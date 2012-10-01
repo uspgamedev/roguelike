@@ -2,7 +2,7 @@
 #define ROGUELIKE_ACTION_TIME_TIMEMANAGER_H_
 
 // Inheritance
-// (none)
+#include <ugdk/action/task.h>
 
 // External Dependencies
 #include <queue>
@@ -24,23 +24,19 @@ class obj_less {
     bool operator()(const base::GameObject* a, const base::GameObject* b) const;
 };
 
-class TimeManager {
-  // singleton
-  static TimeManager* reference_;
-  TimeManager();
+typedef std::priority_queue< base::GameObject*, std::vector<base::GameObject*>, obj_less >
+        ObjectQueue;
+
+class TimeManager : public ugdk::action::Task {
+  typedef ugdk::action::Task super;
 
   public:
-    static TimeManager* reference() {
-        return reference_ == nullptr
-          ? (reference_ = new TimeManager())
-          : reference_ ;
-    }
-    ~TimeManager();
+    TimeManager() {}
+    ~TimeManager() {}
+
+    void operator()(double dt);
 
   private:
-     typedef std::priority_queue< base::GameObject*, std::vector<base::GameObject*>, obj_less >
-             ObjectQueue;
-
      ObjectQueue actors_;
 };
 

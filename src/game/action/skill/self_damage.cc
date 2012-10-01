@@ -21,8 +21,9 @@ static double spend_damage(GameObject* caster) {
     return 1.0;
 }
 
-static void act_damage(GameObject* caster, double power) {
+static double act_damage(GameObject* caster, double power) {
     caster->damageable_component()->TakeDamage(9001.1337042);
+    return 0.0;
 }
 
 SelfDamage::SelfDamage()

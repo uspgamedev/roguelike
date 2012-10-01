@@ -26,9 +26,9 @@ Movement::Movement( bool is_relative, const MovementCalculator& calculator,
   : is_relative_(is_relative), calculator_(calculator), spender_(spender), action_(action) {}
 
 
-bool Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
+double Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
     const GameThing& thing = targets.front();
-    if( thing.is_obj() ) return false;
+    if( thing.is_obj() ) return -1.0;
 
     const Integer2D& tile = thing.tile();
     Integer2D movement = calculator_(caster,tile);
@@ -36,16 +36,15 @@ bool Movement::operator()(base::GameObject* caster, const GameTargets& targets) 
     if(is_relative_) { if( movement.x == 0 && movement.y == 0 ) return false; }
     else {
         const Integer2D& casterpos = caster->shape_component()->occupying_tiles().front();
-        if( movement.x == casterpos.x && movement.y == casterpos.y ) return false;
+        if( movement.x == casterpos.x && movement.y == casterpos.y ) return -1.0;
     }
 
     double power = spender_(caster,movement);
     if( power != 0.0 ) {
-        action_(caster,movement,power );
-        return true;
+        return action_(caster,movement,power );
     }
 
-    return false;
+    return -1.0;
 }
 
 } // namespace skill

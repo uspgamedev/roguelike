@@ -50,6 +50,7 @@ SET(GAME_SRCS
     ./game/builder/objectbuilder.h 
     ./game/builder.h 
     ./game/component/componentbase.h 
+    ./game/component/controller.cc 
     ./game/component/controller.h 
     ./game/component/controller_ai.cc 
     ./game/component/controller_ai.h 

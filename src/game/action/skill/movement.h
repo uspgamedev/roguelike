@@ -26,7 +26,7 @@ typedef std::tr1::function<ugdk::math::Integer2D (const base::GameObject*, const
 typedef std::tr1::function<double (base::GameObject*, const ugdk::math::Integer2D&)>
         MovementSpender;
 
-typedef std::tr1::function<void (base::GameObject*, const ugdk::math::Integer2D&, double)>
+typedef std::tr1::function<double (base::GameObject*, const ugdk::math::Integer2D&, double)>
         MovementAction;
 
 class Movement : public Skill {
@@ -36,7 +36,7 @@ class Movement : public Skill {
               const MovementSpender& spender, const MovementAction& action );
     virtual ~Movement() {}
 
-    bool operator()(base::GameObject* caster, const GameTargets& targets);
+    double operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     bool is_relative_;

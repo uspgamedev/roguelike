@@ -32,16 +32,16 @@ class SkillManager : public ugdk::base::GenericContainer<Skill*> {
     ~SkillManager();
 
 
-    bool Cast(const std::string& skill, base::GameObject* caster, const GameTargets& targets) {
+    double Cast(const std::string& skill, base::GameObject* caster, const GameTargets& targets) {
         return (*Find(skill))(caster, targets);
     }
-    bool Cast(const std::string& skill, base::GameObject* caster, const ugdk::math::Integer2D& target) {
+    double Cast(const std::string& skill, base::GameObject* caster, const ugdk::math::Integer2D& target) {
         return (*Find(skill))(caster, target);
     }
-    bool Cast(const std::string& skill, base::GameObject* caster, base::GameObject* target) {
+    double Cast(const std::string& skill, base::GameObject* caster, base::GameObject* target) {
         return (*Find(skill))(caster, target);
     }
-    bool Cast(const std::string& skill, base::GameObject* caster) {
+    double Cast(const std::string& skill, base::GameObject* caster) {
         return (*Find(skill))(caster);
     }
 };

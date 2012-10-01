@@ -22,7 +22,7 @@ namespace skill {
 typedef std::tr1::function<double (base::GameObject*)>
         SenseSpender;
 
-typedef std::tr1::function<void (base::GameObject*, double)>
+typedef std::tr1::function<double (base::GameObject*, double)>
         SenseAction;
 
 class Self : public Skill {
@@ -32,7 +32,7 @@ class Self : public Skill {
              const  SenseAction&  action  );
     virtual ~Self() {}
 
-    bool operator()(base::GameObject* caster, const GameTargets& targets);
+    double operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     SenseSpender spender_;

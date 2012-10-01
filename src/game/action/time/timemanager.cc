@@ -4,12 +4,16 @@
 
 // External Dependencies
 // (none)
+#include <cstdio>
 
 // Internal Dependencies
+#include "game/base/gamecontroller.h"
 #include "game/base/gameobject.h"
+#include "game/component/controller.h"
 #include "game/component/energy.h"
 
 // Using
+using game::base::GameController;
 using game::base::GameObject;
 using game::component::Energy;
 
@@ -18,15 +22,15 @@ namespace action {
 namespace time {
 
 bool obj_less::operator()(const GameObject* a, const GameObject* b) const {
-    const Energy* enga = a->energy_component();
-    if(enga == nullptr) return true;
-    const Energy* engb = b->energy_component();
-    if(engb == nullptr) return false;
-    return enga->Mean() < engb->Mean();
+    return a->energy_component()->Mean() < b->energy_component()->Mean();
 }
 
-// singleton
-TimeManager* TimeManager::reference_ = nullptr;
+void TimeManager::operator()(double) {
+    if( actors_.empty() ) { GameController::reference()->Finish(); return; }
+    GameObject* next = actors_.top();
+    double time_spent = next->controller_component()->Act();
+}
+
 
 } // namespace time
 } // namespace action

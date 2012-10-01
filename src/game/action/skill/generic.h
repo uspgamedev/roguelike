@@ -31,7 +31,7 @@ class Generic : public Skill {
     Generic(const GenericValidator& validator, const GenericSpender& spender, const GameAction& action);
     virtual ~Generic() {}
 
-    bool operator()(base::GameObject* caster, const GameTargets& targets);
+    double operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     GenericValidator validator_;

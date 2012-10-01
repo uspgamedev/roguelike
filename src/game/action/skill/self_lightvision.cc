@@ -20,8 +20,9 @@ static double spend_sense_lightvision(GameObject* caster) {
     return 1.0;
 }
 
-static void act_sense_lightvision(GameObject* caster, double power) {
+static double act_sense_lightvision(GameObject* caster, double power) {
     caster->vision_component()->See();
+    return 0.0;
 }
 
 LightVision::LightVision()

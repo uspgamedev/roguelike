@@ -20,17 +20,16 @@ Generic::Generic(const GenericValidator& validator, const GenericSpender& spende
   : validator_(validator), spender_(spender), action_(action) {}
 
 
-bool Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
+double Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
 
     if(validator_(caster,targets)) {
         double power = spender_(caster,targets);
         if( power != 0.0 ) {
-            action_(caster,targets,power);
-            return true;
+            return action_(caster,targets,power);
         }
     }
 
-    return false;
+    return -1.0;
 }
 
 } // namespace skill

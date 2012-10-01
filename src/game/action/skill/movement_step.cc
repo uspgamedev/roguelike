@@ -68,7 +68,7 @@ static double spend_mov_step(GameObject* caster, const Integer2D& direction) {
     return 1.0;
 }
 
-static void act_mov_step(GameObject* caster, const Integer2D& direction, double power) {
+static double act_mov_step(GameObject* caster, const Integer2D& direction, double power) {
     Integer2D position = caster->shape_component()->occupying_tiles().front();
     return act_mov_place(caster,position+direction,power);
 }

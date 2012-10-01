@@ -22,7 +22,7 @@ class ControllerIdle : public Controller {
     ControllerIdle(game::base::GameObject* owner) : super(owner) {}
     ~ControllerIdle() {}
 
-    void Update(double dt);
+    double Act() { return -1.0; }
 };
 
 } // namespace component

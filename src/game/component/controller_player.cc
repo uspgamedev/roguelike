@@ -35,16 +35,22 @@ ControllerPlayer::ControllerPlayer(GameObject* owner)
 }
 ControllerPlayer::~ControllerPlayer() {}
 
-void ControllerPlayer::Update(double) {
+double ControllerPlayer::Act() {
+    double time_carry = super::Act();
+    // Comboable Skills go here
+
+
+
+    if(time_carry > 0.0) return time_carry;
+    // Non-comboable skills go after here.
+
     InputManager* input = INPUT_MANAGER();
 
     // Vision stuff
-    if( input->KeyPressed(ugdk::input::K_i) ) owner_->vision_component()->Initialize();
     if( input->KeyPressed(ugdk::input::K_o) ) owner_->vision_component()->CycleOctant();
-    if( input->KeyPressed(ugdk::input::K_p) ) owner_->Cast("see");
 
     // Derp stuff
-    if( input->KeyPressed(ugdk::input::K_z) ) owner_->Cast("ouch");
+    if( input->KeyPressed(ugdk::input::K_z) ) return Cast("ouch");
 
     // Movement
     if( input->KeyPressed(ugdk::input::K_RIGHT) || input->KeyPressed(ugdk::input::K_LEFT) ||
@@ -83,23 +89,24 @@ void ControllerPlayer::Update(double) {
         hold_tick_.Restart(HOLD_TICK_INTERVAL);
         hold_tick_.Pause();
 
-        owner_->Cast("step",where_to_);
-        owner_->Cast("see");
-
+        double ret = Cast("step",where_to_);
+        Cast("see");
         where_to_ = Integer2D(0,0);
+
+        return ret;
     }
-    else if ( ( input->KeyDown(ugdk::input::K_RIGHT) || input->KeyDown(ugdk::input::K_LEFT) ||
-                input->KeyDown(ugdk::input::K_UP)    || input->KeyDown(ugdk::input::K_DOWN) )
-              && time_held_.Expired() && hold_tick_.Expired() ) {
+    if ( ( input->KeyDown(ugdk::input::K_RIGHT) || input->KeyDown(ugdk::input::K_LEFT) ||
+           input->KeyDown(ugdk::input::K_UP)    || input->KeyDown(ugdk::input::K_DOWN) )
+         && time_held_.Expired() && hold_tick_.Expired() ) {
 
         hold_tick_.Restart(HOLD_TICK_INTERVAL);
         if(where_to_.x != 0 || where_to_.y != 0) {
-            owner_->Cast("step",where_to_);
-            owner_->Cast("see");
+            double ret = Cast("step",where_to_);
+            Cast("see");
+            return ret;
         }
     }
-
-
+    return -1.0;
 }
 
 } // namespace component

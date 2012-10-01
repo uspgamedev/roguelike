@@ -1,3 +1,4 @@
+
 // Header File
 #include "game/base/gamecontroller.h"
 
@@ -124,6 +125,8 @@ GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullp
     wall_8->shape_component()->PlaceAt(Integer2D(18,15));
     wall_9->shape_component()->PlaceAt(Integer2D(17,16));
     wall_0->shape_component()->PlaceAt(Integer2D(18,17));
+
+    
 }
 
 GameController::~GameController() {
@@ -164,8 +167,8 @@ void GameController::BlackoutTiles() {
 
 void GameController::addPendingGameObjects() {
     for(auto it = pending_game_objects_.begin(); it != pending_game_objects_.end(); ++it) {
-        if((*it)->graphic_component()->node() != nullptr)
-            this->content_node()->AddChild((*it)->graphic_component()->node());
+        /*if((*it)->graphic_component()->node() != nullptr)
+            this->content_node()->AddChild((*it)->graphic_component()->node());*/
         game_objects_.push_back(*it);
         this->AddEntity(*it);
     }

@@ -13,9 +13,5 @@
 namespace game {
 namespace component {
 
-void ControllerIdle::Update(double) {
-
-}
-
 } // namespace component
 } // namespace game

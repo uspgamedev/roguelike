@@ -30,8 +30,9 @@ static double spend_mov_place(GameObject* caster, const Integer2D& target) {
     return 1.0;
 }
 
-void act_mov_place(GameObject* caster, const Integer2D& target, double power) {
+double act_mov_place(GameObject* caster, const Integer2D& target, double power) {
     caster->shape_component()->PlaceAt(target);
+    return 0.0;
 }
 
 MovementPlace::MovementPlace()

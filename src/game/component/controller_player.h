@@ -24,7 +24,7 @@ class ControllerPlayer : public Controller {
     ControllerPlayer(game::base::GameObject* owner);
     ~ControllerPlayer();
 
-    void Update(double dt);
+    double Act();
 
   private:
     ugdk::math::Integer2D where_to_;

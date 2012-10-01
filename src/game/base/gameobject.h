@@ -20,7 +20,6 @@
 
 // Defines
 #define FORALL_UPDATEABLE_COMPONENTS(action)    \
-    action( controller, Controller)             \
     action(    graphic,    Graphic)
 
 #define FORALL_COMPONENTS(action)           \
@@ -64,11 +63,6 @@ class GameObject : public ugdk::action::Entity {
     
     FORALL_COMPONENTS(GETTER_DECLARATION) // ends in "}"
     FORALL_COMPONENTS(SETTER_DECLARATION) // ends in "}"
-
-    bool Cast(const std::string& skill, const action::skill::GameTargets& targets);
-    bool Cast(const std::string& skill, const ugdk::math::Integer2D& target);
-    bool Cast(const std::string& skill, base::GameObject* target);
-    bool Cast(const std::string& skill);
 
     void Die() { die_(); to_be_removed_ = true; }
     bool dead() const { return to_be_removed_; }

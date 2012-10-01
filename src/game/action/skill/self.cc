@@ -19,13 +19,13 @@ namespace skill {
 Self::Self( const SenseSpender& spender, const  SenseAction& action )
   : spender_(spender), action_(action) {}
 
-bool Self::operator()(GameObject* caster, const GameTargets& targets) {
+double Self::operator()(GameObject* caster, const GameTargets& targets) {
     double power = spender_(caster);
     if(power != 0.0) {
-        action_(caster,power);
-        return true;
+        return action_(caster,power);
     }
-    return false;
+
+    return -1.0;
 }
 
 } // namespace skill

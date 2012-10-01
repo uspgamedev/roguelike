@@ -53,18 +53,5 @@ void GameObject::Update(double dt) {
     FORALL_UPDATEABLE_COMPONENTS(UPDATE_ACTION) // note lack of ";"
 }
 
-bool GameObject::Cast(const string& skill, const GameTargets& targets) {
-    return SkillManager::reference()->Cast(skill,this,targets);
-}
-bool GameObject::Cast(const string& skill, const Integer2D& target) {
-    return SkillManager::reference()->Cast(skill,this,target);
-}
-bool GameObject::Cast(const string& skill, GameObject* target) {
-    return SkillManager::reference()->Cast(skill,this,target);
-}
-bool GameObject::Cast(const string& skill) {
-    return SkillManager::reference()->Cast(skill,this);
-}
-
 } // namespace base
 } // namespace game
