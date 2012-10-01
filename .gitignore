@@ -39,3 +39,5 @@ cmake_install.cmake
 /src/RelWithDebInfo
 /src/Release
 /src/MinSizeRel
+Makefile
+roguelike

@@ -8,7 +8,7 @@
 
 // MANOMANOMANOMANOMANOMANO
 #define LevelLoader main
-void hardcodedawesomeness();
+static void hardcodedawesomeness();
 // endMANOMANOMANOMANOMANOMANO
 
 int LevelLoader(int argc, char **argv) {
