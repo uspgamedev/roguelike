@@ -4,6 +4,8 @@
 // External Dependencies
 #include <ugdk/portable/tr1.h>
 #include FROM_TR1(functional)
+#include <ugdk/action/scene.h>
+#include <ugdk/graphic/node.h>
 #include <ugdk/math/integer2D.h>
 
 // Internal Dependencies
@@ -51,6 +53,10 @@ void GameObject::Initialize( FORALL_COMPONENTS(INI_ARG_DECLARATION) // note lack
 
 void GameObject::Update(double dt) {
     FORALL_UPDATEABLE_COMPONENTS(UPDATE_ACTION) // note lack of ";"
+}
+
+void GameObject::OnSceneAdd(ugdk::action::Scene* scene) {
+    scene->content_node()->AddChild(graphic_component()->node());
 }
 
 } // namespace base

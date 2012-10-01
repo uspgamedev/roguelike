@@ -12,7 +12,7 @@
 #include <ugdk/math/vector2D.h>  // needed for map_size_
 
 // Internal Dependencies
-// (none)
+#include "game/action/time/timemanager.h"
 
 // Forward Declarations
 #include "game/base.h"
@@ -28,7 +28,6 @@ class GameController : public ugdk::action::Scene {
     static GameController* reference();
     ~GameController();
 
-    void Update(double dt);
 
     void AddGameObject(GameObject* game_object);
 
@@ -56,17 +55,15 @@ class GameController : public ugdk::action::Scene {
 
   private:
     GameController();
-
+    
     void clearDeadGameObjects();
     void addPendingGameObjects();
-    
-    std::list<GameObject*> pending_game_objects_;
-    std::list<GameObject*> game_objects_;
 
     ugdk::Vector2D map_size_;
 	std::vector< std::vector<GameTile*> > tiles_;
 
     GameObject* hero_;
+    action::time::ObjectQueue actors_;
 };
 
 } // namespace base

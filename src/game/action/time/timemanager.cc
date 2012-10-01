@@ -26,9 +26,17 @@ bool obj_less::operator()(const GameObject* a, const GameObject* b) const {
 }
 
 void TimeManager::operator()(double) {
-    if( actors_.empty() ) { GameController::reference()->Finish(); return; }
+    if( actors_.empty() ) {
+        GameController::reference()->Finish();
+        return;
+    }
+
     GameObject* next = actors_.top();
+    actors_.pop();
     double time_spent = next->controller_component()->Act();
+    if( !next->dead() ) actors_.push(next);
+    // for each cara regen por time_spent.
+
 }
 
 

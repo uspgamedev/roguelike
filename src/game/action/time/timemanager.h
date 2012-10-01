@@ -31,13 +31,13 @@ class TimeManager : public ugdk::action::Task {
   typedef ugdk::action::Task super;
 
   public:
-    TimeManager() {}
+    TimeManager(ObjectQueue& actors) : actors_(actors) {}
     ~TimeManager() {}
 
     void operator()(double dt);
 
   private:
-     ObjectQueue actors_;
+     ObjectQueue& actors_;
 };
 
 } // namespace time

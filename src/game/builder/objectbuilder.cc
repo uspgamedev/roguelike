@@ -15,6 +15,7 @@
 #include "game/component/controller_player.h"
 #include "game/component/vision.h"
 #include "game/component/damageable.h"
+#include "game/component/energy.h"
 #include "game/component/shape_rectangular.h"
 #include "game/component/graphic_rectangular.h"
 
@@ -28,6 +29,7 @@ using game::component::ControllerPlayer;
 using game::component::Vision;
 using game::component::ShapeRectangular;
 using game::component::Damageable;
+using game::component::Energy;
 using game::component::GraphicRectangular;
 
 namespace game {
@@ -40,7 +42,7 @@ GameObject* ObjectBuilder::BuildHero() {
         new   ControllerPlayer(hero),
         new             Vision(hero),
         new         Damageable(hero, 10.0),
-        nullptr,
+        new             Energy(hero),
         new   ShapeRectangular(hero, 2, 2, 1.0, 0.25, 1.0e-9),
         new GraphicRectangular(hero, "@", 3.0),
         [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr); }
