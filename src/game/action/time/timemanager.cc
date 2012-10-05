@@ -33,7 +33,7 @@ void TimeManager::operator()(double) {
 }
 
 void TimeManager::time_has_passed(double time) {
-    ObjectQueue new_actors(actors_.comp);
+    ObjectQueue new_actors(actors_.key_comp());
 
     for(auto at = actors_.begin(); at != actors_.end() ; ++at) {
         (*at)->energy_component()->Regen(time);
