@@ -41,6 +41,7 @@ void TimeManager::time_has_passed(double time) {
     }
 
     actors_.swap(new_actors);
+    game::base::GameController::reference()->PassTime(time);
 }
 
 

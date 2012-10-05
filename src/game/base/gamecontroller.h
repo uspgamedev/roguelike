@@ -50,6 +50,7 @@ class GameController : public ugdk::action::Scene {
     }
 
     void BlackoutTiles();
+    void PassTime(double dt) { time_since_beggining_ += dt; }
 
     void set_hero(GameObject* hero) { hero_ = hero; }
 
@@ -64,6 +65,8 @@ class GameController : public ugdk::action::Scene {
 
     GameObject* hero_;
     action::time::ObjectQueue actors_;
+    
+    double time_since_beggining_;
 };
 
 } // namespace base

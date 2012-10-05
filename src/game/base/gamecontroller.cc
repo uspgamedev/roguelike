@@ -43,7 +43,7 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
     return a->energy_component()->Mean() < b->energy_component()->Mean();
 }
 
-GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr), actors_(actor_less) {
+GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 
 	Vector2D pos = Vector2D();
