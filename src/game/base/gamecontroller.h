@@ -34,7 +34,7 @@ class GameController : public ugdk::action::Scene {
     const ugdk::Vector2D& map_size() const { return map_size_; }
 
     bool TileOutOfBounds(int x, int y) const {
-        return y < 0 || y >= tiles_.size() || x < 0 || x >= tiles_[y].size();
+        return y < 0 || y >= (int)(tiles_.size()) || x < 0 || x >= (int)(tiles_[y].size());
     }
     bool TileOutOfBounds(const ugdk::math::Integer2D& coords) const {
         return TileOutOfBounds(coords.x, coords.y);

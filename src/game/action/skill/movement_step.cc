@@ -9,11 +9,13 @@
 // Internal Dependencies
 #include "game/action/skill/movement_place.h"
 #include "game/base/gameobject.h"
+#include "game/component/energy.h"
 #include "game/component/shape.h"
 
 // Using
 using ugdk::math::Integer2D;
 using game::base::GameObject;
+using game::component::Energy;
 
 namespace game {
 namespace action {
@@ -65,6 +67,16 @@ static Integer2D calculate_mov_step(const GameObject* caster, const Integer2D& d
 }
 
 static double spend_mov_step(GameObject* caster, const Integer2D& direction) {
+    Energy* energy = caster->energy_component();
+    double legs = energy->legs();
+
+    if( direction.NormOne() > 1 ) {
+        if(legs < 0.141) return 0.0;
+        energy->set_legs(legs - 0.141);
+        return 1.0;
+    }
+    if(legs < 0.100) return 0.0;
+    energy->set_legs(legs - 0.100);
     return 1.0;
 }
 

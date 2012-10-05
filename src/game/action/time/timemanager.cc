@@ -4,7 +4,6 @@
 
 // External Dependencies
 // (none)
-#include <cstdio>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
@@ -13,6 +12,7 @@
 #include "game/component/energy.h"
 
 // Using
+using std::set;
 using game::base::GameController;
 using game::base::GameObject;
 using game::component::Energy;
@@ -21,22 +21,26 @@ namespace game {
 namespace action {
 namespace time {
 
-bool obj_less::operator()(const GameObject* a, const GameObject* b) const {
-    return a->energy_component()->Mean() < b->energy_component()->Mean();
-}
-
 void TimeManager::operator()(double) {
     if( actors_.empty() ) {
         GameController::reference()->Finish();
         return;
     }
 
-    GameObject* next = actors_.top();
-    actors_.pop();
+    GameObject* next = *(actors_.begin());
     double time_spent = next->controller_component()->Act();
-    if( !next->dead() ) actors_.push(next);
-    // for each cara regen por time_spent.
+    if(time_spent > 0.0) time_has_passed(time_spent);
+}
 
+void TimeManager::time_has_passed(double time) {
+    ObjectQueue new_actors(actors_.comp);
+
+    for(auto at = actors_.begin(); at != actors_.end() ; ++at) {
+        (*at)->energy_component()->Regen(time);
+        new_actors.insert(*at);
+    }
+
+    actors_.swap(new_actors);
 }
 
 

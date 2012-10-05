@@ -5,7 +5,7 @@
 #include <ugdk/action/task.h>
 
 // External Dependencies
-#include <queue>
+#include <set>
 
 // Internal Dependencies
 // (none)
@@ -17,15 +17,7 @@ namespace game {
 namespace action {
 namespace time {
 
-class obj_less {
-  public:
-    obj_less() {}
-    ~obj_less() {}
-    bool operator()(const base::GameObject* a, const base::GameObject* b) const;
-};
-
-typedef std::priority_queue< base::GameObject*, std::vector<base::GameObject*>, obj_less >
-        ObjectQueue;
+typedef std::set< base::GameObject*, bool (*)(const base::GameObject*, const base::GameObject*) > ObjectQueue;
 
 class TimeManager : public ugdk::action::Task {
   typedef ugdk::action::Task super;
@@ -37,6 +29,8 @@ class TimeManager : public ugdk::action::Task {
     void operator()(double dt);
 
   private:
+     void time_has_passed(double time);
+
      ObjectQueue& actors_;
 };
 

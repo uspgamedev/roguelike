@@ -5,7 +5,7 @@
 // External Dependencies
 #include <cassert>
 #include <cstdlib>
-#include <queue>
+#include <set>
 #include <ugdk/action/generictask.h>
 #include <ugdk/base/engine.h>
 #include <ugdk/graphic/drawable/text.h>
@@ -16,17 +16,14 @@
 // Internal Dependencies
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
-#include "game/builder/objectbuilder.h"
-#include "game/component/controller_player.h"
-#include "game/component/graphic.h"
-#include "game/component/shape_rectangular.h"
+#include "game/component/energy.h"
+//#include "game/component/graphic.h"
 
 // Using
 using std::list;
 using std::vector;
 using ugdk::math::Integer2D;
 using ugdk::Vector2D;
-using game::builder::ObjectBuilder;
 
 namespace game {
 namespace base {
@@ -42,7 +39,11 @@ GameController* GameController::reference() {
     return reference_ == nullptr ? (reference_ = new GameController()) : reference_;
 }
 
-GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr) {
+static bool actor_less(const GameObject* a, const GameObject* b) {
+    return a->energy_component()->Mean() < b->energy_component()->Mean();
+}
+
+GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr), actors_(actor_less) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 
 	Vector2D pos = Vector2D();
@@ -74,7 +75,7 @@ GameController::~GameController() {
 
 void GameController::AddGameObject(GameObject* game_object) {
     this->QueuedAddEntity(game_object);
-    if( game_object == hero_ ) actors_.push(hero_);
+    if( game_object == hero_ ) actors_.insert(hero_);
 }
 
 void GameController::BlackoutTiles() {

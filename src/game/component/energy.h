@@ -5,7 +5,7 @@
 #include "game/component/componentbase.h"
 
 // External Dependencies
-// (none)
+#include <cmath>
 
 // Internal Dependencies
 // (none)
@@ -24,8 +24,7 @@ class Energy : public ComponentBase {
                 arms_(1.0),         legs_(1.0),         eyes_(1.0),
             max_arms_(1.0),     max_legs_(1.0),     max_eyes_(1.0),
           regen_arms_(1.0),   regen_legs_(1.0),   regen_eyes_(1.0),
-          time_carry_(0.0),
-        arms_savings_(0.0), legs_savings_(0.0), eyes_savings_(0.0) {}
+          time_carry_(0.0) {}
     ~Energy() {}
 
     // Getters
@@ -50,18 +49,15 @@ class Energy : public ComponentBase {
     void set_regen_legs(double regen_legs) { regen_legs_ = regen_legs; }
     void set_regen_eyes(double regen_eyes) { regen_eyes_ = regen_eyes; }
 
-    void    set_time_carry(double   time_carry) {   time_carry_ =   time_carry; }
-    void set_arms_savings_(double arms_savings) { arms_savings_ = arms_savings; }
-    void set_legs_savings_(double legs_savings) { legs_savings_ = legs_savings; }
-    void set_eyes_savings_(double eyes_savings) { eyes_savings_ = eyes_savings; }
+    void set_time_carry(double   time_carry) { time_carry_ = time_carry; }
 
     // Useful stuff
     double Mean() const { return (arms_ + legs_ + eyes_) / 3.0 ; }
+    void Regen(double time) { arms_ = std::min(max_arms_, arms_+regen_arms_*time);
+                              legs_ = std::min(max_legs_, legs_+regen_legs_*time);
+                              eyes_ = std::min(max_eyes_, eyes_+regen_eyes_*time); }
 
     double   PopTimeCarry() { double ret =   time_carry_;   time_carry_ = 0.0; return ret; }
-    double PopArmsSavings() { double ret = arms_savings_; arms_savings_ = 0.0; return ret; }
-    double PopLegsSavings() { double ret = legs_savings_; legs_savings_ = 0.0; return ret; }
-    double PopEyesSavings() { double ret = eyes_savings_; eyes_savings_ = 0.0; return ret; }
 
   private:
     double arms_;
@@ -77,9 +73,6 @@ class Energy : public ComponentBase {
     double regen_eyes_;
 
     double time_carry_;
-    double arms_savings_;
-    double legs_savings_;
-    double eyes_savings_;
 };
 
 } // namespace component
