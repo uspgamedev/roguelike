@@ -23,10 +23,10 @@ namespace skill {
 typedef std::tr1::function<ugdk::math::Integer2D (const base::GameObject*, const ugdk::math::Integer2D&)>
         MovementCalculator;
 
-typedef std::tr1::function<double (base::GameObject*, const ugdk::math::Integer2D&)>
+typedef std::tr1::function<Efficiency (base::GameObject*, const ugdk::math::Integer2D&)>
         MovementSpender;
 
-typedef std::tr1::function<double (base::GameObject*, const ugdk::math::Integer2D&, double)>
+typedef std::tr1::function<TimePassed (base::GameObject*, const ugdk::math::Integer2D&, Efficiency)>
         MovementAction;
 
 class Movement : public Skill {
@@ -36,7 +36,7 @@ class Movement : public Skill {
               const MovementSpender& spender, const MovementAction& action );
     virtual ~Movement() {}
 
-    double operator()(base::GameObject* caster, const GameTargets& targets);
+    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     bool is_relative_;

@@ -13,6 +13,8 @@ SET(GAME_SRCS
     ./game/action/skill/self_lightvision.h 
     ./game/action/skill/self_damage.cc 
     ./game/action/skill/self_damage.h 
+    ./game/action/skill/simple.cc 
+    ./game/action/skill/simple.h 
     ./game/action/skill/skill.cc 
     ./game/action/skill/skill.h 
     ./game/action/skill/skillmanager.cc 

@@ -22,7 +22,9 @@ namespace action {
 namespace skill {
 
 typedef std::list<base::GameThing> GameTargets;
-typedef std::tr1::function<double (base::GameObject*, const GameTargets&, double)>
+typedef double Efficiency;
+typedef double TimePassed;
+typedef std::tr1::function<TimePassed (base::GameObject*, const GameTargets&, Efficiency)>
         GameAction;
 
 class Skill {
@@ -30,10 +32,10 @@ class Skill {
     Skill() {}
     virtual ~Skill() {}
 
-    virtual double operator()(base::GameObject* caster, const GameTargets& targets) = 0;
-    virtual double operator()(base::GameObject* caster, const ugdk::math::Integer2D& target);
-    virtual double operator()(base::GameObject* caster, base::GameObject* target);
-    virtual double operator()(base::GameObject* caster);
+    virtual TimePassed operator()(base::GameObject* caster, const GameTargets& targets) = 0;
+    virtual TimePassed operator()(base::GameObject* caster, const ugdk::math::Integer2D& target);
+    virtual TimePassed operator()(base::GameObject* caster, base::GameObject* target);
+    virtual TimePassed operator()(base::GameObject* caster);
 
     // Needed for GenericContainer
     static Skill* LoadFromFile(const std::string&) { return nullptr; }

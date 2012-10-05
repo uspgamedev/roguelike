@@ -22,7 +22,7 @@ namespace skill {
 typedef std::tr1::function<bool (const base::GameObject*, const GameTargets&)>
         GenericValidator;
 
-typedef std::tr1::function<double (base::GameObject*, const GameTargets&)>
+typedef std::tr1::function<Efficiency (base::GameObject*, const GameTargets&)>
         GenericSpender;
 
 class Generic : public Skill {
@@ -31,7 +31,7 @@ class Generic : public Skill {
     Generic(const GenericValidator& validator, const GenericSpender& spender, const GameAction& action);
     virtual ~Generic() {}
 
-    double operator()(base::GameObject* caster, const GameTargets& targets);
+    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     GenericValidator validator_;

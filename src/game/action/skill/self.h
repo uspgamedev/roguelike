@@ -19,10 +19,10 @@ namespace game {
 namespace action {
 namespace skill {
 
-typedef std::tr1::function<double (base::GameObject*)>
+typedef std::tr1::function<Efficiency (base::GameObject*)>
         SenseSpender;
 
-typedef std::tr1::function<double (base::GameObject*, double)>
+typedef std::tr1::function<TimePassed (base::GameObject*, Efficiency)>
         SenseAction;
 
 class Self : public Skill {
@@ -32,7 +32,7 @@ class Self : public Skill {
              const  SenseAction&  action  );
     virtual ~Self() {}
 
-    double operator()(base::GameObject* caster, const GameTargets& targets);
+    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     SenseSpender spender_;

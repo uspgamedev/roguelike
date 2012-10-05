@@ -20,7 +20,7 @@ namespace action {
 namespace skill {
 
 ugdk::math::Integer2D calculate_mov_place(const base::GameObject* caster, const ugdk::math::Integer2D& target);
-double act_mov_place(base::GameObject* caster, const ugdk::math::Integer2D& target, double power);
+TimePassed act_mov_place(base::GameObject* caster, const ugdk::math::Integer2D& target, Efficiency power);
 
 class MovementPlace : public Movement {
   typedef Movement super;
