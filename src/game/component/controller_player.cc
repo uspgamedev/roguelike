@@ -37,12 +37,16 @@ ControllerPlayer::~ControllerPlayer() {}
 
 double ControllerPlayer::Act() {
     double time_carry = super::Act();
-    // Comboable Skills go here
+    ////////////////////////////////
+    // Comboable Skills go here. ///
+    ////////////////////////////////
 
 
 
     if(time_carry > 0.0) return time_carry;
-    // Non-comboable skills go after here.
+    ///////////////////////////////////////////
+    /// Non-comboable skills go after here. ///
+    ///////////////////////////////////////////
 
     InputManager* input = INPUT_MANAGER();
 
@@ -51,6 +55,7 @@ double ControllerPlayer::Act() {
 
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) ) return Cast("ouch");
+    if( input->KeyPressed(ugdk::input::K_f) ) return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
 
     // Movement
     if( input->KeyPressed(ugdk::input::K_RIGHT) || input->KeyPressed(ugdk::input::K_LEFT) ||

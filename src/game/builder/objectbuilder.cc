@@ -45,7 +45,7 @@ GameObject* ObjectBuilder::BuildHero() {
         new             Energy(hero),
         new   ShapeRectangular(hero, 2, 2, 1.0, 0.25, 1.0e-9),
         new GraphicRectangular(hero, "@", 3.0),
-        [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr); }
+        [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr);}
     );
 
     hero->vision_component()->Initialize();
@@ -62,7 +62,8 @@ GameObject* ObjectBuilder::BuildEnemy() {
         new         Damageable(enemy, 4.0),
         nullptr,
         new   ShapeRectangular(enemy, 5, 6, 3.0, 0.8, 1.0e-9),
-        new GraphicRectangular(enemy, "E", 2.0)
+        new GraphicRectangular(enemy, "E", 2.0),
+        [](){}
     );
 
     return enemy;

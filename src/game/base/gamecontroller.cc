@@ -17,10 +17,10 @@
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
 #include "game/component/energy.h"
-//#include "game/component/graphic.h"
 
 // Using
 using std::list;
+using std::set;
 using std::vector;
 using ugdk::math::Integer2D;
 using ugdk::Vector2D;
@@ -82,6 +82,20 @@ void GameController::BlackoutTiles() {
     for(auto j = tiles_.begin(); j != tiles_.end(); ++j)
         for(auto i = (*j).begin(); i != (*j).end(); ++i)
             (*i)->node()->modifier()->set_visible(false);
+}
+
+void GameController::RemoveDeadActors() {
+    std::set<GameObject*> to_remove;
+    for(auto it = actors_.begin(); it != actors_.end(); ++it) {
+        if( (*it)->dead() )
+            to_remove.insert((*it));
+    }
+    for(auto it = to_remove.begin(); it != to_remove.end(); ++it)
+        actors_.erase((*it));
+}
+
+const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {
+    return Tile(coords)->objects_here();
 }
 
 } // namespace base

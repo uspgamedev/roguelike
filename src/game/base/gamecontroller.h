@@ -7,6 +7,7 @@
 // External Dependencies
 #include <cassert>
 #include <list>                  // template class, also needed for push_back(-)
+#include <set>
 #include <vector>                // template class, also needed for size(-)
 #include <ugdk/math/integer2D.h> // needed for Tile
 #include <ugdk/math/vector2D.h>  // needed for map_size_
@@ -49,8 +50,13 @@ class GameController : public ugdk::action::Scene {
         return Tile(coords.x, coords.y);
     }
 
+    const std::set<GameObject*>& ObjectsAt(const ugdk::math::Integer2D& coords);
+    const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
+
+
     void BlackoutTiles();
     void PassTime(double dt) { time_since_beggining_ += dt; }
+    void RemoveDeadActors();
 
     void set_hero(GameObject* hero) { hero_ = hero; }
 
