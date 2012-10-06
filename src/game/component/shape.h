@@ -13,6 +13,8 @@
 
 // Forward Declarations
 #include "game/base.h"
+#include "game/base/gamecontroller.h"
+#include "game/base/gametile.h"
 
 namespace game {
 namespace component {
@@ -22,7 +24,10 @@ class Shape : public ComponentBase {
   public:
     Shape(game::base::GameObject* owner, double stay_sizeclass = 1.0, double pass_sizeclass = 0.25, double enter_sizeclass = 1.0e-5 )
       : super(owner), stay_sizeclass_(stay_sizeclass), pass_sizeclass_(pass_sizeclass), enter_sizeclass_(enter_sizeclass) {}
-    virtual ~Shape() {}
+    virtual ~Shape() {
+        for(auto it = occupying_tiles_.begin(); it != occupying_tiles_.end(); it++)
+            base::GameController::reference()->Tile((*it))->RemoveObject(this->owner_);
+    }
 
     void set_stay_sizeclass(  double stay_sizeclass ) { stay_sizeclass_  = stay_sizeclass;  }
     void set_pass_sizeclass(  double pass_sizeclass ) { pass_sizeclass_  = pass_sizeclass;  }
