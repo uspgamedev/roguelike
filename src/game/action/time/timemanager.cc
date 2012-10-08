@@ -29,8 +29,8 @@ void TimeManager::operator()(double) {
 
     GameObject* next = *(actors_.begin());
     double time_spent = next->controller_component()->Act();
-    GameController::reference()->RemoveDeadActors();
-    if(time_spent > 0.0) time_has_passed(time_spent);
+    if(time_spent > 0.0)
+        time_has_passed(time_spent);
 }
 
 void TimeManager::time_has_passed(double time) {

@@ -55,7 +55,8 @@ double ControllerPlayer::Act() {
 
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) ) return Cast("ouch");
-    if( input->KeyPressed(ugdk::input::K_f) ) return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
+    if( input->KeyPressed(ugdk::input::K_f) ) 
+        return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
 
     // Movement
     if( input->KeyPressed(ugdk::input::K_RIGHT) || input->KeyPressed(ugdk::input::K_LEFT) ||

@@ -36,9 +36,14 @@ static TimePassed act_fireat(GameObject* caster, GameThing& target, Efficiency p
 
     if(target.is_obj())
         target.obj()->damageable_component()->TakeDamage(9001.1337042);
-    else
-        (*(gc->ObjectsAt(target.tile()).begin()))->damageable_component()->TakeDamage(9001.1337042);
-
+    else {
+        auto thiscodeisgonnago = gc->ObjectsAt(target.tile());
+        if(!thiscodeisgonnago.empty()) {
+            GameObject* obj = (*(gc->ObjectsAt(target.tile()).begin()));
+            Damageable* damn = obj->damageable_component();
+            damn->TakeDamage(9001.1337042);
+        }
+    }
     return 0.0;
 }
 

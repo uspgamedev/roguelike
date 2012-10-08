@@ -56,7 +56,7 @@ class GameController : public ugdk::action::Scene {
 
     void BlackoutTiles();
     void PassTime(double dt) { time_since_beggining_ += dt; }
-    void RemoveDeadActors();
+    void RemoveActor(GameObject* actor);
 
     void set_hero(GameObject* hero) { hero_ = hero; }
 

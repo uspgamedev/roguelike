@@ -64,7 +64,7 @@ class GameObject : public ugdk::action::Entity {
     FORALL_COMPONENTS(GETTER_DECLARATION) // ends in "}"
     FORALL_COMPONENTS(SETTER_DECLARATION) // ends in "}"
 
-    void Die() { die_(); to_be_removed_ = true; }
+    void Die();
     bool dead() const { return to_be_removed_; }
     
     void OnSceneAdd(ugdk::action::Scene* scene);

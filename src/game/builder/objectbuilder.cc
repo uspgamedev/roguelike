@@ -57,13 +57,12 @@ GameObject* ObjectBuilder::BuildEnemy() {
 
     GameObject* enemy = new GameObject();
     enemy->Initialize(
-        new       ControllerAi(enemy),
+        new      ControllerAi(enemy),
         /*new             Vision(enemy),*/nullptr,
-        new         Damageable(enemy, 4.0),
-        nullptr,
+        new   Damageable(enemy, 4.0),
+        new            Energy(enemy),
         new   ShapeRectangular(enemy, 5, 6, 3.0, 0.8, 1.0e-9),
-        new GraphicRectangular(enemy, "E", 2.0),
-        [](){}
+        new GraphicRectangular(enemy, "E", 2.0)
     );
 
     return enemy;
@@ -73,7 +72,7 @@ GameObject* ObjectBuilder::BuildItem() {
 
     GameObject* item = new GameObject();
     item->Initialize(
-        new     ControllerIdle(item),
+        nullptr,
         nullptr,
         nullptr,
         nullptr,
@@ -88,7 +87,7 @@ GameObject* ObjectBuilder::BuildWall() {
 
     GameObject* wall = new GameObject();
     wall->Initialize(
-        new     ControllerIdle(wall),
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

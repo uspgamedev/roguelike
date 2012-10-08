@@ -17,7 +17,7 @@ namespace game {
 namespace action {
 namespace time {
 
-typedef std::set< base::GameObject*, bool (*)(const base::GameObject*, const base::GameObject*) > ObjectQueue;
+typedef std::multiset< base::GameObject*, bool (*)(const base::GameObject*, const base::GameObject*) > ObjectQueue;
 
 class TimeManager : public ugdk::action::Task {
   typedef ugdk::action::Task super;

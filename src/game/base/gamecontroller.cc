@@ -75,7 +75,8 @@ GameController::~GameController() {
 
 void GameController::AddGameObject(GameObject* game_object) {
     this->QueuedAddEntity(game_object);
-    if( game_object == hero_ ) actors_.insert(hero_);
+    if( game_object->controller_component() != nullptr )
+        actors_.insert(game_object);
 }
 
 void GameController::BlackoutTiles() {
@@ -84,14 +85,14 @@ void GameController::BlackoutTiles() {
             (*i)->node()->modifier()->set_visible(false);
 }
 
-void GameController::RemoveDeadActors() {
-    std::set<GameObject*> to_remove;
-    for(auto it = actors_.begin(); it != actors_.end(); ++it) {
-        if( (*it)->dead() )
-            to_remove.insert((*it));
+void GameController::RemoveActor(GameObject* actor) {
+    auto elements = actors_.equal_range(actor);
+    for(auto it = elements.first; it != elements.second; ++it) {
+        if(*it == actor) {
+            actors_.erase(it);
+            return;
+        }
     }
-    for(auto it = to_remove.begin(); it != to_remove.end(); ++it)
-        actors_.erase((*it));
 }
 
 const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {

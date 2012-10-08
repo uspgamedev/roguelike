@@ -55,6 +55,14 @@ void GameObject::Update(double dt) {
     FORALL_UPDATEABLE_COMPONENTS(UPDATE_ACTION) // note lack of ";"
 }
 
+void GameObject::Die() {
+    if(this->controller_component())
+        base::GameController::reference()->RemoveActor(this);
+    if (die_)
+        die_();
+    to_be_removed_ = true;
+}
+
 void GameObject::OnSceneAdd(ugdk::action::Scene* scene) {
     scene->content_node()->AddChild(graphic_component()->node());
 }
