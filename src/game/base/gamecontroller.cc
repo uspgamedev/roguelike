@@ -40,11 +40,12 @@ GameController* GameController::reference() {
 }
 
 static bool actor_less(const GameObject* a, const GameObject* b) {
-    return a->energy_component()->Mean() < b->energy_component()->Mean();
+    double mean_a = a->energy_component()->Mean();
+    double mean_b = b->energy_component()->Mean();
+    return mean_a < mean_b || ( mean_a == mean_b && a < b );
 }
 
 GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
-	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 
 	Vector2D pos = Vector2D();
 	for(int y = 0; y < 40; ++y) {
@@ -86,13 +87,7 @@ void GameController::BlackoutTiles() {
 }
 
 void GameController::RemoveActor(GameObject* actor) {
-    auto elements = actors_.equal_range(actor);
-    for(auto it = elements.first; it != elements.second; ++it) {
-        if(*it == actor) {
-            actors_.erase(it);
-            return;
-        }
-    }
+    actors_.erase(actor);
 }
 
 const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {
