@@ -41,7 +41,7 @@ ShapeRectangular::~ShapeRectangular() {}
 const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 
     // we'll need to access the tiles (to remove and add ourselves to the tiles).
-    const GameController* gamecontroller = GameController::reference();
+    GameController* gamecontroller = GameController::reference();
 
     if(!TryPlace(destination)) {
         assert(!occupying_tiles_.empty());
@@ -66,6 +66,9 @@ const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 
     // Update the nodes on the graphic component.
     owner_->graphic_component()->NodeLogic(occupying_tiles_);
+
+    // The world state has changed, require a blackout.
+    gamecontroller->RequireBlackout();
 
     return destination;
 }

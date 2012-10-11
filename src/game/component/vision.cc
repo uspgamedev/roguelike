@@ -53,8 +53,8 @@ void Vision::MarkVisible(const Integer2D& tile) {
 
 void Vision::See() {
     //TODO: use visible_tiles_
-    gamecontroller_->BlackoutTiles();
-    losprocessor_->Process();
+    if( gamecontroller_->BlackoutTiles() )
+        losprocessor_->Process();
 }
 
 void Vision::CycleOctant() {

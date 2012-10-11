@@ -29,33 +29,26 @@ namespace component {
 #define HOLD_TICK_INTERVAL 25
 
 ControllerPlayer::ControllerPlayer(GameObject* owner)
-  : super(owner), where_to_(Integer2D(0,0)), time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL) {
+  : super(owner), where_to_(0,0), time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL) {
     time_held_.Pause();
     hold_tick_.Pause();
 }
 ControllerPlayer::~ControllerPlayer() {}
 
 double ControllerPlayer::Act() {
-    double time_carry = super::Act();
-    ////////////////////////////////
-    // Comboable Skills go here. ///
-    ////////////////////////////////
-
-
-
-    if(time_carry > 0.0) return time_carry;
-    ///////////////////////////////////////////
-    /// Non-comboable skills go after here. ///
-    ///////////////////////////////////////////
+    //double time_carry = super::Act(); //TODO: herp.
+    Cast("see");
 
     InputManager* input = INPUT_MANAGER();
 
     // Vision stuff
-    if( input->KeyPressed(ugdk::input::K_o) ) owner_->vision_component()->CycleOctant();
+    if( input->KeyPressed(ugdk::input::K_o) )
+        owner_->vision_component()->CycleOctant();
 
     // Derp stuff
-    if( input->KeyPressed(ugdk::input::K_z) ) return Cast("ouch");
-    if( input->KeyPressed(ugdk::input::K_f) ) 
+    if( input->KeyPressed(ugdk::input::K_z) )
+        return Cast("ouch");
+    if( input->KeyPressed(ugdk::input::K_f) )
         return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
 
     // Movement
@@ -96,7 +89,6 @@ double ControllerPlayer::Act() {
         hold_tick_.Pause();
 
         double ret = Cast("step",where_to_);
-        Cast("see");
         where_to_ = Integer2D(0,0);
 
         return ret;
@@ -107,11 +99,11 @@ double ControllerPlayer::Act() {
 
         hold_tick_.Restart(HOLD_TICK_INTERVAL);
         if(where_to_.x != 0 || where_to_.y != 0) {
-            double ret = Cast("step",where_to_);
-            Cast("see");
-            return ret;
+            return Cast("step",where_to_);
         }
     }
+
+
     return -1.0;
 }
 

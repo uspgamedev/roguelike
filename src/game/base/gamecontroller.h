@@ -54,7 +54,8 @@ class GameController : public ugdk::action::Scene {
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
 
 
-    void BlackoutTiles();
+    void RequireBlackout() { needs_blackout_ = true; }
+    bool BlackoutTiles();
     void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);
 
@@ -73,6 +74,7 @@ class GameController : public ugdk::action::Scene {
     action::time::ObjectQueue actors_;
     
     double time_since_beggining_;
+    bool needs_blackout_;
 };
 
 } // namespace base

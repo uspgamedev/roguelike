@@ -21,10 +21,10 @@ class Energy : public ComponentBase {
   public:
     Energy(game::base::GameObject* owner)
       : super(owner),
-                arms_(1.0),         legs_(1.0),         eyes_(1.0),
-            max_arms_(1.0),     max_legs_(1.0),     max_eyes_(1.0),
-          regen_arms_(1.0),   regen_legs_(1.0),   regen_eyes_(1.0),
-          time_carry_(0.0) {}
+              arms_(100.0),       legs_(100.0),       eyes_(100.0),
+          max_arms_(100.0),   max_legs_(100.0),   max_eyes_(100.0),
+        regen_arms_(  1.0), regen_legs_(  1.0), regen_eyes_(  1.0),
+        time_carry_(  0.0) {}
     ~Energy() {}
 
     // Getters
@@ -57,7 +57,7 @@ class Energy : public ComponentBase {
                               legs_ = std::min(max_legs_, legs_+regen_legs_*time);
                               eyes_ = std::min(max_eyes_, eyes_+regen_eyes_*time); }
 
-    double   PopTimeCarry() { double ret =   time_carry_;   time_carry_ = 0.0; return ret; }
+    double PopTimeCarry() { double ret = time_carry_; time_carry_ = 0.0; return ret; }
 
   private:
     double arms_;

@@ -26,7 +26,7 @@ Movement::Movement( bool is_relative, const MovementCalculator& calculator,
   : is_relative_(is_relative), calculator_(calculator), spender_(spender), action_(action) {}
 
 
-double Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
+TimePassed Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
     const GameThing& thing = targets.front();
     if( thing.is_obj() ) return -1.0;
 
@@ -39,9 +39,9 @@ double Movement::operator()(base::GameObject* caster, const GameTargets& targets
         if( movement.x == casterpos.x && movement.y == casterpos.y ) return -1.0;
     }
 
-    double power = spender_(caster,movement);
+    Efficiency power = spender_(caster,movement);
     if( power != 0.0 ) {
-        return action_(caster,movement,power );
+        return action_(caster,movement,power);
     }
 
     return -1.0;

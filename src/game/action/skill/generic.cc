@@ -20,10 +20,10 @@ Generic::Generic(const GenericValidator& validator, const GenericSpender& spende
   : validator_(validator), spender_(spender), action_(action) {}
 
 
-double Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
+TimePassed Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
 
     if(validator_(caster,targets)) {
-        double power = spender_(caster,targets);
+        Efficiency power = spender_(caster,targets);
         if( power != 0.0 ) {
             return action_(caster,targets,power);
         }

@@ -80,10 +80,13 @@ void GameController::AddGameObject(GameObject* game_object) {
         actors_.insert(game_object);
 }
 
-void GameController::BlackoutTiles() {
+bool GameController::BlackoutTiles() {
+    if(!needs_blackout_) return false;
     for(auto j = tiles_.begin(); j != tiles_.end(); ++j)
         for(auto i = (*j).begin(); i != (*j).end(); ++i)
             (*i)->node()->modifier()->set_visible(false);
+    needs_blackout_ = false;
+    return true;
 }
 
 void GameController::RemoveActor(GameObject* actor) {
