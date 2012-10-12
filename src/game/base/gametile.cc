@@ -23,7 +23,7 @@ using ugdk::graphic::TexturedRectangle;
 namespace game {
 namespace base {
 
-const Vector2D GameTile::TILE_SIZE = Vector2D(23.0, 23.0);
+const Integer2D GameTile::TILE_SIZE = Integer2D(23, 23);
 
 GameTile::GameTile(const Integer2D& coords) : coords_(coords), node_(new Node) {
 	ground_ = new TexturedRectangle( ResourceManager::GetTextureFromFile("images/white.png") );
