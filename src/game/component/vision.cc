@@ -22,35 +22,27 @@ using game::base::GameObject;
 namespace game {
 namespace component {
 
-Vision::Vision(game::base::GameObject* owner)
-  : super(owner), range_(20.5),
-    initialized_(false), gamecontroller_(nullptr),
-    left_eye_(0,0,0.1,0.1,0.9,0.2), right_eye_(0,0,0.1,0.1,0.9,0.2) {}
-
-Vision::~Vision() {
-    if(initialized_)
-        delete losprocessor_;
-}
-
 bool blocks_vision(const Integer2D& tile) {
     const GameController* gc = GameController::reference();
 
-    //TODO: POARR NAO TUDO BLOCA VISAO NEH
     return !gc->Tile(tile)->objects_here().empty();
 }
 
-void Vision::Initialize() {
-    if(initialized_) return;
+Vision::Vision(game::base::GameObject* owner)
+  : super(owner), range_(20.5),
+    initialized_(false), gamecontroller_(GameController::reference()),
+    left_eye_(0,0,0.1,0.1,0.9,0.2), right_eye_(0,0,0.1,0.1,0.9,0.2) {
 
-    gamecontroller_ = GameController::reference();
     for(int i = 0; i < 8; ++i)
         relevant_octants_.insert((i+0)%8);
     
     eyes_.insert(  &left_eye_ );
     eyes_.insert( &right_eye_ );
     losprocessor_ = new Processor(relevant_octants_,visible_tiles_,range_,eyes_,blocks_vision);
-    
-    initialized_ = true;
+}
+
+Vision::~Vision() {
+    delete losprocessor_;
 }
 
 void Vision::See() {

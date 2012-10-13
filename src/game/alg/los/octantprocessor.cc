@@ -36,13 +36,13 @@ OctantProcessor::OctantProcessor(int octant_id, set<Integer2D>& visible_tiles, c
 OctantProcessor::~OctantProcessor() { clean_cones(); }
 
 void OctantProcessor::ProcessOctant() {
-    //TODO: for each octant { for each eye {} } ???? (should be the opposite of this)
+    //TODO: for each octant { for each eye { [...] } } ? (should be the opposite of this)
     for(auto et = eyes_.begin() ; et != eyes_.end() ; ++et) {
 	    // Reset the octant.
         octant_.set_origin((*et)->coords);
 	    octant_.iterator()->Reset();
 
-        //TODO: make independent to vision, and delegate this next step to octant.
+        //TODO: delegate this next step to octant.
         // Find out the true eye frame: flip the y axis, and rotate accordingly.
         Frame eye_frame = (*et)->frame;
         Frame eye;

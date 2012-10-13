@@ -94,6 +94,4 @@ static void hardcodedawesomeness() {
     wall_8->shape_component()->PlaceAt(Integer2D(18,15));
     wall_9->shape_component()->PlaceAt(Integer2D(17,16));
     wall_0->shape_component()->PlaceAt(Integer2D(18,17));
-
-    hero->vision_component()->Initialize();
 }

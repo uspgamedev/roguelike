@@ -29,15 +29,11 @@ class Vision : public ComponentBase {
     Vision(game::base::GameObject* owner);
     virtual ~Vision();
 
-    void Initialize(); //TODO: remove (see the TODOs on the alg::los namespace).
-
     const base::GameObject* owner() const { return owner_; }
     const std::set<int>& relevant_octants() const { return relevant_octants_; }
 
     void See();
     void CycleOctant();
-
-
 
   private:
     double range_;
