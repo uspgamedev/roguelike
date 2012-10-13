@@ -55,7 +55,8 @@ class GameController : public ugdk::action::Scene {
 
 
     void RequireBlackout() { needs_blackout_ = true; }
-    bool BlackoutTiles();
+    bool TilesNeededBlackout();
+    void BlackoutTiles();
     void MarkVisible(const ugdk::math::Integer2D& tile);
     void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);

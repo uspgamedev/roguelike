@@ -46,7 +46,7 @@ Vision::~Vision() {
 }
 
 void Vision::See() {
-    if( gamecontroller_->BlackoutTiles() ) {
+    if( gamecontroller_->TilesNeededBlackout() ) {
         
         left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin());
         right_eye_.coords = left_eye_.coords + Integer2D(1,0);
