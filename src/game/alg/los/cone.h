@@ -6,12 +6,13 @@
 
 // External Dependencies
 #include <list>
+#include <ugdk/math/vector2D.h>
 
 // Internal Dependencies
 #include "game/alg/equationallinedouble.h"
 
 // Forward Declarations
-#include <ugdk/math.h>
+// (none)
 
 namespace game {
 namespace alg {

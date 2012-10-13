@@ -6,27 +6,38 @@
 
 // External Dependencies
 #include <array>
+#include <ugdk/portable/tr1.h>
+#include FROM_TR1(functional)
+#include <set>
 
 // Internal Dependencies
-// (none)
+#include "game/alg/los/eye.h"
 
 // Forward Declarations
+#include <ugdk/math.h>
+#include "utils/integer2Dutils.h"
 #include "game/alg.h"
-#include "game/component.h" // needed for vision_ //TODO: find a way to remove.
 
 namespace game {
 namespace alg {
 namespace los {
 
 class Processor {
+  // lacks operator=
+  Processor& operator=(const Processor&);
+
   public:
-    Processor(component::Vision* vision);
+    Processor(const std::set<int>& relevant_octants, std::set<ugdk::math::Integer2D>& visible_tiles,
+              const double& sight_range, const std::set<Eye*>& eyes,
+              const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~Processor();
 
     void Process();
 
   private:
-    component::Vision* vision_;
+    const std::set<int>& relevant_octants_;
+    std::set<ugdk::math::Integer2D>& visible_tiles_;
+
     std::array<OctantProcessor*,8> octants_;
 };
 

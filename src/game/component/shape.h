@@ -5,8 +5,9 @@
 #include "game/component/componentbase.h"
 
 // External Dependencies
-#include <list> // template class
+#include <set> // template class
 #include <ugdk/math/integer2D.h>
+#include "utils/integer2Dutils.h"
 
 // Internal Dependencies
 // (none)
@@ -36,8 +37,8 @@ class Shape : public ComponentBase {
     double stay_sizeclass()  const { return stay_sizeclass_;  }
     double pass_sizeclass()  const { return pass_sizeclass_;  }
     double enter_sizeclass() const { return enter_sizeclass_; }
-    const std::list<ugdk::math::Integer2D>& occupying_tiles() const { return occupying_tiles_; } 
-    std::list<ugdk::math::Integer2D>& occupying_tiles()             { return occupying_tiles_; }
+    const std::set<ugdk::math::Integer2D>& occupying_tiles() const { return occupying_tiles_; } 
+          std::set<ugdk::math::Integer2D>& occupying_tiles()       { return occupying_tiles_; }
 
     virtual const ugdk::math::Integer2D& PlaceAt(const ugdk::math::Integer2D& tile) = 0;
     virtual const ugdk::math::Integer2D& Move(const std::list<ugdk::math::Integer2D>& mov) = 0;
@@ -49,7 +50,7 @@ class Shape : public ComponentBase {
     double stay_sizeclass_;
     double pass_sizeclass_;
     double enter_sizeclass_;
-	std::list<ugdk::math::Integer2D> occupying_tiles_;
+	std::set<ugdk::math::Integer2D> occupying_tiles_;
 };
 
 } // namespace component

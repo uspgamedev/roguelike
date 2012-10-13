@@ -23,7 +23,7 @@ Integer2D calculate_mov_place(const GameObject* caster, const Integer2D& target)
 
     if(caster->shape_component()->TryPlace(target))
         return target;
-    return shape->occupying_tiles().front();
+    return *(shape->occupying_tiles().begin());
 }
 
 static double spend_mov_place(GameObject* caster, const Integer2D& target) {

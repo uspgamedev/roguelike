@@ -6,6 +6,7 @@
 #include <limits> //TODO: remove.
 #include <set>
 #include <ugdk/math/integer2D.h>
+#include "utils/integer2Dutils.h"
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
@@ -45,7 +46,7 @@ const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 
     if(!TryPlace(destination)) {
         assert(!occupying_tiles_.empty());
-        return occupying_tiles_.front();
+        return *(occupying_tiles_.begin());
     }
 
     // Remove yourself from the map.
@@ -59,7 +60,7 @@ const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 			Integer2D dest_tile(destination.x+i, destination.y+j);
 
             GameTile* tile = gamecontroller->Tile(dest_tile);
-            occupying_tiles_.push_back(dest_tile);
+            occupying_tiles_.insert(dest_tile);
             tile->PushObject(owner_);
         }
     }
@@ -79,13 +80,11 @@ const Integer2D& ShapeRectangular::Move(const list<Integer2D>& mov) {
     assert(!occupying_tiles_.empty());
 
     // for with lookahead.
-    if( mov.size() == 0 ) return occupying_tiles_.front(); // make sure ++di exists.
+    if( mov.size() == 0 ) return *(occupying_tiles_.begin()); // make sure ++di exists.
     auto di = mov.begin();
     for( ; (++di) != mov.end() ; ++di ) {
         --di;
-        //TODO: use a better ugdk.
-        Integer2D cmp = occupying_tiles_.front() - Step(*di);
-        if( cmp.x == 0 && cmp.y == 0 ) return Step(*di);
+        if( *(occupying_tiles_.begin()) == Step(*di) ) return Step(*di);
     }
     --di;
     return Step(*di);
@@ -97,12 +96,11 @@ const Integer2D& ShapeRectangular::Step(const Integer2D& dir) {
 
     // no movement? no Place.
     //TODO: use a better ugdk
-    Integer2D cmp = TryStep(dir); // - Integer2D(0,0);
-    if( cmp.x == 0 && cmp.y == 0 ) return occupying_tiles_.front();
+    if( TryStep(dir) == Integer2D(0,0) ) return *(occupying_tiles_.begin());
 
     //TODO: Step logic. (sound, sensoryfield adjustments, etc...)
 
-    Integer2D destination = occupying_tiles_.front() + TryStep(dir);
+    Integer2D destination = *(occupying_tiles_.begin()) + TryStep(dir);
     return PlaceAt(destination);
 }
 
@@ -129,7 +127,7 @@ const Integer2D ShapeRectangular::TryStep(const Integer2D& dir) const {
     // Moving diagonally requires at least one of the corners free.
     // Trying to move diagonally will try to deflect your movement to one coord should it fail,
     //   but will never decide between two valid alternatives.
-    Integer2D destination = occupying_tiles_.front() + dir;
+    Integer2D destination = *(occupying_tiles_.begin()) + dir;
 
     if(dir.x == 0 || dir.y == 0) return TryPlace(destination) ? dir : Integer2D(0,0);
 

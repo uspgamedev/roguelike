@@ -48,8 +48,6 @@ GameObject* ObjectBuilder::BuildHero() {
         [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr);}
     );
 
-    hero->vision_component()->Initialize();
-
     return hero;
 }
 

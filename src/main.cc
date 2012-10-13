@@ -35,6 +35,7 @@ int LevelLoader(int argc, char **argv) {
 #include "game/base/gameobject.h"
 #include "game/builder/objectbuilder.h"
 #include "game/component/shape.h"
+#include "game/component/vision.h"
 
 static void hardcodedawesomeness() {
 
@@ -94,4 +95,5 @@ static void hardcodedawesomeness() {
     wall_9->shape_component()->PlaceAt(Integer2D(17,16));
     wall_0->shape_component()->PlaceAt(Integer2D(18,17));
 
+    hero->vision_component()->Initialize();
 }

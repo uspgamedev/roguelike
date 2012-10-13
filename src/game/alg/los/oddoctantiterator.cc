@@ -15,7 +15,7 @@ namespace game {
 namespace alg {
 namespace los {
 
-OddOctantIterator::OddOctantIterator(double range_squared) : super(range_squared, Integer2D(0,0)) {}
+OddOctantIterator::OddOctantIterator(double range_squared) : super(range_squared, Integer2D(0,-1)) {}
 
 OddOctantIterator& OddOctantIterator::operator++() {
 
@@ -40,7 +40,7 @@ OddOctantIterator& OddOctantIterator::operator++() {
 }
 
 void OddOctantIterator::Reset() {
-    focus_ = Integer2D(0,0);
+    focus_ = Integer2D(0,-1);
 }
 
 bool OddOctantIterator::FocusIsControlTile() const {

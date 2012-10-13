@@ -32,6 +32,8 @@ SET(GAME_SRCS
     ./game/alg/los/cone.h 
     ./game/alg/los/evenoctantiterator.cc 
     ./game/alg/los/evenoctantiterator.h 
+    ./game/alg/los/eye.cc 
+    ./game/alg/los/eye.h 
     ./game/alg/los/octant.cc 
     ./game/alg/los/octant.h 
     ./game/alg/los/octantiterator.h 
@@ -77,6 +79,8 @@ SET(GAME_SRCS
     ./game/component.h 
     ./game/config.h 
     ./main.cc 
+    ./utils/integer2Dutils.cc 
+    ./utils/integer2Dutils.h 
     ./utils/utils.cc 
     ./utils/utils.h 
 )

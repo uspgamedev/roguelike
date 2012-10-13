@@ -5,18 +5,20 @@
 // (none)
 
 // External Dependencies
-#include <list>
+#include <list> //TODO: Use a better data structure for cones_.
+#include <set>
 #include <ugdk/portable/tr1.h>
 #include FROM_TR1(functional)
 #include <ugdk/math/integer2D.h>
+#include "utils/integer2Dutils.h"
 
 // Internal Dependencies
-#include "game/alg/los/octant.h"
 #include "game/alg/los/cone.h"
+#include "game/alg/los/eye.h"
+#include "game/alg/los/octant.h"
 
 // Forward Declarations
 #include "game/alg.h"
-#include "game/component.h" // needed for vision_ //TODO: remove (see .cc)
 
 namespace game {
 namespace alg {
@@ -24,7 +26,8 @@ namespace los {
 
 class OctantProcessor {
   public:
-    OctantProcessor(int octant_id, component::Vision* vision);
+    OctantProcessor(int octant_id, std::set<ugdk::math::Integer2D>& visible_tiles, const double& sight_range,
+                    const std::set<Eye*>& eyes, const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~OctantProcessor();
 
     void ProcessOctant();
@@ -37,9 +40,13 @@ class OctantProcessor {
 
     Octant octant_;
     std::list<Cone*> cones_;
-    component::Vision* vision_;
+    
+    std::set<ugdk::math::Integer2D>& visible_tiles_;
+    const double& sight_range_;
+    const std::set<Eye*>& eyes_;
 
-	std::tr1::function<bool (Cone*)> cone_processor_; // process_cone_here's incarnation as a non-method function.
+    const std::tr1::function<bool (ugdk::math::Integer2D&)> blocks_vision_;
+	const std::tr1::function<bool (Cone*)> cone_processor_; // process_cone_here's incarnation as a non-method function.
 };
 
 } // namespace los

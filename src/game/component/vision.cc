@@ -6,32 +6,37 @@
 #include <ugdk/math/frame.h>
 #include <ugdk/math/integer2D.h>
 
-#include <ugdk/graphic/node.h>     //TODO rem.
-#include <ugdk/graphic/modifier.h> //TODO rem.
-
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
 #include "game/base/gameobject.h"
-#include "game/base/gametile.h"
 #include "game/alg/los/processor.h"
 
 // Using
 using std::set;
 using ugdk::math::Integer2D;
+using game::alg::los::Eye;
+using game::alg::los::Processor;
 using game::base::GameController;
 using game::base::GameObject;
-using game::alg::los::Processor;
 
 namespace game {
 namespace component {
 
 Vision::Vision(game::base::GameObject* owner)
-  : super(owner), range_(20.5), eye_frame_(0.45, 0.10, 0.55, 0.20),
-    initialized_(false), gamecontroller_(nullptr) {}
+  : super(owner), range_(20.5),
+    initialized_(false), gamecontroller_(nullptr),
+    left_eye_(0,0,0.1,0.1,0.9,0.2), right_eye_(0,0,0.1,0.1,0.9,0.2) {}
 
 Vision::~Vision() {
     if(initialized_)
         delete losprocessor_;
+}
+
+bool blocks_vision(const Integer2D& tile) {
+    const GameController* gc = GameController::reference();
+
+    //TODO: POARR NAO TUDO BLOCA VISAO NEH
+    return !gc->Tile(tile)->objects_here().empty();
 }
 
 void Vision::Initialize() {
@@ -41,20 +46,24 @@ void Vision::Initialize() {
     for(int i = 0; i < 8; ++i)
         relevant_octants_.insert((i+0)%8);
     
-    losprocessor_ = new Processor(this);
+    eyes_.insert(  &left_eye_ );
+    eyes_.insert( &right_eye_ );
+    losprocessor_ = new Processor(relevant_octants_,visible_tiles_,range_,eyes_,blocks_vision);
     
     initialized_ = true;
 }
 
-void Vision::MarkVisible(const Integer2D& tile) {
-    //TODO: use visible_tiles_
-    gamecontroller_->Tile(tile)->node()->modifier()->set_visible(true);
-}
-
 void Vision::See() {
-    //TODO: use visible_tiles_
-    if( gamecontroller_->BlackoutTiles() )
+    if( gamecontroller_->BlackoutTiles() ) {
+        
+        left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin());
+        right_eye_.coords = left_eye_.coords + Integer2D(1,0);
+        
         losprocessor_->Process();
+        for(auto vt = visible_tiles_.begin() ; vt != visible_tiles_.end() ; ++vt) {
+            gamecontroller_->MarkVisible(*vt);
+        }
+    }
 }
 
 void Vision::CycleOctant() {
@@ -69,15 +78,6 @@ void Vision::CycleOctant() {
 	
 	relevant_octants_.insert((i+1)%8);
     See();
-}
-
-bool Vision::BlocksVision(const Integer2D& tile) {
-    //TODO: POARR NAO TUDO BLOCA VISAO NEH
-    const set<GameObject*>& stuff = gamecontroller_->Tile(tile)->objects_here();
-    for(auto ot = stuff.begin(); ot != stuff.end(); ++ot) {
-        if(*ot != owner_) return true;
-    }
-    return false;
 }
 
 } // namespace component

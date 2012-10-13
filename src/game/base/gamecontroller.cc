@@ -89,6 +89,10 @@ bool GameController::BlackoutTiles() {
     return true;
 }
 
+void GameController::MarkVisible(const Integer2D& tile) {
+    Tile(tile)->node()->modifier()->set_visible(true);
+}
+
 void GameController::RemoveActor(GameObject* actor) {
     actors_.erase(actor);
 }

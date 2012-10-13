@@ -15,7 +15,7 @@ namespace game {
 namespace alg {
 namespace los {
 
-EvenOctantIterator::EvenOctantIterator(double range_squared) : super(range_squared, Integer2D(0,0)) {}
+EvenOctantIterator::EvenOctantIterator(double range_squared) : super(range_squared, Integer2D(1,0)) {}
 
 EvenOctantIterator& EvenOctantIterator::operator++() {
 
@@ -40,7 +40,7 @@ EvenOctantIterator& EvenOctantIterator::operator++() {
 }
 
 void EvenOctantIterator::Reset() {
-    focus_ = Integer2D(0,0);
+    focus_ = Integer2D(1,0);
 }
 
 bool EvenOctantIterator::FocusIsControlTile() const {

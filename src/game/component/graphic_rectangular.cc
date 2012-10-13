@@ -15,7 +15,7 @@
 #include "game/component/shape_rectangular.h"
 
 // Using
-using std::list;
+using std::set;
 using std::string;
 using game::base::GameController;
 using game::base::GameObject;
@@ -32,11 +32,11 @@ GraphicRectangular::~GraphicRectangular() {}
 
 void GraphicRectangular::Update(double) {}
 
-void GraphicRectangular::NodeLogic(const list<Integer2D>& occupying_tiles) {
+void GraphicRectangular::NodeLogic(const set<Integer2D>& occupying_tiles) {
 	const GameController* gamecontroller = GameController::reference();
 
     node()->modifier()->set_scale( Vector2D(static_cast<ShapeRectangular*>(owner_->shape_component())->dimensions())*0.382 );
-	node()->modifier()->set_offset( gamecontroller->Tile(occupying_tiles.front())->node()->modifier()->offset() );
+	node()->modifier()->set_offset( gamecontroller->Tile(*(occupying_tiles.begin()))->node()->modifier()->offset() );
 }
 
 } // namespace component

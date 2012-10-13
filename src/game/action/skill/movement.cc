@@ -35,7 +35,7 @@ TimePassed Movement::operator()(base::GameObject* caster, const GameTargets& tar
 
     if(is_relative_) { if( movement.x == 0 && movement.y == 0 ) return false; }
     else {
-        const Integer2D& casterpos = caster->shape_component()->occupying_tiles().front();
+        const Integer2D& casterpos = *(caster->shape_component()->occupying_tiles().begin());
         if( movement.x == casterpos.x && movement.y == casterpos.y ) return -1.0;
     }
 

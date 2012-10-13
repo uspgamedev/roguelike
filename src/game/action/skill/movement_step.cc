@@ -23,7 +23,7 @@ namespace skill {
 
 static Integer2D calculate_mov_step(const GameObject* caster, const Integer2D& direction) {
     // we'll need at least this info:
-    Integer2D position = caster->shape_component()->occupying_tiles().front();
+    Integer2D position = *(caster->shape_component()->occupying_tiles().begin());
     Integer2D to_where = position+direction;
     Integer2D trystep = calculate_mov_place(caster,to_where);
     
@@ -81,7 +81,7 @@ static double spend_mov_step(GameObject* caster, const Integer2D& direction) {
 }
 
 static double act_mov_step(GameObject* caster, const Integer2D& direction, double power) {
-    Integer2D position = caster->shape_component()->occupying_tiles().front();
+    Integer2D position = *(caster->shape_component()->occupying_tiles().begin());
     return act_mov_place(caster,position+direction,power);
 }
 

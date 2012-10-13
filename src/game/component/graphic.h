@@ -5,7 +5,7 @@
 #include "game/component/componentbase.h"
 
 // External Dependencies
-#include <list>
+#include <set>
 #include <string>
 
 // Internal Dependencies
@@ -27,7 +27,7 @@ class Graphic : public ComponentBase {
 
     virtual void Update(double dt) = 0;
 
-    virtual void NodeLogic(const std::list<ugdk::math::Integer2D>& occupying_tiles) = 0;
+    virtual void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles) = 0;
 
           ugdk::graphic::Node* node()       { return node_; }
     const ugdk::graphic::Node* node() const { return node_; }
