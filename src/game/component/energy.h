@@ -53,9 +53,11 @@ class Energy : public ComponentBase {
 
     // Useful stuff
     double Mean() const { return (arms_ + legs_ + eyes_) / 3.0 ; }
-    void Regen(double time) { arms_ = std::min(max_arms_, arms_+regen_arms_*time);
-                              legs_ = std::min(max_legs_, legs_+regen_legs_*time);
-                              eyes_ = std::min(max_eyes_, eyes_+regen_eyes_*time); }
+    void Regen(double time) {
+        arms_ = std::max(0.0, std::min(max_arms_, arms_+regen_arms_*time));
+        legs_ = std::max(0.0, std::min(max_legs_, legs_+regen_legs_*time));
+        eyes_ = std::max(0.0, std::min(max_eyes_, eyes_+regen_eyes_*time));
+    }
 
     bool Spend(double arms, double legs, double eyes) {
         if(arms_ < arms) return false; // not enough arms.

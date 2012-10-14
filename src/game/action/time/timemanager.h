@@ -8,7 +8,7 @@
 #include <set>
 
 // Internal Dependencies
-// (none)
+#include "game/action/time/timeelapsed.h"
 
 // Forward Declarations
 #include "game/base.h"
@@ -29,7 +29,7 @@ class TimeManager : public ugdk::action::Task {
     void operator()(double dt);
 
   private:
-     void time_has_passed(double time);
+     void time_has_passed(const TimeElapsed& time);
 
      ObjectQueue& actors_;
 };

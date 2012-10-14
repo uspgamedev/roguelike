@@ -10,6 +10,7 @@
 
 // Using
 using game::action::skill::GameTargets;
+using game::action::time::TimeElapsed;
 using game::base::GameThing;
 
 namespace game {
@@ -19,7 +20,7 @@ namespace skill {
 Simple::Simple(const SimpleValidator& validator, const SimpleSpender& spender, const SimpleAction& action)
   : validator_(validator), spender_(spender), action_(action) {}
 
-TimePassed Simple::operator()(base::GameObject* caster, const GameTargets& targets) {
+TimeElapsed Simple::operator()(base::GameObject* caster, const GameTargets& targets) {
     // Simple skills all have this validator step:
     if(targets.size() != 1) return false;
     GameThing target = targets.front();

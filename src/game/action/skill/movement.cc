@@ -13,6 +13,7 @@
 // Using
 using ugdk::math::Integer2D;
 using game::action::skill::GameTargets;
+using game::action::time::TimeElapsed;
 using game::base::GameObject;
 using game::base::GameThing;
 
@@ -26,7 +27,7 @@ Movement::Movement( bool is_relative, const MovementCalculator& calculator,
   : is_relative_(is_relative), calculator_(calculator), spender_(spender), action_(action) {}
 
 
-TimePassed Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
+TimeElapsed Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
     // can only move relative to tiles, not objects.
     const GameThing& thing = targets.front();
     if( thing.is_obj() ) return false;

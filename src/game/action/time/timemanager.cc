@@ -28,12 +28,12 @@ void TimeManager::operator()(double) {
     }
 
     GameObject* next = *(actors_.begin());
-    double time_spent = next->controller_component()->Act();
-    if(time_spent != 0.0)
-        time_has_passed(time_spent);
+    TimeElapsed time_elapsed = next->controller_component()->Act();
+    if(time_elapsed && (static_cast<double>(time_elapsed) != 0.0))
+        time_has_passed(time_elapsed);
 }
 
-void TimeManager::time_has_passed(double time) {
+void TimeManager::time_has_passed(const TimeElapsed& time) {
     ObjectQueue new_actors(actors_.key_comp());
 
     for(auto at = actors_.begin(); at != actors_.end() ; ++at) {

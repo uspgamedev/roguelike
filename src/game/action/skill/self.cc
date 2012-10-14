@@ -11,6 +11,7 @@
 // Using
 using game::base::GameObject;
 using game::action::skill::GameTargets;
+using game::action::time::TimeElapsed;
 
 namespace game {
 namespace action {
@@ -19,7 +20,7 @@ namespace skill {
 Self::Self( const SelfValidator& validator, const SelfSpender& spender, const SelfAction& action )
   : validator_(validator), spender_(spender), action_(action) {}
 
-TimePassed Self::operator()(GameObject* caster, const GameTargets&) {
+TimeElapsed Self::operator()(GameObject* caster, const GameTargets&) {
     if(!validator_(caster)) return false;
 
     SpendInfo spend_info = spender_(caster);

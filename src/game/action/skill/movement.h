@@ -36,7 +36,7 @@ class Movement : public Skill {
               const MovementSpender& spender, const MovementAction& action );
     virtual ~Movement() {}
 
-    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
+    time::TimeElapsed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     bool is_relative_;

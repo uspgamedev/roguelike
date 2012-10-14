@@ -36,7 +36,7 @@ class Self : public Skill {
           const    SelfAction&    action  );
     virtual ~Self() {}
 
-    TimePassed operator()(base::GameObject* caster, const GameTargets&);
+    time::TimeElapsed operator()(base::GameObject* caster, const GameTargets&);
 
   private:
     SelfValidator validator_;

@@ -12,23 +12,24 @@
 
 // Using
 using ugdk::math::Integer2D;
+using game::action::time::TimeElapsed;
 using game::base::GameObject;
 
 namespace game {
 namespace action {
 namespace skill {
 
-TimePassed Skill::operator()(GameObject* caster, const Integer2D& target) {
+TimeElapsed Skill::operator()(GameObject* caster, const Integer2D& target) {
     GameTargets args;
     args.push_back(target);
     return operator()(caster, args);
 }
-TimePassed Skill::operator()(GameObject* caster, GameObject* target) {
+TimeElapsed Skill::operator()(GameObject* caster, GameObject* target) {
     GameTargets args;
     args.push_back(target);
     return operator()(caster, args);
 }
-TimePassed Skill::operator()(base::GameObject* caster) {
+TimeElapsed Skill::operator()(base::GameObject* caster) {
     GameTargets args;
     return operator()(caster, args);
 }

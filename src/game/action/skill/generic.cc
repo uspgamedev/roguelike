@@ -10,6 +10,7 @@
 
 // Using
 using game::action::skill::GameTargets;
+using game::action::time::TimeElapsed;
 using game::base::GameThing;
 
 namespace game {
@@ -20,7 +21,7 @@ Generic::Generic(const GenericValidator& validator, const GenericSpender& spende
   : validator_(validator), spender_(spender), action_(action) {}
 
 
-TimePassed Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
+TimeElapsed Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
     if(!validator_(caster,targets)) return false;
 
     SpendInfo spend_info = spender_(caster,targets);

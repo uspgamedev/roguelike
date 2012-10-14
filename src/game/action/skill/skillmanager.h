@@ -32,16 +32,16 @@ class SkillManager : public ugdk::base::GenericContainer<Skill*> {
     ~SkillManager();
 
 
-    TimePassed Cast(const std::string& skill, base::GameObject* caster, const GameTargets& targets) {
+    time::TimeElapsed Cast(const std::string& skill, base::GameObject* caster, const GameTargets& targets) {
         return (*Find(skill))(caster, targets);
     }
-    TimePassed Cast(const std::string& skill, base::GameObject* caster, const ugdk::math::Integer2D& target) {
+    time::TimeElapsed Cast(const std::string& skill, base::GameObject* caster, const ugdk::math::Integer2D& target) {
         return (*Find(skill))(caster, target);
     }
-    TimePassed Cast(const std::string& skill, base::GameObject* caster, base::GameObject* target) {
+    time::TimeElapsed Cast(const std::string& skill, base::GameObject* caster, base::GameObject* target) {
         return (*Find(skill))(caster, target);
     }
-    TimePassed Cast(const std::string& skill, base::GameObject* caster) {
+    time::TimeElapsed Cast(const std::string& skill, base::GameObject* caster) {
         return (*Find(skill))(caster);
     }
 };

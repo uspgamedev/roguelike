@@ -14,25 +14,26 @@ using std::string;
 using ugdk::math::Integer2D;
 using game::action::skill::GameTargets;
 using game::action::skill::SkillManager;
+using game::action::time::TimeElapsed;
 using game::base::GameObject;
 
 namespace game {
 namespace component {
     
-double Controller::Act() {
+TimeElapsed Controller::Act() {
     return owner_->energy_component()->PopTimeCarry();
 }
 
-double Controller::Cast(const string& skill, const GameTargets& targets) {
+TimeElapsed Controller::Cast(const string& skill, const GameTargets& targets) {
     return SkillManager::reference()->Cast(skill,owner_,targets);
 }
-double Controller::Cast(const string& skill, const Integer2D& target) {
+TimeElapsed Controller::Cast(const string& skill, const Integer2D& target) {
     return SkillManager::reference()->Cast(skill,owner_,target);
 }
-double Controller::Cast(const string& skill, GameObject* target) {
+TimeElapsed Controller::Cast(const string& skill, GameObject* target) {
     return SkillManager::reference()->Cast(skill,owner_,target);
 }
-double Controller::Cast(const string& skill) {
+TimeElapsed Controller::Cast(const string& skill) {
     return SkillManager::reference()->Cast(skill,owner_);
 }
 

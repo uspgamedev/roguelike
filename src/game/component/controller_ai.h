@@ -23,7 +23,7 @@ class ControllerAi : public Controller {
     ControllerAi(game::base::GameObject* owner) : super(owner) {}
     ~ControllerAi() {}
 
-    double Act() { return -1.0; }
+    action::time::TimeElapsed Act() { return false; }
 };
 
 } // namespace component

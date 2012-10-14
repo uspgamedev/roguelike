@@ -34,7 +34,7 @@ class Simple : public Skill {
     Simple(const SimpleValidator& validator, const SimpleSpender& spender, const SimpleAction& action);
     virtual ~Simple() {}
     
-    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
+    time::TimeElapsed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     SimpleValidator validator_;

@@ -11,13 +11,13 @@ class Controller;
 class ControllerAi;
 class ControllerIdle;
 class ControllerPlayer;
-class Vision;
 
 // Model components
 class Damageable;
 class Energy;
 class Shape;
 class ShapeRectangular;
+class Vision;
 
 // View components
 class Graphic;

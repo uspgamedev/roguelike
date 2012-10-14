@@ -19,6 +19,7 @@ using std::list;
 using ugdk::input::InputManager;
 using ugdk::math::Integer2D;
 using ugdk::time::TimeAccumulator;
+using game::action::time::TimeElapsed;
 using game::base::GameObject;
 using game::base::GameThing;
 
@@ -35,7 +36,7 @@ ControllerPlayer::ControllerPlayer(GameObject* owner)
 }
 ControllerPlayer::~ControllerPlayer() {}
 
-double ControllerPlayer::Act() {
+TimeElapsed ControllerPlayer::Act() {
     //double time_carry = super::Act(); //TODO: herp.
     Cast("see");
 
@@ -103,8 +104,7 @@ double ControllerPlayer::Act() {
         }
     }
 
-
-    return -1.0;
+    return false;
 }
 
 } // namespace component

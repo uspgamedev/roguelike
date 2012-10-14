@@ -34,7 +34,7 @@ class Generic : public Skill {
     Generic(const GenericValidator& validator, const GenericSpender& spender, const GenericAction& action);
     virtual ~Generic() {}
 
-    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
+    time::TimeElapsed operator()(base::GameObject* caster, const GameTargets& targets);
 
   private:
     GenericValidator validator_;

@@ -1,0 +1,35 @@
+#ifndef ROGUELIKE_ACTION_TIME_TIMEELAPSED_H_
+#define ROGUELIKE_ACTION_TIME_TIMEELAPSED_H_
+
+// Inheritance
+#include <ugdk/action/task.h>
+
+// External Dependencies
+#include <set>
+
+// Internal Dependencies
+// (none)
+
+// Forward Declarations
+#include "game/base.h"
+
+namespace game {
+namespace action {
+namespace time {
+
+struct TimeElapsed {
+    bool elapsed;
+    double  time;
+
+    TimeElapsed(bool elapsed) : elapsed(elapsed), time( 0.0) {} // meant to be used only with passed == false.
+    TimeElapsed(double  time) : elapsed(   true), time(time) {}
+
+    operator   bool() const { return elapsed; }
+    operator double() const { return    time; }
+};
+
+} // namespace time
+} // namespace action
+} // namespace game
+
+#endif /* ROGUELIKE_ACTION_TIME_TIMEELAPSED_H_ */
