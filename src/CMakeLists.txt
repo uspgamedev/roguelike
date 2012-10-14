@@ -21,7 +21,7 @@ endif ()
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../" )
 
 
 add_executable(roguelike ${GAME_SRCS} ${GENERATED_SRC})
@@ -37,25 +37,31 @@ CONFIGURE_FILE(
 
 #Libs and dlls stuff in Windows, for compatibility.
 if(WIN32)
+	add_custom_command(TARGET roguelike POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E
+		COMMENT "Removing all libs and dlls from the project's root directory.")
+	
 	foreach(it ${dlls})
 		add_custom_command(TARGET roguelike POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_SOURCE_DIR}/${it}"
-			WORKING_DIRECTORY ../ COMMENT "Removing ${it} from the root.")
+			WORKING_DIRECTORY ../)
 	endforeach(it ${dlls})
 		
 	foreach(it ${libs})
 		add_custom_command(TARGET roguelike POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_SOURCE_DIR}/${it}"
-			WORKING_DIRECTORY ../ COMMENT "Removing ${it} from the root.")
+			WORKING_DIRECTORY ../)
 	endforeach(it ${libs})
 
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		add_custom_command(TARGET roguelike POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_directory "./lib64/" "./"
-			WORKING_DIRECTORY ../ COMMENT "Copying relevant libs to the root")
+			WORKING_DIRECTORY ../
+			COMMENT "Copying x64-relevant libs to the project's root")
 	ELSE()
 		add_custom_command(TARGET roguelike POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_directory "./lib/" "./"
-			WORKING_DIRECTORY ../ COMMENT "Copying relevant libs to the root")
+			WORKING_DIRECTORY ../
+			COMMENT "Copying x86-relevant libs to the project's root")
 	ENDIF()
 endif(WIN32)

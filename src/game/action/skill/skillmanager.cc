@@ -22,7 +22,6 @@ namespace skill {
 // singleton
 SkillManager* SkillManager::reference_ = nullptr;
 
-
 SkillManager::SkillManager() {
     Insert("place", new MovementPlace());
     Insert( "step", new MovementStep());

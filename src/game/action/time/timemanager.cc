@@ -29,7 +29,7 @@ void TimeManager::operator()(double) {
 
     GameObject* next = *(actors_.begin());
     double time_spent = next->controller_component()->Act();
-    if(time_spent > 0.0)
+    if(time_spent != 0.0)
         time_has_passed(time_spent);
 }
 
