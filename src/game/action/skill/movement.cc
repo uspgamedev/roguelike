@@ -27,24 +27,28 @@ Movement::Movement( bool is_relative, const MovementCalculator& calculator,
 
 
 TimePassed Movement::operator()(base::GameObject* caster, const GameTargets& targets) {
+    // can only move relative to tiles, not objects.
     const GameThing& thing = targets.front();
-    if( thing.is_obj() ) return -1.0;
+    if( thing.is_obj() ) return false;
 
     const Integer2D& tile = thing.tile();
     Integer2D movement = calculator_(caster,tile);
 
-    if(is_relative_) { if( movement.x == 0 && movement.y == 0 ) return false; }
+    // don't move if the resulting movement is zero.
+    if(is_relative_) {
+        if( movement.x == 0 && movement.y == 0 )
+            return false;
+    }
     else {
         const Integer2D& casterpos = *(caster->shape_component()->occupying_tiles().begin());
-        if( movement.x == casterpos.x && movement.y == casterpos.y ) return -1.0;
+        if( movement.x == casterpos.x && movement.y == casterpos.y ) return false;
     }
 
-    Efficiency power = spender_(caster,movement);
-    if( power != 0.0 ) {
-        return action_(caster,movement,power);
-    }
+    // otherwise, do the normal skill logic.
+    SpendInfo spend_info = spender_(caster,movement);
+    if(spend_info) action_(caster,movement,spend_info);
 
-    return -1.0;
+    return spend_info;
 }
 
 } // namespace skill

@@ -19,24 +19,29 @@ namespace game {
 namespace action {
 namespace skill {
 
-typedef std::tr1::function<Efficiency (base::GameObject*)>
-        SenseSpender;
+typedef std::tr1::function<bool (const base::GameObject*)>
+        SelfValidator;
 
-typedef std::tr1::function<TimePassed (base::GameObject*, Efficiency)>
-        SenseAction;
+typedef std::tr1::function<SpendInfo (base::GameObject*)>
+        SelfSpender;
+
+typedef std::tr1::function<void (base::GameObject*, const Efficiency&)>
+        SelfAction;
 
 class Self : public Skill {
   typedef Skill super;
   public:
-    Self( const SenseSpender& spender,
-             const  SenseAction&  action  );
+    Self( const SelfValidator& validator,
+          const   SelfSpender&   spender,
+          const    SelfAction&    action  );
     virtual ~Self() {}
 
-    TimePassed operator()(base::GameObject* caster, const GameTargets& targets);
+    TimePassed operator()(base::GameObject* caster, const GameTargets&);
 
   private:
-    SenseSpender spender_;
-    SenseAction action_;
+    SelfValidator validator_;
+    SelfSpender     spender_;
+    SelfAction       action_;
 };
 
 } // namespace skill

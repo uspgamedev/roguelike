@@ -22,9 +22,37 @@ namespace action {
 namespace skill {
 
 typedef std::list<base::GameThing> GameTargets;
-typedef double Efficiency;
-typedef double TimePassed;
-typedef std::tr1::function<TimePassed (base::GameObject*, const GameTargets&, Efficiency)>
+
+struct Efficiency {
+    double efficiency;
+
+    Efficiency(double efficiency) : efficiency(efficiency) {}
+
+    operator double() { return efficiency; }
+};
+struct TimePassed {
+    bool passed;
+    double time;
+
+    TimePassed(bool passed) : passed(passed), time(-1.0) {} // meant to be used only with passed == false.
+    TimePassed(double time) : passed( true ), time(time) {}
+
+    operator   bool() { return passed; }
+    operator double() { return   time; }
+};
+struct SpendInfo {
+    TimePassed timepassed;
+    Efficiency efficiency;
+
+    SpendInfo(const TimePassed& timepassed, const Efficiency& efficiency)
+      : timepassed(timepassed), efficiency(efficiency) {}
+
+    operator       bool() { return timepassed; }
+    operator Efficiency() { return efficiency; }
+    operator TimePassed() { return timepassed; }
+};
+
+typedef std::tr1::function<void (base::GameObject*, const GameTargets&, const Efficiency&)>
         GameAction;
 
 class Skill {

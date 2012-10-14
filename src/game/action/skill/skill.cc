@@ -18,17 +18,17 @@ namespace game {
 namespace action {
 namespace skill {
 
-double Skill::operator()(GameObject* caster, const Integer2D& target) {
+TimePassed Skill::operator()(GameObject* caster, const Integer2D& target) {
     GameTargets args;
     args.push_back(target);
     return operator()(caster, args);
 }
-double Skill::operator()(GameObject* caster, GameObject* target) {
+TimePassed Skill::operator()(GameObject* caster, GameObject* target) {
     GameTargets args;
     args.push_back(target);
     return operator()(caster, args);
 }
-double Skill::operator()(base::GameObject* caster) {
+TimePassed Skill::operator()(base::GameObject* caster) {
     GameTargets args;
     return operator()(caster, args);
 }

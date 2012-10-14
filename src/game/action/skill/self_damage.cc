@@ -17,17 +17,20 @@ namespace game {
 namespace action {
 namespace skill {
 
-static double spend_damage(GameObject* caster) {
-    return 1.0;
+static bool validate_self_damage(const GameObject* caster) {
+    return caster->damageable_component() != nullptr;
 }
 
-static double act_damage(GameObject* caster, double power) {
+static SpendInfo spend_self_damage(GameObject* caster) {
+    return SpendInfo(0.0,1.0);
+}
+
+static void act_self_damage(GameObject* caster, const Efficiency& power) {
     caster->damageable_component()->TakeDamage(9001.1337042);
-    return 0.0;
 }
 
 SelfDamage::SelfDamage()
-  : super(spend_damage, act_damage) {}
+  : super(validate_self_damage, spend_self_damage, act_self_damage) {}
 
 } // namespace skill
 } // namespace action

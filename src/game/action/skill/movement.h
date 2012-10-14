@@ -23,10 +23,10 @@ namespace skill {
 typedef std::tr1::function<ugdk::math::Integer2D (const base::GameObject*, const ugdk::math::Integer2D&)>
         MovementCalculator;
 
-typedef std::tr1::function<Efficiency (base::GameObject*, const ugdk::math::Integer2D&)>
+typedef std::tr1::function<SpendInfo (base::GameObject*, const ugdk::math::Integer2D&)>
         MovementSpender;
 
-typedef std::tr1::function<TimePassed (base::GameObject*, const ugdk::math::Integer2D&, Efficiency)>
+typedef std::tr1::function<void (base::GameObject*, const ugdk::math::Integer2D&, const Efficiency&)>
         MovementAction;
 
 class Movement : public Skill {

@@ -23,32 +23,31 @@ namespace game {
 namespace action {
 namespace skill {
 
-static bool validate_fireat(const GameObject* caster, const GameThing& target) {
+static bool validate_simple_fireat(const GameObject* caster, const GameThing& target) {
     return true;
 }
 
-static Efficiency spend_fireat(GameObject* caster, const GameThing& target) {
-    return 1.0;
+static SpendInfo spend_simple_fireat(GameObject* caster, const GameThing& target) {
+    return SpendInfo(0.0,1.0);
 }
 
-static TimePassed act_fireat(GameObject* caster, GameThing& target, Efficiency power) {
+static void act_simple_fireat(GameObject* caster, GameThing& target, const Efficiency& power) {
     base::GameController* gc = base::GameController::reference();
 
     if(target.is_obj())
         target.obj()->damageable_component()->TakeDamage(9001.1337042);
     else {
-        auto thiscodeisgonnago = gc->ObjectsAt(target.tile());
+        auto thiscodeisgonnago = gc->ObjectsAt(target.tile()); //TODO: thiscodeisgonnago
         if(!thiscodeisgonnago.empty()) {
             GameObject* obj = (*(gc->ObjectsAt(target.tile()).begin()));
             Damageable* damn = obj->damageable_component();
             damn->TakeDamage(9001.1337042);
         }
     }
-    return 0.0;
 }
 
 SimpleFireAt::SimpleFireAt()
-  : super(validate_fireat,spend_fireat,act_fireat) {}
+  : super(validate_simple_fireat,spend_simple_fireat,act_simple_fireat) {}
 
 } // namespace skill
 } // namespace action

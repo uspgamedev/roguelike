@@ -6,12 +6,11 @@
 #include "game/base/gamecontroller.h"   // needed for GameController::reference()
 #include "game/action/time/timemanager.h"
 
-// MANOMANOMANOMANOMANOMANO
-#define LevelLoader main
-static void hardcodedawesomeness();
+//TODO: MANOMANOMANOMANOMANOMANO
+static void LevelLoader();
 // endMANOMANOMANOMANOMANOMANO
 
-int LevelLoader(int argc, char **argv) {
+int main(int argc, char **argv) {
 	ugdk::Configuration engine_config;
 	engine_config.window_title = "AWESUMENFUCKINTASTIC-EST. Game. Ever.";
 	engine_config.window_size = ugdk::Vector2D(1200.0, 900.0);
@@ -23,7 +22,7 @@ int LevelLoader(int argc, char **argv) {
 	engine->video_manager()->SetVSync(true);
 
     ugdk::action::Scene* main_scene = game::base::GameController::reference();
-    hardcodedawesomeness();
+    LevelLoader();
 
     engine->PushScene(main_scene);
     engine->Run();
@@ -37,7 +36,7 @@ int LevelLoader(int argc, char **argv) {
 #include "game/component/shape.h"
 #include "game/component/vision.h"
 
-static void hardcodedawesomeness() {
+static void LevelLoader() {
 
     using ugdk::math::Integer2D;
     using game::base::GameController;

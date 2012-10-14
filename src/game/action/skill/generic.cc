@@ -16,20 +16,17 @@ namespace game {
 namespace action {
 namespace skill {
     
-Generic::Generic(const GenericValidator& validator, const GenericSpender& spender, const GameAction& action)
+Generic::Generic(const GenericValidator& validator, const GenericSpender& spender, const GenericAction& action)
   : validator_(validator), spender_(spender), action_(action) {}
 
 
 TimePassed Generic::operator()(base::GameObject* caster, const GameTargets& targets) {
+    if(!validator_(caster,targets)) return false;
 
-    if(validator_(caster,targets)) {
-        Efficiency power = spender_(caster,targets);
-        if( power != 0.0 ) {
-            return action_(caster,targets,power);
-        }
-    }
+    SpendInfo spend_info = spender_(caster,targets);
+    if(spend_info) action_(caster,targets,spend_info);
 
-    return -1.0;
+    return spend_info;
 }
 
 } // namespace skill

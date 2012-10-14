@@ -13,6 +13,7 @@ using std::set;
 using std::tr1::function;
 using ugdk::math::Integer2D;
 
+
 namespace game {
 namespace alg {
 namespace los {

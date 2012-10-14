@@ -66,21 +66,20 @@ static Integer2D calculate_mov_step(const GameObject* caster, const Integer2D& d
     return Integer2D(0,0);
 }
 
-static double spend_mov_step(GameObject* caster, const Integer2D& direction) {
+static SpendInfo spend_mov_step(GameObject* caster, const Integer2D& direction) {
     Energy* energy = caster->energy_component();
-    double legs = energy->legs();
 
     if( direction.NormOne() > 1 ) {
-        if(legs < 0.141) return 0.0;
-        energy->set_legs(legs - 0.141);
-        return 1.0;
+        if(!energy->Spend(0.0,0.141,0.0))
+            return SpendInfo(false,0.0);
+    } else {
+        if(!energy->Spend(0.0,0.100,0.0))
+            return SpendInfo(false,0.0);
     }
-    if(legs < 0.100) return 0.0;
-    energy->set_legs(legs - 0.100);
-    return 1.0;
+    return SpendInfo(1.0,1.0);
 }
 
-static double act_mov_step(GameObject* caster, const Integer2D& direction, double power) {
+static void act_mov_step(GameObject* caster, const Integer2D& direction, const Efficiency& power) {
     Integer2D position = *(caster->shape_component()->occupying_tiles().begin());
     return act_mov_place(caster,position+direction,power);
 }

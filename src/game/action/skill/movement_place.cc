@@ -26,13 +26,12 @@ Integer2D calculate_mov_place(const GameObject* caster, const Integer2D& target)
     return *(shape->occupying_tiles().begin());
 }
 
-static double spend_mov_place(GameObject* caster, const Integer2D& target) {
-    return 1.0;
+static SpendInfo spend_mov_place(GameObject* caster, const Integer2D& target) {
+    return SpendInfo(0.0,1.0);
 }
 
-double act_mov_place(GameObject* caster, const Integer2D& target, double power) {
+void act_mov_place(GameObject* caster, const Integer2D& target, const Efficiency& power) {
     caster->shape_component()->PlaceAt(target);
-    return 1.0;
 }
 
 MovementPlace::MovementPlace()

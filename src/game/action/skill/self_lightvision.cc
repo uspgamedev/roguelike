@@ -16,17 +16,20 @@ namespace game {
 namespace action {
 namespace skill {
 
-static double spend_sense_lightvision(GameObject* caster) {
-    return 1.0;
+static bool validate_self_lightvision(const GameObject* caster) {
+    return caster->vision_component() != nullptr;
 }
 
-static double act_sense_lightvision(GameObject* caster, double power) {
+static SpendInfo spend_self_lightvision(GameObject* caster) {
+    return SpendInfo(0.0,1.0);
+}
+
+static void act_self_lightvision(GameObject* caster, const Efficiency& power) {
     caster->vision_component()->See();
-    return 0.0;
 }
 
 LightVision::LightVision()
-  : super(spend_sense_lightvision, act_sense_lightvision) {}
+  : super(validate_self_lightvision, spend_self_lightvision, act_self_lightvision) {}
 
 } // namespace skill
 } // namespace action

@@ -16,16 +16,16 @@ namespace game {
 namespace action {
 namespace skill {
     
-Self::Self( const SenseSpender& spender, const  SenseAction& action )
-  : spender_(spender), action_(action) {}
+Self::Self( const SelfValidator& validator, const SelfSpender& spender, const SelfAction& action )
+  : validator_(validator), spender_(spender), action_(action) {}
 
-double Self::operator()(GameObject* caster, const GameTargets& targets) {
-    double power = spender_(caster);
-    if(power != 0.0) {
-        return action_(caster,power);
-    }
+TimePassed Self::operator()(GameObject* caster, const GameTargets&) {
+    if(!validator_(caster)) return false;
 
-    return -1.0;
+    SpendInfo spend_info = spender_(caster);
+    if(spend_info) action_(caster,spend_info);
+
+    return spend_info;
 }
 
 } // namespace skill

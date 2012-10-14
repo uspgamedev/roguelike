@@ -57,6 +57,16 @@ class Energy : public ComponentBase {
                               legs_ = std::min(max_legs_, legs_+regen_legs_*time);
                               eyes_ = std::min(max_eyes_, eyes_+regen_eyes_*time); }
 
+    bool Spend(double arms, double legs, double eyes) {
+        if(arms_ < arms) return false; // not enough arms.
+        if(legs_ < legs) return false; // not enough energ.. uh, legs
+        if(eyes_ < eyes) return false; // YOU REQUIRE ADITIONAL PYLONS, I MEAN, EYES.
+        arms_ -= arms;
+        legs_ -= legs;
+        eyes_ -= eyes;
+        return true;
+    }
+
     double PopTimeCarry() { double ret = time_carry_; time_carry_ = 0.0; return ret; }
 
   private:

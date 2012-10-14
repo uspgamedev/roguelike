@@ -22,10 +22,10 @@ namespace skill {
 typedef std::tr1::function<bool (const base::GameObject*, const base::GameThing&)>
         SimpleValidator;
 
-typedef std::tr1::function<Efficiency (base::GameObject*, const base::GameThing&)>
+typedef std::tr1::function<SpendInfo (base::GameObject*, const base::GameThing&)>
         SimpleSpender;
 
-typedef std::tr1::function<TimePassed (base::GameObject*, base::GameThing&, Efficiency)>
+typedef std::tr1::function<void (base::GameObject*, base::GameThing&, const Efficiency&)>
         SimpleAction;
 
 class Simple : public Skill {
