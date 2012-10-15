@@ -13,8 +13,6 @@ SET(GAME_SRCS
     ./src/game/action/skill/self_damage.h 
     ./src/game/action/skill/self_lightvision.cc 
     ./src/game/action/skill/self_lightvision.h 
-    ./src/game/action/skill/self_turnninety.cc 
-    ./src/game/action/skill/self_turnninety.h 
     ./src/game/action/skill/simple.cc 
     ./src/game/action/skill/simple.h 
     ./src/game/action/skill/simple_fireat.cc 

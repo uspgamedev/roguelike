@@ -33,9 +33,13 @@ class Vision : public ComponentBase {
     const std::set<int>& relevant_octants() const { return relevant_octants_; }
 
     void See();
-    void CycleOctant();
+
+    void set_dir(const ugdk::math::Integer2D& dir) { dir_ = dir; }
 
   private:
+    void face_ahead();
+    void update_octants(int start);
+
     double range_;
     std::set<int> relevant_octants_;
     std::set<ugdk::math::Integer2D> visible_tiles_;
@@ -47,6 +51,8 @@ class Vision : public ComponentBase {
 
     bool initialized_;
     game::base::GameController* gamecontroller_;
+
+    ugdk::math::Integer2D dir_;
 };
 
 } // namespace component

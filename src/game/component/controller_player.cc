@@ -42,10 +42,6 @@ TimeElapsed ControllerPlayer::Act() {
 
     InputManager* input = INPUT_MANAGER();
 
-    // Vision stuff
-    if( input->KeyPressed(ugdk::input::K_o) )
-        owner_->vision_component()->CycleOctant();
-
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) )
         return Cast("ouch");

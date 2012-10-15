@@ -31,10 +31,11 @@ bool blocks_vision(const Integer2D& tile) {
 Vision::Vision(game::base::GameObject* owner)
   : super(owner), range_(20.5),
     initialized_(false), gamecontroller_(GameController::reference()),
-    left_eye_(0,0,0.1,0.1,0.9,0.2), right_eye_(0,0,0.1,0.1,0.9,0.2) {
+    left_eye_(0,0,0.40,0.40,0.60,0.60), right_eye_(0,0,0.40,0.40,0.60,0.60),
+    dir_(0,-1) {
 
-    for(int i = 0; i < 8; ++i)
-        relevant_octants_.insert((i+0)%8);
+    for(int i = 0; i < 6; ++i)
+        relevant_octants_.insert((i+5)%8);
     
     eyes_.insert(  &left_eye_ );
     eyes_.insert( &right_eye_ );
@@ -47,10 +48,7 @@ Vision::~Vision() {
 
 void Vision::See() {
     if( gamecontroller_->TilesNeededBlackout() ) {
-        
-        left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin());
-        right_eye_.coords = left_eye_.coords + Integer2D(1,0);
-        
+        face_ahead();
         losprocessor_->Process();
         for(auto vt = visible_tiles_.begin() ; vt != visible_tiles_.end() ; ++vt) {
             gamecontroller_->MarkVisible(*vt);
@@ -58,18 +56,52 @@ void Vision::See() {
     }
 }
 
-void Vision::CycleOctant() {
-	auto rt = relevant_octants_.begin();
-	int i = *rt;
-	while( (++rt != relevant_octants_.end()) && i+1 == *(rt) )
-		++i;
-	if( rt != relevant_octants_.end() )
-		relevant_octants_.erase(*rt);
-	else
-		relevant_octants_.erase(*(relevant_octants_.begin()));
-	
-	relevant_octants_.insert((i+1)%8);
-    See();
+void Vision::face_ahead() {
+    if(dir_.x == 1) {
+        if(dir_.y == 1) {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(1,0);
+            right_eye_.coords = left_eye_.coords + Integer2D(-1,1);
+            update_octants(0);
+        } else if(dir_.y == 0) {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(1,0);
+            right_eye_.coords = left_eye_.coords + Integer2D(0,1);
+            update_octants(7);
+        } else /* if(dir_.y == -1) */ {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin());
+            right_eye_.coords = left_eye_.coords + Integer2D(1,1);
+            update_octants(6);
+        }
+    } else if(dir_.x == 0) {
+        if(dir_.y == 1) {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(1,1);
+            right_eye_.coords = left_eye_.coords + Integer2D(-1,0);
+            update_octants(1);
+        } else /* if(dir_.y == -1) */ {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin());
+            right_eye_.coords = left_eye_.coords + Integer2D(1,0);
+            update_octants(5);
+        } 
+    } else if(dir_.x == -1) {
+        if(dir_.y == 1) {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(1,1);
+            right_eye_.coords = left_eye_.coords + Integer2D(-1,-1);
+            update_octants(2);
+        } else if(dir_.y == 0) {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(0,1);
+            right_eye_.coords = left_eye_.coords + Integer2D(0,-1);
+            update_octants(3);
+        } else /* if(dir_.y == -1) */ {
+            left_eye_.coords = *(owner_->shape_component()->occupying_tiles().begin()) + Integer2D(0,1);
+            right_eye_.coords = left_eye_.coords + Integer2D(1,-1);
+            update_octants(4);
+        }
+    }
+}
+
+void Vision::update_octants(int start) {
+    relevant_octants_.clear();
+    for(int i = 0; i < 6; ++i)
+        relevant_octants_.insert((i+start)%8);
 }
 
 } // namespace component

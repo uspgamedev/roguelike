@@ -11,11 +11,13 @@
 #include "game/base/gameobject.h"
 #include "game/component/energy.h"
 #include "game/component/shape.h"
+#include "game/component/vision.h" //TODO: Shape should take care of this.
 
 // Using
 using ugdk::math::Integer2D;
 using game::base::GameObject;
 using game::component::Energy;
+using game::component::Vision;
 
 namespace game {
 namespace action {
@@ -80,6 +82,7 @@ static SpendInfo spend_mov_step(GameObject* caster, const Integer2D& direction) 
 }
 
 static void act_mov_step(GameObject* caster, const Integer2D& direction, const Efficiency& power) {
+    caster->vision_component()->set_dir(direction);
     Integer2D position = *(caster->shape_component()->occupying_tiles().begin());
     return act_mov_place(caster,position+direction,power);
 }
