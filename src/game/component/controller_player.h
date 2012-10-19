@@ -27,7 +27,7 @@ class ControllerPlayer : public Controller {
     ~ControllerPlayer();
 
     double Act();
-    void Cursor();
+    double Cursor();
 
     ugdk::math::Integer2D Movement();
 

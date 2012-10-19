@@ -56,14 +56,15 @@ double ControllerPlayer::Act() {
     if( input->KeyPressed(ugdk::input::K_o) ) owner_->vision_component()->CycleOctant();
 
     // Cursor
+    if (aim_->IsActive()) {
+        double ret = Cursor();
+        return ret;
+    }
+
     if( input->KeyPressed(ugdk::input::K_i) ) {
         where_to_ = Integer2D(0, 0);
         aim_->AimAt((*owner_->shape_component()->occupying_tiles().begin()));
         aim_->ToggleAim();
-    }
-
-    if (aim_->IsActive()) {
-        Cursor();
         return 0.0;
     }
 
@@ -81,17 +82,23 @@ double ControllerPlayer::Act() {
     return -1.0;
 }
 
-void ControllerPlayer::Cursor() {
+double ControllerPlayer::Cursor() {
     InputManager* input = INPUT_MANAGER();
 
     if(input->KeyPressed(ugdk::input::K_ESCAPE)) {
         where_to_ = (*owner_->shape_component()->occupying_tiles().begin());
         aim_->ToggleAim();
-        return;
+        return 0.0;
     }
+
+    
+    if( input->KeyPressed(ugdk::input::K_f) )
+        return Cast("fire", aim_->aim());
+
     Integer2D temp = Movement();
     aim_->AimAt(aim_->aim() + temp);
 
+    return 0.0;
 }
 
 

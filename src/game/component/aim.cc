@@ -32,7 +32,8 @@ Aim::Aim(game::base::GameObject* owner) : owner_(owner), cursor_node_(new ugdk::
 }
 
 void Aim::AimAt(ugdk::math::Integer2D aim) {
-    if(aim_.x == aim.x && aim_.y == aim.y)
+    game::base::GameController* gc = game::base::GameController::reference();
+    if( (aim_.x == aim.x && aim_.y == aim.y) || (aim.x < 0 || aim.y < 0 ) || (aim.x > gc->map_size().x - 1 || aim.y > gc->map_size().y - 1))
         return;
     aim_ = aim;
     cursor_node_->modifier()->set_offset(game::base::GameTile::TILE_SIZE.Multiplied(aim_));
