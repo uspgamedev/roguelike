@@ -45,12 +45,8 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
     return mean_a < mean_b || ( mean_a == mean_b && a < b );
 }
 
-<<<<<<< HEAD
-GameController::GameController() : super(), map_size_(500.0, 500.0), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
-=======
 GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
->>>>>>> cursor
 
 	Vector2D pos = Vector2D();
 	for(int y = 0; y < 40; ++y) {
