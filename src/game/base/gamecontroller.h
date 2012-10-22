@@ -32,7 +32,7 @@ class GameController : public ugdk::action::Scene {
 
     void AddGameObject(GameObject* game_object);
 
-    const ugdk::Vector2D& map_size() const { return map_size_; }
+    const ugdk::math::Integer2D& map_size() const { return map_size_; }
 
     bool TileOutOfBounds(int x, int y) const {
         return y < 0 || y >= (int)(tiles_.size()) || x < 0 || x >= (int)(tiles_[y].size());
@@ -69,7 +69,7 @@ class GameController : public ugdk::action::Scene {
     void clearDeadGameObjects();
     void addPendingGameObjects();
 
-    ugdk::Vector2D map_size_;
+    ugdk::math::Integer2D map_size_;
 	std::vector< std::vector<GameTile*> > tiles_;
 
     GameObject* hero_;

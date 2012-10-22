@@ -7,8 +7,10 @@
 // External Dependencies
 #include <ugdk/math/integer2D.h> // where_to_
 #include <ugdk/time/timeaccumulator.h> // time_held_
+#include <ugdk/graphic/node.h>
 
 // Internal Dependencies
+#include "game/component/aim.h"
 // (none)
 
 // Forward Declarations
@@ -25,8 +27,12 @@ class ControllerPlayer : public Controller {
     ~ControllerPlayer();
 
     action::time::TimeElapsed Act();
+    double Cursor();
+
+    ugdk::math::Integer2D Movement();
 
   private:
+    Aim* aim_;
     ugdk::math::Integer2D where_to_;
     ugdk::time::TimeAccumulator time_held_;
     ugdk::time::TimeAccumulator hold_tick_;

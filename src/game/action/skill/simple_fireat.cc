@@ -34,14 +34,17 @@ static SpendInfo spend_simple_fireat(GameObject* caster, const GameThing& target
 static void act_simple_fireat(GameObject* caster, GameThing& target, const Efficiency& power) {
     base::GameController* gc = base::GameController::reference();
 
-    if(target.is_obj())
-        target.obj()->damageable_component()->TakeDamage(9001.1337042);
+    if(target.is_obj()) {
+        if(target.obj()->damageable_component())
+            target.obj()->damageable_component()->TakeDamage(9001.1337042);
+    }
     else {
         auto thiscodeisgonnago = gc->ObjectsAt(target.tile()); //TODO: thiscodeisgonnago
         if(!thiscodeisgonnago.empty()) {
             GameObject* obj = (*(gc->ObjectsAt(target.tile()).begin()));
             Damageable* damn = obj->damageable_component();
-            damn->TakeDamage(9001.1337042);
+            if(damn)
+                damn->TakeDamage(9001.1337042);
         }
     }
 }

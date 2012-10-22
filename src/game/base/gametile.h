@@ -23,7 +23,7 @@ class GameTile {
   GameTile& operator=(const GameTile&);
 
   public:
-	static const ugdk::Vector2D TILE_SIZE;
+	static const ugdk::math::Integer2D TILE_SIZE;
     
 	GameTile(const ugdk::math::Integer2D& coords);
     GameTile(int x, int y);

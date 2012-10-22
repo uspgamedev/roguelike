@@ -56,6 +56,8 @@ SET(GAME_SRCS
     ./src/game/builder/objectbuilder.cc 
     ./src/game/builder/objectbuilder.h 
     ./src/game/builder.h 
+    ./src/game/component/aim.h 
+    ./src/game/component/aim.cc 
     ./src/game/component/componentbase.h 
     ./src/game/component/controller.cc 
     ./src/game/component/controller.h 
