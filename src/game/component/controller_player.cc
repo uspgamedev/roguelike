@@ -32,7 +32,9 @@ namespace component {
 #define HOLD_TICK_INTERVAL 25
 
 ControllerPlayer::ControllerPlayer(GameObject* owner)
-  : super(owner), where_to_(Integer2D(0,0)), time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL), aim_(new Aim(this->owner_)){
+  : super(owner), where_to_(Integer2D(0,0)),
+    time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL),
+    aim_(new Aim(this->owner_)){
     time_held_.Pause();
     hold_tick_.Pause();
 }
@@ -45,16 +47,14 @@ TimeElapsed ControllerPlayer::Act() {
     InputManager* input = INPUT_MANAGER();
 
     // Cursor
-    if (aim_->IsActive()) {
-        double ret = Cursor();
-        return ret;
-    }
+    if (aim_->IsActive())
+        return cursor();
 
     if( input->KeyPressed(ugdk::input::K_i) ) {
-        where_to_ = Integer2D(0, 0);
+        where_to_ = Integer2D(0,0);
         aim_->AimAt((*owner_->shape_component()->occupying_tiles().begin()));
         aim_->ToggleAim();
-        return 0.0;
+        return false;
     }
 
     // Derp stuff
@@ -63,37 +63,28 @@ TimeElapsed ControllerPlayer::Act() {
     if( input->KeyPressed(ugdk::input::K_f) )
         return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
 
-    Integer2D temp = Movement();
-    double ret = Cast("step", temp);
-    Cast("see");
-    if (ret >= 0.0)
-        return ret;
-
-    return -1.0;
+    return Cast("step", movement());
 }
 
-double ControllerPlayer::Cursor() {
+TimeElapsed ControllerPlayer::cursor() {
     InputManager* input = INPUT_MANAGER();
 
     if(input->KeyPressed(ugdk::input::K_ESCAPE)) {
-        where_to_ = (*owner_->shape_component()->occupying_tiles().begin());
+        where_to_ = *(owner_->shape_component()->occupying_tiles().begin());
         aim_->ToggleAim();
-        return 0.0;
+        return false;
     }
-
     
     if( input->KeyPressed(ugdk::input::K_f) )
         return Cast("fire", aim_->aim());
 
-    Integer2D temp = Movement();
-    aim_->AimAt(aim_->aim() + temp);
-
-    return 0.0;
+    aim_->AimAt(aim_->aim() + movement());
+    return false;
 }
 
 
-// Brocoli's awesome movement code.
-Integer2D ControllerPlayer::Movement() {
+// brocoli's somewhatly awesomely movementely codely.
+Integer2D ControllerPlayer::movement() {
     InputManager* input = INPUT_MANAGER();
 
     if( input->KeyPressed(ugdk::input::K_RIGHT) || input->KeyPressed(ugdk::input::K_LEFT) ||
@@ -132,10 +123,10 @@ Integer2D ControllerPlayer::Movement() {
         hold_tick_.Restart(HOLD_TICK_INTERVAL);
         hold_tick_.Pause();
 
-        Integer2D temp = where_to_;
+        Integer2D ret = where_to_;
         where_to_ = Integer2D(0, 0);
 
-        return temp;
+        return ret;
     }
     if ( ( input->KeyDown(ugdk::input::K_RIGHT) || input->KeyDown(ugdk::input::K_LEFT) ||
            input->KeyDown(ugdk::input::K_UP)    || input->KeyDown(ugdk::input::K_DOWN) )

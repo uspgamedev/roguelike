@@ -21,8 +21,8 @@ struct TimeElapsed {
     bool elapsed;
     double  time;
 
-    TimeElapsed(bool elapsed) : elapsed(elapsed), time( 0.0) {} // meant to be used only with passed == false.
-    TimeElapsed(double  time) : elapsed(   true), time(time) {}
+    TimeElapsed(bool elapsed) : elapsed(elapsed), time( 0.0) {}
+    TimeElapsed(double  time) : elapsed(  true ), time(time) {}
 
     operator   bool() const { return elapsed; }
     operator double() const { return    time; }

@@ -27,11 +27,12 @@ class ControllerPlayer : public Controller {
     ~ControllerPlayer();
 
     action::time::TimeElapsed Act();
-    double Cursor();
 
-    ugdk::math::Integer2D Movement();
 
   private:
+    action::time::TimeElapsed cursor();
+    ugdk::math::Integer2D movement();
+
     Aim* aim_;
     ugdk::math::Integer2D where_to_;
     ugdk::time::TimeAccumulator time_held_;

@@ -3,7 +3,7 @@
 #include "game/action/time/timemanager.h"
 
 // External Dependencies
-// (none)
+#include <cassert>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
@@ -29,8 +29,10 @@ void TimeManager::operator()(double) {
 
     GameObject* next = *(actors_.begin());
     TimeElapsed time_elapsed = next->controller_component()->Act();
-    if(time_elapsed && (static_cast<double>(time_elapsed) != 0.0))
+    if(time_elapsed) {
+        assert( static_cast<double>(time_elapsed) >= 0.0 ); // Remove this if you want to allow time_elapsed < 0.0
         time_has_passed(time_elapsed);
+    }
 }
 
 void TimeManager::time_has_passed(const TimeElapsed& time) {

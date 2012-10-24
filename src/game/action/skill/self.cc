@@ -25,7 +25,6 @@ TimeElapsed Self::operator()(GameObject* caster, const GameTargets&) {
 
     SpendInfo spend_info = spender_(caster);
     if(spend_info) action_(caster,spend_info);
-
     return spend_info;
 }
 
