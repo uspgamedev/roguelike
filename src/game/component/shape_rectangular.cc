@@ -19,6 +19,7 @@
 using std::list;
 using std::set;
 using ugdk::math::Integer2D;
+using game::action::Aim;
 using game::base::GameController;
 using game::base::GameObject;
 using game::base::GameTile;
@@ -36,8 +37,11 @@ ShapeRectangular::ShapeRectangular(
     dimensions_(Integer2D(size_x,size_y)),
     bumps_() {
     bumps_.resize(4);
+    aim_ = new Aim();
 }
-ShapeRectangular::~ShapeRectangular() {}
+ShapeRectangular::~ShapeRectangular() {
+    aim_->set_origin(nullptr);
+}
 
 const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 
@@ -67,6 +71,9 @@ const Integer2D& ShapeRectangular::PlaceAt(const Integer2D& destination) {
 
     // Update the nodes on the graphic component.
     owner_->graphic_component()->NodeLogic(occupying_tiles_);
+
+    // Validate Aim, since you now have a valid position in the map.
+    if(!aim_->HasOrigin()) aim_->set_origin(&(*occupying_tiles_.begin()));
 
     // The world state has changed, require a blackout.
     gamecontroller->RequireBlackout();

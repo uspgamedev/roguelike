@@ -22,12 +22,12 @@ class Cursor {
     Cursor();
     ~Cursor() {}
 
-    ugdk::math::Integer2D position() const { return position_; }
+    ugdk::math::Integer2D tile() const { return tile_; }
     void ChangeTile(const ugdk::math::Integer2D& tile);
-    void ChangeTile(int x, int y) { ChangeTile(ugdk::math::Integer2D(x,y); }
+    void ChangeTile(int x, int y) { ChangeTile(ugdk::math::Integer2D(x,y)); }
 
-    bool IsActive() { return node_modifier_->visible(); }
-    void ToggleActive() { node_modifier_->set_visible(!node_modifier_->visible()); }
+    bool IsActive();
+    void ToggleActive();
 
   protected:
     ugdk::math::Integer2D tile_;

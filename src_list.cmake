@@ -1,4 +1,6 @@
 SET(GAME_SRCS 
+    ./src/game/action/aim.cc 
+    ./src/game/action/aim.h 
     ./src/game/action/skill/generic.cc 
     ./src/game/action/skill/generic.h 
     ./src/game/action/skill/movement.cc 
@@ -56,8 +58,6 @@ SET(GAME_SRCS
     ./src/game/builder/objectbuilder.cc 
     ./src/game/builder/objectbuilder.h 
     ./src/game/builder.h 
-    ./src/game/component/aim.h 
-    ./src/game/component/aim.cc 
     ./src/game/component/componentbase.h 
     ./src/game/component/controller.cc 
     ./src/game/component/controller.h 
@@ -81,6 +81,8 @@ SET(GAME_SRCS
     ./src/game/component/vision.h 
     ./src/game/component.h 
     ./src/game/config.h 
+    ./src/game/ui/cursor.cc 
+    ./src/game/ui/cursor.h 
     ./src/main.cc 
     ./src/utils/integer2Dutils.cc 
     ./src/utils/integer2Dutils.h 

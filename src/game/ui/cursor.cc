@@ -4,6 +4,8 @@
 
 // External Dependencies
 #include <ugdk/base/resourcemanager.h>
+#include <ugdk/graphic/node.h>
+#include <ugdk/graphic/modifier.h>
 #include <ugdk/graphic/drawable/texturedrectangle.h>
 #include <ugdk/math/vector2D.h>
 
@@ -33,13 +35,20 @@ Cursor::Cursor() : tile_(0,0) {
     GameController::reference()->interface_node()->AddChild(node);
 }
 
-
 void Cursor::ChangeTile(const ugdk::math::Integer2D& tile) {
     GameController* gc = GameController::reference();
     if( gc->TileOutOfBounds(tile) ) return;
 
-    position_ = position;
-    node_modifier_->set_offset(GameController::TILE_SIZE.Multiplied(tile_));
+    tile_ = tile;
+    node_modifier_->set_offset(GameController::TILE_SIZE.Multiplied(tile));
+}
+
+bool Cursor::IsActive() {
+    return node_modifier_->visible();
+}
+
+void Cursor::ToggleActive() {
+    node_modifier_->set_visible(!node_modifier_->visible());
 }
 
 } // namespace ui
