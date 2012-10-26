@@ -11,7 +11,6 @@
 
 // Internal Dependencies
 #include "game/component/aim.h"
-// (none)
 
 // Forward Declarations
 #include <ugdk/time.h>
@@ -33,7 +32,7 @@ class ControllerPlayer : public Controller {
     action::time::TimeElapsed cursor();
     ugdk::math::Integer2D movement();
 
-    Aim* aim_;
+    Aim aim_;
     ugdk::math::Integer2D where_to_;
     ugdk::time::TimeAccumulator time_held_;
     ugdk::time::TimeAccumulator hold_tick_;

@@ -28,6 +28,7 @@
 // Using
 using std::string;
 using std::tr1::function;
+using ugdk::action::Scene;
 using ugdk::math::Integer2D;
 using game::action::skill::GameTargets;
 using game::action::skill::SkillManager;
@@ -38,21 +39,21 @@ namespace base {
 
 GameObject::GameObject()
   : super(),
-	FORALL_COMPONENTS(INITIALIZE_WITH_NULLPTR) // note lack of ","
+	FORALL_COMPONENTS(INITIALIZE_WITH_NULLPTR) // ,
     die_() {}
 
 GameObject::~GameObject() {
-	FORALL_COMPONENTS(DESTRUCTOR_ACTION) // note lack of ";"
+	FORALL_COMPONENTS(DESTRUCTOR_ACTION) // ;
 }
 
-void GameObject::Initialize( FORALL_COMPONENTS(INI_ARG_DECLARATION) // note lack of ","
+void GameObject::Initialize( FORALL_COMPONENTS(INI_ARG_DECLARATION) // ;
                              const function<void (void)>& die ) {
-    FORALL_COMPONENTS(INI_ASSIGNMENT) // note lack of ";"
+    FORALL_COMPONENTS(INI_ASSIGNMENT) // ;
     die_ = die;
 }
 
 void GameObject::Update(double dt) {
-    FORALL_UPDATEABLE_COMPONENTS(UPDATE_ACTION) // note lack of ";"
+    FORALL_UPDATEABLE_COMPONENTS(UPDATE_ACTION) // ;
 }
 
 void GameObject::Die() {
@@ -66,8 +67,8 @@ void GameObject::Die() {
     gc->RequireBlackout();
 }
 
-void GameObject::OnSceneAdd(ugdk::action::Scene* scene) {
-    scene->content_node()->AddChild(graphic_component()->node());
+void GameObject::OnSceneAdd(Scene* scene) {
+    graphic_component()->OnSceneAdd(scene);
 }
 
 } // namespace base

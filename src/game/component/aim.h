@@ -19,21 +19,19 @@ namespace component {
 
 class Aim {
   public:
-    Aim(game::base::GameObject* owner);
+    Aim();
     ~Aim() {}
 
-    ugdk::math::Integer2D aim() { return aim_; }
-    void AimAt(ugdk::math::Integer2D aim);
+    ugdk::math::Integer2D aimed_tile() { return aimed_tile_; }
+    void AimAt(const ugdk::math::Integer2D& aim);
 
     bool IsActive() { return cursor_active_; }
     void ToggleAim();
 
   protected:
     bool cursor_active_;
-    ugdk::math::Integer2D aim_;
+    ugdk::math::Integer2D aimed_tile_;
     ugdk::graphic::Node* cursor_node_;
-
-    game::base::GameObject* owner_;
 };
 
 } // namespace component

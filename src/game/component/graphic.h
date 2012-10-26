@@ -12,6 +12,7 @@
 // (none)
 
 // Forward Declarations
+#include <ugdk/action.h>
 #include <ugdk/graphic.h>
 #include <ugdk/math.h>
 #include "game/base.h"
@@ -26,13 +27,13 @@ class Graphic : public ComponentBase {
     virtual ~Graphic();
 
     virtual void Update(double dt) = 0;
-
     virtual void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles) = 0;
 
-          ugdk::graphic::Node* node()       { return node_; }
-    const ugdk::graphic::Node* node() const { return node_; }
 
-  private:
+    const ugdk::graphic::Node* node() const { return node_; }
+    void OnSceneAdd(ugdk::action::Scene* scene);
+
+  protected:
     ugdk::graphic::Node* node_;
 };
 

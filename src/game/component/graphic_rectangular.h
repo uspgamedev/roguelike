@@ -6,6 +6,7 @@
 
 // External Dependencies
 #include <set>
+#include <ugdk/math/vector2D.h>
 
 // Internal Dependencies
 // (none)
@@ -24,8 +25,10 @@ class GraphicRectangular : public Graphic {
     ~GraphicRectangular();
 
     void Update(double dt);
-
 	void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles);
+
+  private:
+    ugdk::Vector2D rect_size_;
 };
 
 } // namespace component

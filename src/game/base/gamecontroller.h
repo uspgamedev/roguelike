@@ -26,9 +26,10 @@ class GameController : public ugdk::action::Scene {
   static GameController* reference_;
 
   public:
+    static const ugdk::math::Integer2D TILE_SIZE;
+
     static GameController* reference();
     ~GameController();
-
 
     void AddGameObject(GameObject* game_object);
 

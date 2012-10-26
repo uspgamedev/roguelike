@@ -33,6 +33,8 @@ namespace base {
     return min + (max - min) * (n / RAND_MAX);
 }*/
 
+const Integer2D GameController::TILE_SIZE = Integer2D(23, 23);
+
 GameController* GameController::reference_ = nullptr;
 
 GameController* GameController::reference() {
@@ -59,10 +61,10 @@ GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), a
 			content_node()->AddChild(gt->node());
 			vect.push_back(gt);
 
-			pos.x += GameTile::TILE_SIZE.x;
+			pos.x += TILE_SIZE.x;
 		}
 		tiles_.push_back(vect);
-		pos.y += GameTile::TILE_SIZE.y;
+		pos.y += TILE_SIZE.y;
 	}
 
     this->AddTask(new action::time::TimeManager(actors_));

@@ -9,7 +9,6 @@
 // Internal Dependencies
 #include "game/component/shape.h"
 #include "game/base/gamecontroller.h"
-#include "game/base/gametile.h"
 #include "game/base/gameobject.h"
 
 // Forward Declarations
@@ -17,26 +16,28 @@
 
 // Using
 using ugdk::Vector2D;
+using ugdk::math::Integer2D;
 using ugdk::base::ResourceManager;
 using ugdk::graphic::TexturedRectangle;
+using game::base::GameController;
 
 namespace game {
 namespace component {
     
-Aim::Aim(game::base::GameObject* owner) : owner_(owner), cursor_node_(new ugdk::graphic::Node) {
+Aim::Aim() : cursor_node_(new ugdk::graphic::Node) {
     cursor_active_ = false;
     cursor_node_->modifier()->set_visible(false);
-    cursor_node_->set_drawable(new TexturedRectangle( ResourceManager::GetTextureFromFile("images/cursor.png") ));
-    cursor_node_->modifier()->set_scale( Vector2D(1.0, 1.0) * 0.382 );
-    game::base::GameController::reference()->interface_node()->AddChild(cursor_node_);
+    TexturedRectangle* rect = new TexturedRectangle( ResourceManager::GetTextureFromFile("images/cursor.png") );
+    cursor_node_->set_drawable(rect);
+    cursor_node_->modifier()->set_scale( Vector2D(GameController::TILE_SIZE) / rect->width() );
+    GameController::reference()->interface_node()->AddChild(cursor_node_);
 }
 
-void Aim::AimAt(ugdk::math::Integer2D aim) {
+void Aim::AimAt(const ugdk::math::Integer2D& aimed_tile) {
     game::base::GameController* gc = game::base::GameController::reference();
-    if( (aim_.x == aim.x && aim_.y == aim.y) || (aim.x < 0 || aim.y < 0 ) || (aim.x > gc->map_size().x - 1 || aim.y > gc->map_size().y - 1))
-        return;
-    aim_ = aim;
-    cursor_node_->modifier()->set_offset(game::base::GameTile::TILE_SIZE.Multiplied(aim_));
+    if( gc->TileOutOfBounds(aimed_tile) ) return;
+    aimed_tile_ = aimed_tile;
+    cursor_node_->modifier()->set_offset(GameController::TILE_SIZE.Multiplied(aimed_tile_));
 }
 
 void Aim::ToggleAim() {

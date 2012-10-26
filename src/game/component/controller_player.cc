@@ -34,7 +34,7 @@ namespace component {
 ControllerPlayer::ControllerPlayer(GameObject* owner)
   : super(owner), where_to_(Integer2D(0,0)),
     time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL),
-    aim_(new Aim(this->owner_)){
+    aim_() {
     time_held_.Pause();
     hold_tick_.Pause();
 }
@@ -47,21 +47,19 @@ TimeElapsed ControllerPlayer::Act() {
     InputManager* input = INPUT_MANAGER();
 
     // Cursor
-    if (aim_->IsActive())
+    if (aim_.IsActive())
         return cursor();
 
-    if( input->KeyPressed(ugdk::input::K_i) ) {
+    if( input->KeyPressed(ugdk::input::K_f) ) {
         where_to_ = Integer2D(0,0);
-        aim_->AimAt((*owner_->shape_component()->occupying_tiles().begin()));
-        aim_->ToggleAim();
+        aim_.AimAt((*owner_->shape_component()->occupying_tiles().begin()));
+        aim_.ToggleAim();
         return false;
     }
 
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) )
         return Cast("ouch");
-    if( input->KeyPressed(ugdk::input::K_f) )
-        return Cast("fire",Integer2D(35,4)); //TODO: MANOMANOMANO
 
     return Cast("step", movement());
 }
@@ -71,14 +69,14 @@ TimeElapsed ControllerPlayer::cursor() {
 
     if(input->KeyPressed(ugdk::input::K_ESCAPE)) {
         where_to_ = *(owner_->shape_component()->occupying_tiles().begin());
-        aim_->ToggleAim();
+        aim_.ToggleAim();
         return false;
     }
     
     if( input->KeyPressed(ugdk::input::K_f) )
-        return Cast("fire", aim_->aim());
+        return Cast("fire", aim_.aimed_tile());
 
-    aim_->AimAt(aim_->aim() + movement());
+    aim_.AimAt(aim_.aimed_tile() + movement());
     return false;
 }
 
