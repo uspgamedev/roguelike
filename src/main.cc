@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     ugdk::Engine* engine = ugdk::Engine::reference();
     engine->Initialize(engine_config);
 	engine->video_manager()->SetVSync(true);
+    engine->video_manager()->SetLightSystem(true);
 
     ugdk::action::Scene* main_scene = game::base::GameController::reference();
     LevelLoader();

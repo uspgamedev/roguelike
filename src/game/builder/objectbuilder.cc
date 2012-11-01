@@ -5,6 +5,10 @@
 // External Dependencies
 #include <string>
 #include <limits>
+#include <ugdk/graphic/light.h>
+#include <ugdk/graphic/node.h>
+#include <ugdk/graphic/modifier.h>
+#include <ugdk/math/vector2D.h>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
@@ -21,6 +25,9 @@
 
 // Using
 using std::numeric_limits;
+using ugdk::graphic::Light;
+using ugdk::graphic::Node;
+using ugdk::Vector2D;
 using game::base::GameController;
 using game::base::GameObject;
 using game::component::ControllerAi;
@@ -47,6 +54,14 @@ GameObject* ObjectBuilder::BuildHero() {
         new GraphicRectangular(hero, "@", 3.0),
         [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr);}
     );
+
+    Node* light_node = new Node();
+    Light* light = new Light();
+    light->set_dimension(Vector2D(800.0,800.0));
+    light_node->set_light(light);
+    light_node->modifier()->set_offset(Vector2D(static_cast<GraphicRectangular*>(hero->graphic_component())->rect_size().x/2));
+    
+    hero->graphic_component()->node()->AddChild(light_node);
 
     return hero;
 }

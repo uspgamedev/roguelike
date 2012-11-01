@@ -29,8 +29,11 @@ class Graphic : public ComponentBase {
     virtual void Update(double dt) = 0;
     virtual void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles) = 0;
 
+    void SetVisibility(bool visibility);
 
-    ugdk::graphic::Node* node() { return node_; }
+    const ugdk::graphic::Node* node() const { return node_; }
+          ugdk::graphic::Node* node()       { return node_; }
+
     void OnSceneAdd(ugdk::action::Scene* scene);
 
   protected:

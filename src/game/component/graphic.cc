@@ -27,5 +27,9 @@ void Graphic::OnSceneAdd(Scene* scene) {
     scene->content_node()->AddChild(node_);
 }
 
+void Graphic::SetVisibility(bool visibility) {
+    node_->modifier()->set_visible(visibility);
+}
+
 } // namespace component
 } // namespace game

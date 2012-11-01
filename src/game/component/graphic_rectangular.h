@@ -27,6 +27,8 @@ class GraphicRectangular : public Graphic {
     void Update(double dt);
 	void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles);
 
+    const ugdk::Vector2D& rect_size() const { return rect_size_; }
+
   private:
     ugdk::Vector2D rect_size_;
 };

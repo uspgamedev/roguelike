@@ -52,7 +52,7 @@ void GameTile::RemoveObject(GameObject* obj) {
 void GameTile::SetVisibility(bool visibility) {
     node_->modifier()->set_visible(visibility);
     for(auto it = objects_here_.begin(); it != objects_here_.end(); ++it) {
-        (*it)->graphic_component()->node()->modifier()->set_visible(visibility);
+        (*it)->graphic_component()->SetVisibility(visibility);
     }
 }
 
