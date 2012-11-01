@@ -30,7 +30,7 @@ class Graphic : public ComponentBase {
     virtual void NodeLogic(const std::set<ugdk::math::Integer2D>& occupying_tiles) = 0;
 
 
-    const ugdk::graphic::Node* node() const { return node_; }
+    ugdk::graphic::Node* node() { return node_; }
     void OnSceneAdd(ugdk::action::Scene* scene);
 
   protected:

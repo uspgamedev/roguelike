@@ -31,7 +31,7 @@ class GameTile {
 
 	void PushObject(GameObject* obj);
 	void RemoveObject(GameObject* obj);
-
+    void SetVisibility(bool visibility);
 	
 	int x() const { return coords_.x; }
 	int y() const { return coords_.y; }

@@ -10,6 +10,8 @@
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
+#include "game/base/gameobject.h"
+#include "game/component/graphic.h"
 
 // Using
 using ugdk::math::Integer2D;
@@ -45,6 +47,13 @@ void GameTile::PushObject(GameObject* obj) {
 
 void GameTile::RemoveObject(GameObject* obj) {
 	objects_here_.erase(obj);
+}
+
+void GameTile::SetVisibility(bool visibility) {
+    node_->modifier()->set_visible(visibility);
+    for(auto it = objects_here_.begin(); it != objects_here_.end(); ++it) {
+        (*it)->graphic_component()->node()->modifier()->set_visible(visibility);
+    }
 }
 
 } // namespace base

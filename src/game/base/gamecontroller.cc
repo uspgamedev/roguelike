@@ -92,12 +92,12 @@ bool GameController::TilesNeededBlackout() {
 void GameController::BlackoutTiles() {
     for(auto j = tiles_.begin(); j != tiles_.end(); ++j)
         for(auto i = (*j).begin(); i != (*j).end(); ++i)
-            (*i)->node()->modifier()->set_visible(false);
+            (*i)->SetVisibility(false);
     needs_blackout_ = false;
 }
 
 void GameController::MarkVisible(const Integer2D& tile) {
-    Tile(tile)->node()->modifier()->set_visible(true);
+    Tile(tile)->SetVisibility(true);
 }
 
 void GameController::RemoveActor(GameObject* actor) {
