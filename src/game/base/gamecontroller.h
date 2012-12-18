@@ -54,7 +54,6 @@ class GameController : public ugdk::action::Scene {
     const std::set<GameObject*>& ObjectsAt(const ugdk::math::Integer2D& coords);
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
 
-
     void RequireBlackout() { needs_blackout_ = true; }
     bool TilesNeededBlackout();
     void BlackoutTiles();
@@ -63,6 +62,10 @@ class GameController : public ugdk::action::Scene {
     void RemoveActor(GameObject* actor);
 
     void set_hero(GameObject* hero) { hero_ = hero; }
+    void set_tiles(std::vector< std::vector<GameTile*> > tiles) { tiles_ = tiles; }
+    void set_map_size(ugdk::math::Integer2D map_size) { map_size_ = map_size; }
+
+    action::time::ObjectQueue& actors() { return actors_; }
 
   private:
     GameController();

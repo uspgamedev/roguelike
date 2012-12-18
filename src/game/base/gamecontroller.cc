@@ -12,18 +12,24 @@
 #include <ugdk/graphic/node.h>
 #include <ugdk/graphic/textmanager.h>
 #include <ugdk/math/vector2D.h>
+#include <ugdk/script/virtualobj.h>
+#include <ugdk/script/scriptmanager.h>
 
 // Internal Dependencies
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
+#include "game/builder/objectbuilder.h"
 #include "game/component/energy.h"
+#include "game/component/shape.h"
 
 // Using
 using std::list;
 using std::set;
 using std::vector;
 using ugdk::math::Integer2D;
+using ugdk::script::VirtualObj;
 using ugdk::Vector2D;
+using game::builder::ObjectBuilder;
 
 namespace game {
 namespace base {
@@ -32,7 +38,7 @@ namespace base {
     double n = rand();
     return min + (max - min) * (n / RAND_MAX);
 }*/
-
+    
 const Integer2D GameController::TILE_SIZE = Integer2D(23, 23);
 
 GameController* GameController::reference_ = nullptr;
@@ -49,12 +55,13 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
 
 GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
-
-	Vector2D pos = Vector2D();
-	for(int y = 0; y < 40; ++y) {
+    //VirtualObj level_data = SCRIPT_MANAGER()->LoadModule("level_1");
+    
+	/*Vector2D pos = Vector2D();
+	for(int y = 0; y < 50; ++y) {
 		vector<GameTile*> vect;
 		pos.x = 0;
-		for(int x = 0; x < 50; ++x) {
+		for(int x = 0; x < 40; ++x) {
 			GameTile* gt = new GameTile(x, y);
             gt->node()->set_zindex(-1.0);
 			gt->node()->modifier()->set_offset(pos);
@@ -62,6 +69,7 @@ GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), a
 			vect.push_back(gt);
 
 			pos.x += TILE_SIZE.x;
+    
 		}
 		tiles_.push_back(vect);
 		pos.y += TILE_SIZE.y;
@@ -69,7 +77,7 @@ GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), a
 
     this->AddTask(new action::time::TimeManager(actors_));
 
-    BlackoutTiles();   
+    BlackoutTiles();   */
 }
 
 GameController::~GameController() {

@@ -8,6 +8,7 @@ class GameController;
 class GameObject;
 class GameTile;
 class GameThing;
+class LevelManager;
 
 } // namespace base
 } // namespace game

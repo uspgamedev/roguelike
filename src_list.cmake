@@ -54,6 +54,8 @@ SET(GAME_SRCS
     ./src/game/base/gamething.h 
     ./src/game/base/gametile.cc 
     ./src/game/base/gametile.h 
+    ./src/game/base/levelmanager.cc 
+    ./src/game/base/levelmanager.h 
     ./src/game/base.h 
     ./src/game/builder/objectbuilder.cc 
     ./src/game/builder/objectbuilder.h 
