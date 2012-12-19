@@ -10,6 +10,7 @@
 #include <ugdk/graphic/node.h>
 
 // Internal Dependencies
+#include "game/base/gamecontroller.h"
 #include "game/action/aim.h"
 
 // Forward Declarations
@@ -34,6 +35,8 @@ class ControllerPlayer : public Controller {
     ugdk::math::Integer2D where_to_;
     ugdk::time::TimeAccumulator time_held_;
     ugdk::time::TimeAccumulator hold_tick_;
+
+    game::base::GameController* gc;
 
     bool held_movement_adjusted_;
 };

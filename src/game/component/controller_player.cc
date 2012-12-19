@@ -23,6 +23,7 @@ using ugdk::Vector2D;
 using ugdk::time::TimeAccumulator;
 using game::action::Aim;
 using game::action::time::TimeElapsed;
+using game::base::GameController;
 using game::base::GameObject;
 using game::base::GameThing;
 
@@ -34,7 +35,8 @@ namespace component {
 
 ControllerPlayer::ControllerPlayer(GameObject* owner)
   : super(owner), where_to_(Integer2D(0,0)),
-    time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL) {
+    time_held_(DELAY_HOLD), hold_tick_(HOLD_TICK_INTERVAL),
+    gc(game::base::GameController::reference()){
     time_held_.Pause();
     hold_tick_.Pause();
 }
@@ -61,7 +63,12 @@ TimeElapsed ControllerPlayer::Act() {
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) )
         return Cast("ouch");
-
+    
+    int camera_x = (*owner_->shape_component()->occupying_tiles().begin()).get_x()*GameController::TILE_SIZE.x;
+    int camera_y = (*owner_->shape_component()->occupying_tiles().begin()).get_y()*GameController::TILE_SIZE.y;
+    ugdk::math::Integer2D camera_offset = ugdk::math::Integer2D(camera_x, camera_y);
+    ugdk::Vector2D offset = ugdk::Vector2D(- camera_x + 1200.0/2, - camera_y + 900.0/2);
+    gc->content_node()->modifier()->set_offset(offset);
     return Cast("step", movement());
 }
 
