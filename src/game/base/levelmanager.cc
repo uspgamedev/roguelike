@@ -49,7 +49,7 @@ void LevelManager::GenerateFromFile() {
 
     int width = level_data["width"].value<int>();
     int height = level_data["height"].value<int>();
-    string& map_string = level_data["map"].value<std::string>();
+    string map_string = level_data["map"].value<std::string>();
     
     ObjectBuilder builder = ObjectBuilder();
 	Vector2D pos = Vector2D();
