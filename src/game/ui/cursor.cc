@@ -40,7 +40,7 @@ void Cursor::ChangeTile(const ugdk::math::Integer2D& tile) {
     if( gc->TileOutOfBounds(tile) ) return;
 
     tile_ = tile;
-    node_modifier_->set_offset(GameController::TILE_SIZE.Multiplied(tile));
+    node_modifier_->set_offset(GameController::TILE_SIZE.Multiplied(tile) + gc->content_node()->modifier()->offset());
 }
 
 bool Cursor::IsActive() {
