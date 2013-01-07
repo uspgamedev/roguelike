@@ -51,13 +51,16 @@ class GameController : public ugdk::action::Scene {
         return Tile(coords.x, coords.y);
     }
 
+    void AddToSpawnCounter() { monster_spawn_counter_++; }
+
     const std::set<GameObject*>& ObjectsAt(const ugdk::math::Integer2D& coords);
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
 
+    void Spawn();
     void RequireBlackout() { needs_blackout_ = true; }
     bool TilesNeededBlackout();
     void BlackoutTiles();
-    void MarkVisible(const ugdk::math::Integer2D& tile);
+    void MarkVisible(GameObject*, const ugdk::math::Integer2D tile);
     void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);
 
@@ -69,6 +72,8 @@ class GameController : public ugdk::action::Scene {
 
   private:
     GameController();
+
+    int monster_spawn_counter_;
     
     void clearDeadGameObjects();
     void addPendingGameObjects();

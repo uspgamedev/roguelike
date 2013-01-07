@@ -16,6 +16,7 @@
 #include <ugdk/script/scriptmanager.h>
 
 // Internal Dependencies
+#include "game/component/vision.h"
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
 #include "game/builder/objectbuilder.h"
@@ -50,39 +51,33 @@ GameController* GameController::reference() {
 static bool actor_less(const GameObject* a, const GameObject* b) {
     double mean_a = a->energy_component()->Mean();
     double mean_b = b->energy_component()->Mean();
-    return mean_a < mean_b || ( mean_a == mean_b && a < b );
+    return mean_a > mean_b || ( mean_a == mean_b && a < b );
 }
 
-GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
+GameController::GameController() : super(), monster_spawn_counter_(0), map_size_(50, 40), hero_(nullptr),
+                                   actors_(actor_less), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
-    //VirtualObj level_data = SCRIPT_MANAGER()->LoadModule("level_1");
-    
-	/*Vector2D pos = Vector2D();
-	for(int y = 0; y < 50; ++y) {
-		vector<GameTile*> vect;
-		pos.x = 0;
-		for(int x = 0; x < 40; ++x) {
-			GameTile* gt = new GameTile(x, y);
-            gt->node()->set_zindex(-1.0);
-			gt->node()->modifier()->set_offset(pos);
-			content_node()->AddChild(gt->node());
-			vect.push_back(gt);
-
-			pos.x += TILE_SIZE.x;
-    
-		}
-		tiles_.push_back(vect);
-		pos.y += TILE_SIZE.y;
-	}
-
-    this->AddTask(new action::time::TimeManager(actors_));
-
-    BlackoutTiles();   */
 }
 
 GameController::~GameController() {
     if(hero_) delete hero_;
     reference_ = nullptr;
+}
+
+void GameController::Spawn() {
+    monster_spawn_counter_++;
+    if(monster_spawn_counter_ < 250)
+        return;
+    monster_spawn_counter_ = 0;
+    ObjectBuilder& objb = ObjectBuilder();
+    GameObject* new_enemy = objb.BuildEnemy();
+    int x, y;
+    do {
+        x = rand()%60;
+        y = rand()%60;
+    } while(!new_enemy->shape_component()->TryPlace(Integer2D(x,y)));
+    new_enemy->shape_component()->PlaceAt(Integer2D(x,y));
+    AddGameObject(new_enemy);
 }
 
 void GameController::AddGameObject(GameObject* game_object) {
@@ -104,8 +99,11 @@ void GameController::BlackoutTiles() {
     needs_blackout_ = false;
 }
 
-void GameController::MarkVisible(const Integer2D& tile) {
-    Tile(tile)->SetVisibility(true);
+void GameController::MarkVisible(GameObject* viewer, const Integer2D tile) {
+    if(viewer == hero_)
+        Tile(tile)->SetVisibility(true);
+    else
+        viewer->vision_component()->see_tile(tile);
 }
 
 void GameController::RemoveActor(GameObject* actor) {

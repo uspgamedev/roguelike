@@ -51,7 +51,7 @@ void Vision::See() {
         face_ahead();
         losprocessor_->Process();
         for(auto vt = visible_tiles_.begin() ; vt != visible_tiles_.end() ; ++vt) {
-            gamecontroller_->MarkVisible(*vt);
+            gamecontroller_->MarkVisible(owner_, *vt);
         }
     }
 }

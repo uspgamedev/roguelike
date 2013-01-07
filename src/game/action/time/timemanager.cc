@@ -29,8 +29,9 @@ void TimeManager::operator()(double) {
 
     GameObject* next = *(actors_.begin());
     TimeElapsed time_elapsed = next->controller_component()->Act();
-    if(time_elapsed) {
+    if(time_elapsed.elapsed) {
         assert( static_cast<double>(time_elapsed) >= 0.0 ); // Remove this if you want to allow time_elapsed < 0.0
+        GameController::reference()->Spawn();
         time_has_passed(time_elapsed);
     }
 }

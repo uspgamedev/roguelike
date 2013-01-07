@@ -96,7 +96,6 @@ void LevelManager::GenerateFromFile() {
     do {
         x = rand()%width;
         y = rand()%height;
-        printf("%d, %d\n",x ,y);
     } while(!hero->shape_component()->TryPlace(Integer2D(x,y)));
     hero->shape_component()->PlaceAt(Integer2D(x,y));
 
