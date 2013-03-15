@@ -47,7 +47,7 @@ Vision::~Vision() {
 }
 
 void Vision::See() {
-    if( gamecontroller_->TilesNeededBlackout() ) {
+    if( gamecontroller_->TilesNeededBlackout(owner_) ) {
         face_ahead();
         losprocessor_->Process();
         for(auto vt = visible_tiles_.begin() ; vt != visible_tiles_.end() ; ++vt) {

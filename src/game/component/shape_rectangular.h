@@ -33,10 +33,10 @@ class ShapeRectangular : public Shape {
 
     bool CheckForOob(const ugdk::math::Integer2D& destination) const;
 
-    bool TryPlace(const ugdk::math::Integer2D& destination) const;
+    bool TryPlace(const ugdk::math::Integer2D& destination, game::base::GameObject* ignore = 0) const;
     const ugdk::math::Integer2D TryStep(const ugdk::math::Integer2D& dir) const;
 
-    void EvalBumpsAt(const ugdk::math::Integer2D& destination) const;
+    void EvalBumpsAt(const ugdk::math::Integer2D& destination, game::base::GameObject* ignore = 0) const;
 
     const ugdk::math::Integer2D& dimensions() const { return dimensions_; }
 

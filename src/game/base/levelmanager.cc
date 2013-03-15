@@ -74,7 +74,6 @@ void LevelManager::GenerateFromFile() {
     
     gc->set_tiles(tiles);
     gc->set_map_size(Integer2D(pos.x/GameController::TILE_SIZE.x, pos.y/GameController::TILE_SIZE.y));
-    gc->AddTask(new action::time::TimeManager(gc->actors()));
     gc->BlackoutTiles();
 
     map_string.erase( std::remove(map_string.begin(), map_string.end(), '\n'), map_string.end() );
@@ -92,13 +91,14 @@ void LevelManager::GenerateFromFile() {
     GameObject* hero;
     gc->set_hero(hero = builder.BuildHero());
     gc->AddGameObject(hero);
+    gc->AddTask(new action::time::TimeManager());
     int x, y;
     do {
         x = rand()%width;
         y = rand()%height;
     } while(!hero->shape_component()->TryPlace(Integer2D(x,y)));
     hero->shape_component()->PlaceAt(Integer2D(x,y));
-
+    
 }
 
 void LevelManager::GenerateCaveLevel() {

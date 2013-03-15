@@ -111,12 +111,12 @@ const Integer2D& ShapeRectangular::Step(const Integer2D& dir) {
     return PlaceAt(destination);
 }
 
-bool ShapeRectangular::TryPlace(const Integer2D& destination) const {
+bool ShapeRectangular::TryPlace(const Integer2D& destination, game::base::GameObject* ignore) const {
 
     if(!CheckForOob(destination)) return false;
 
     // Check for stuff where you're going.
-    EvalBumpsAt(destination);
+    EvalBumpsAt(destination, ignore);
 
     if( !bumps_[0].empty() ) // there's something HUGE there (like a wall)
         return false; //TODO: implement wall-like bumps.
@@ -159,7 +159,7 @@ bool ShapeRectangular::CheckForOob(const ugdk::math::Integer2D& destination) con
     return true;
 }
 
-void ShapeRectangular::EvalBumpsAt(const ugdk::math::Integer2D& destination) const {
+void ShapeRectangular::EvalBumpsAt(const ugdk::math::Integer2D& destination, game::base::GameObject* ignore) const {
 
     // !WARNING! //
     // Make sure to CheckForOob() before calling this!!!! //
@@ -182,7 +182,7 @@ void ShapeRectangular::EvalBumpsAt(const ugdk::math::Integer2D& destination) con
         for( int i = 0 ; i < dimensions_.x ; ++i ) {
             const set<GameObject*> stuff = gamecontroller->Tile(destination + Integer2D(i,j))->objects_here();
             for( auto ot = stuff.begin() ; ot != stuff.end() ; ++ot ) {
-                if((*ot) != owner_) { // can't bump into self
+                if((*ot) != owner_ && (*ot)!= ignore) { // can't bump into self
                     their_pass = (*ot)->shape_component()->pass_sizeclass();
                     their_stay = (*ot)->shape_component()->stay_sizeclass();
 

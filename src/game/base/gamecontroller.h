@@ -57,22 +57,29 @@ class GameController : public ugdk::action::Scene {
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
 
     void Spawn();
+    void ClearActorsList() { actors_.clear(); }
     void RequireBlackout() { needs_blackout_ = true; }
-    bool TilesNeededBlackout();
+    bool TilesNeededBlackout(GameObject* owner);
     void BlackoutTiles();
     void MarkVisible(GameObject*, const ugdk::math::Integer2D tile);
     void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);
+    void PropagateSound(const ugdk::math::Integer2D& origin, int noise_level);
 
+    int  current_tick() { return current_tick_; }
+
+    void set_current_tick(int current_tick) { current_tick_ = current_tick; }
     void set_hero(GameObject* hero) { hero_ = hero; }
     void set_tiles(std::vector< std::vector<GameTile*> > tiles) { tiles_ = tiles; }
     void set_map_size(ugdk::math::Integer2D map_size) { map_size_ = map_size; }
 
-    action::time::ObjectQueue& actors() { return actors_; }
+    std::vector<base::GameObject*> actors() { return actors_; }
+    base::GameObject* hero() { return hero_; }
 
   private:
     GameController();
-
+    
+    int current_tick_;
     int monster_spawn_counter_;
     
     void clearDeadGameObjects();
@@ -82,7 +89,7 @@ class GameController : public ugdk::action::Scene {
 	std::vector< std::vector<GameTile*> > tiles_;
 
     GameObject* hero_;
-    action::time::ObjectQueue actors_;
+    std::vector<base::GameObject*> actors_;
     
     double time_since_beggining_;
     bool needs_blackout_;

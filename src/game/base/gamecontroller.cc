@@ -5,6 +5,7 @@
 // External Dependencies
 #include <cassert>
 #include <cstdlib>
+#include <queue>
 #include <set>
 #include <ugdk/action/generictask.h>
 #include <ugdk/base/engine.h>
@@ -22,6 +23,7 @@
 #include "game/builder/objectbuilder.h"
 #include "game/component/energy.h"
 #include "game/component/shape.h"
+#include "game/component/sound.h"
 
 // Using
 using std::list;
@@ -54,8 +56,8 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
     return mean_a > mean_b || ( mean_a == mean_b && a < b );
 }
 
-GameController::GameController() : super(), monster_spawn_counter_(0), map_size_(50, 40), hero_(nullptr),
-                                   actors_(actor_less), time_since_beggining_(0.0) {
+GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(245), map_size_(50, 40),
+                                   hero_(nullptr), actors_(), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 }
 
@@ -83,12 +85,13 @@ void GameController::Spawn() {
 void GameController::AddGameObject(GameObject* game_object) {
     this->QueuedAddEntity(game_object);
     if( game_object->controller_component() != nullptr )
-        actors_.insert(game_object);
+        actors_.push_back(game_object);
 }
 
-bool GameController::TilesNeededBlackout() {
+bool GameController::TilesNeededBlackout(GameObject* owner) {
     if(!needs_blackout_) return false;
-    BlackoutTiles();
+    if(owner == hero_)
+        BlackoutTiles();
     return true;
 }
 
@@ -107,7 +110,52 @@ void GameController::MarkVisible(GameObject* viewer, const Integer2D tile) {
 }
 
 void GameController::RemoveActor(GameObject* actor) {
-    actors_.erase(actor);
+    this->RemoveEntity(actor);
+    /*for(auto it = actors_.begin(); it != actors_.end(); it++)
+        if(*it == actor) {
+            actors_.erase(it);
+            return;
+        }*/
+}
+
+void GameController::PropagateSound(const Integer2D& origin, int noise_level) {
+    std::vector<std::vector<int>> map;
+    map.resize(map_size_.x);
+
+    for(int i = 0; i < map_size_.x ; ++i)
+        map[i].resize(map_size_.y);
+    for(int i = 0; i < map_size_.x ; ++i)
+        for(int j = 0; j < map_size_.y ; ++j)
+            map[i][j] = 0;
+    map[origin.x][origin.y] = noise_level;
+
+    std::queue<Integer2D> targets;
+    std::queue<int>       noise;
+    targets.push(origin);
+    noise.push(noise_level);
+
+    while(!targets.empty()) {
+        Integer2D tile = targets.front();
+        int tile_noise = noise.front();
+        targets.pop();
+        noise.pop();
+
+        for(int i = -1; i < 2; ++i) {
+            for(int j = -1; j < 2; ++j) {
+                if(i == 0 && j == 0)
+                    continue;
+                if( map[tile.x + i][tile.y + j] < tile_noise )
+                    map[tile.x + i][tile.y + j] = tile_noise;
+                else
+                    continue;
+                const std::set<GameObject*>& obj_list = ObjectsAt(tile + Integer2D(i, j));
+                /*for(auto it = obj_list.begin(); it != obj_list.end(); ++it)
+                    if((*it)->sound_component())
+                        if((*it)->sound_component()->TryListen(tile_noise))
+                            (*it)->TryTarget(*/
+            }
+        }
+    }
 }
 
 const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {

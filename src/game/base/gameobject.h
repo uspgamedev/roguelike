@@ -5,6 +5,7 @@
 #include <ugdk/action/entity.h>
 
 // External Dependencies
+#include <set>
 #include <string>
 #include <ugdk/portable/tr1.h>
 #include FROM_TR1(functional)
@@ -28,7 +29,8 @@
     action( damageable, Damageable)         \
     action(     energy,     Energy)         \
     action(      shape,      Shape)         \
-    action(    graphic,    Graphic)
+    action(    graphic,    Graphic)         \
+    action(      sound,      Sound)
 
 
 #define FULL_TYPE(type) component::type*
@@ -71,6 +73,7 @@ class GameObject : public ugdk::action::Entity {
 
   private:
     FORALL_COMPONENTS(ATTRIBUTES_DECLARATION) // note lack of ";"
+
     std::tr1::function<void (void)> die_;
 };
 
