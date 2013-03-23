@@ -64,11 +64,9 @@ TimeElapsed ControllerPlayer::Act() {
     if( input->KeyPressed(ugdk::input::K_z) )
         return Cast("ouch");
     
-    int camera_x = (*owner_->shape_component()->occupying_tiles().begin()).get_x()*GameController::TILE_SIZE.x;
-    int camera_y = (*owner_->shape_component()->occupying_tiles().begin()).get_y()*GameController::TILE_SIZE.y;
-    ugdk::math::Integer2D camera_offset = ugdk::math::Integer2D(camera_x, camera_y);
-    ugdk::Vector2D offset = ugdk::Vector2D(- camera_x + 1200.0/2, - camera_y + 900.0/2);
-    gc->content_node()->modifier()->set_offset(offset);
+    // Camera
+    //gc->AdjustCamera();
+
     return Cast("step", movement());
 }
 

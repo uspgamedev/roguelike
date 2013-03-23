@@ -67,8 +67,10 @@ class GameController : public ugdk::action::Scene {
 
     action::time::ObjectQueue& actors() { return actors_; }
 
+
   private:
     GameController();
+    void AdjustCamera();
     
     void clearDeadGameObjects();
     void addPendingGameObjects();

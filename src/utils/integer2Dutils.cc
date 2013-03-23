@@ -14,7 +14,11 @@ bool operator<(const Integer2D& lhs, const Integer2D& rhs) {
 
 } // namespace math
 
+// lexical (dictionary) ordering
 bool operator<(const Frame& lhs, const Frame& rhs) {
+    double l1, l2, l3, r1, r2, r3;
+
+    /*
     double l1 = lhs.left();
     double l2 = lhs.top();
     double l3 = lhs.right();
@@ -23,8 +27,15 @@ bool operator<(const Frame& lhs, const Frame& rhs) {
     double r2 = rhs.top();
     double r3 = rhs.right();
     double r4 = rhs.bottom();
+    */
 
-    return l1 < r1 || ( l1 == r1 && ( l2 < r2 || ( l2 == r2 && ( l3 < r3 || ( l3 == r3 && l4 < r4 ) ) ) ) );
+    return (l1 = lhs.left()) < (r1 = rhs.left()) || (
+             (l1 == r1) && ( (l2 = lhs.top()) < (r2 = rhs.top()) || (
+               (l2 == r2) && ( (l3 = lhs.right()) < (r3 = rhs.right()) || (
+                 (l3 == r3) && lhs.bottom() < rhs.bottom()
+               ))
+             ))
+           );
 }
 
 } // namespace ugdk

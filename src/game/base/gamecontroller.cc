@@ -26,6 +26,8 @@
 using std::list;
 using std::set;
 using std::vector;
+using ugdk::Engine;
+using ugdk::action::GenericTask;
 using ugdk::math::Integer2D;
 using ugdk::script::VirtualObj;
 using ugdk::Vector2D;
@@ -55,6 +57,13 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
 
 GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
+
+    this->AddTask(new GenericTask(
+        [this](double)->bool { 
+            this->AdjustCamera(); return true;
+        }, 50
+    ));
+
     //VirtualObj level_data = SCRIPT_MANAGER()->LoadModule("level_1");
     
 	/*Vector2D pos = Vector2D();
@@ -114,6 +123,20 @@ void GameController::RemoveActor(GameObject* actor) {
 
 const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {
     return Tile(coords)->objects_here();
+}
+
+void GameController::AdjustCamera() {
+    if(hero_ == nullptr) return;
+
+    //TODO: const
+    Engine* engine = Engine::reference();
+    const Vector2D& window_size = engine->window_size();
+
+    int camera_x = (*hero_->shape_component()->occupying_tiles().begin()).get_x()*GameController::TILE_SIZE.x;
+    int camera_y = (*hero_->shape_component()->occupying_tiles().begin()).get_y()*GameController::TILE_SIZE.y;
+    ugdk::math::Integer2D camera_offset = ugdk::math::Integer2D(camera_x, camera_y);
+    ugdk::Vector2D offset = ugdk::Vector2D(- camera_x + window_size.x/2, - camera_y + window_size.y/2);
+    this->content_node()->modifier()->set_offset(offset);
 }
 
 } // namespace base

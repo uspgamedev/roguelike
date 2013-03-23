@@ -1,10 +1,6 @@
 
 // Header File
-#include "game/base/gametile.h"
-#include "game/base/gameobject.h"
 #include "game/base/levelmanager.h"
-#include "game/builder/objectbuilder.h"
-#include "game/component/shape.h"
 
 // External Dependencies
 #include <algorithm>
@@ -17,7 +13,10 @@
 #include <ugdk/math/vector2D.h>
 
 // Internal Dependencies
-// none
+#include "game/base/gametile.h"
+#include "game/base/gameobject.h"
+#include "game/builder/objectbuilder.h"
+#include "game/component/shape.h"
 
 // Using
 using std::endl;

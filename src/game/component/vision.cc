@@ -29,7 +29,7 @@ bool blocks_vision(const Integer2D& tile) {
 }
 
 Vision::Vision(game::base::GameObject* owner)
-  : super(owner), range_(20.5),
+  : super(owner), range_(13.5),
     initialized_(false), gamecontroller_(GameController::reference()),
     left_eye_(0,0,0.40,0.40,0.60,0.60), right_eye_(0,0,0.40,0.40,0.60,0.60),
     dir_(0,-1) {
