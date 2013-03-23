@@ -59,8 +59,8 @@ void GameObject::Update(double dt) {
 void GameObject::Die() {
     GameController* gc = base::GameController::reference();
 
-    if(this->controller_component())
-        gc->RemoveActor(this);
+    //if(this->controller_component())
+    //    gc->RemoveActor(this);
     if(die_) // if die_ is a valid tr1::function
         die_();
     to_be_removed_ = true;

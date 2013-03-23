@@ -50,8 +50,9 @@ GameObject* ObjectBuilder::BuildHero() {
         new             Vision(hero),
         new         Damageable(hero, 10.0),
         new             Energy(hero),
-        new   ShapeRectangular(hero, 2, 2, 1.0, 0.25, 1.0e-9),
+        new   ShapeRectangular(hero, 1, 1, 1.0, 0.25, 1.0e-9),
         new GraphicRectangular(hero, "@", 3.0),
+        nullptr,
         [](){ GameController* gc = GameController::reference(); gc->BlackoutTiles(); gc->set_hero(nullptr);}
     );
 
@@ -67,17 +68,19 @@ GameObject* ObjectBuilder::BuildHero() {
 }
 
 GameObject* ObjectBuilder::BuildEnemy() {
-
+    
     GameObject* enemy = new GameObject();
     enemy->Initialize(
         new      ControllerAi(enemy),
-        /*new             Vision(enemy),*/nullptr,
+        new            Vision(enemy),//nullptr,
         new   Damageable(enemy, 4.0),
         new            Energy(enemy),
-        new   ShapeRectangular(enemy, 5, 6, 3.0, 0.8, 1.0e-9),
-        new GraphicRectangular(enemy, "E", 2.0)
+        new   ShapeRectangular(enemy, 4, 4, 3.0, 0.8, 1.0e-9),
+        new GraphicRectangular(enemy, "E", 2.0),
+        nullptr
     );
-
+    GameController* gc = GameController::reference();
+    static_cast<ControllerAi*>(enemy->controller_component())->NewMapSize(gc->map_size());
     return enemy;
 }
 
@@ -90,7 +93,8 @@ GameObject* ObjectBuilder::BuildItem() {
         nullptr,
         nullptr,
         new   ShapeRectangular(item, 1, 1, 0.1, 0.025, 0.0),
-        new GraphicRectangular(item, "!", 1.0)
+        new GraphicRectangular(item, "!", 1.0),
+        nullptr
     );
 
     return item;
@@ -105,7 +109,8 @@ GameObject* ObjectBuilder::BuildWall() {
         nullptr,
         nullptr,
         new   ShapeRectangular(wall, 1, 1, numeric_limits<double>::infinity(), 0.0, 0.0 ),
-        new GraphicRectangular(wall, "null", 1.0)
+        new GraphicRectangular(wall, "null", 1.0),
+        nullptr
     );
 
     return wall;

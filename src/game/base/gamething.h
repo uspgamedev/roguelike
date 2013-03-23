@@ -21,9 +21,10 @@ class GameThing {
   public:
     GameThing(GameObject* obj) : obj_(obj), tile_() {}
     GameThing(const ugdk::math::Integer2D& tile) : obj_(nullptr), tile_(tile) {}
+    GameThing() : obj_(nullptr), tile_(ugdk::math::Integer2D(-1, -1)) {}
     ~GameThing() {}
 
-    bool is_obj() const { return obj_ != nullptr; }
+    bool is_obj() const  { return obj_ != nullptr; }
     const GameObject* obj() const { return obj_; }
           GameObject* obj()       { return obj_; }
     const ugdk::math::Integer2D& tile() const { return tile_; }

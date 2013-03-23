@@ -19,6 +19,10 @@ SET(GAME_SRCS
     ./src/game/action/skill/simple.h 
     ./src/game/action/skill/simple_fireat.cc 
     ./src/game/action/skill/simple_fireat.h 
+    ./src/game/action/skill/simple_idle.cc 
+    ./src/game/action/skill/simple_idle.h 
+    ./src/game/action/skill/simple_melee.cc 
+    ./src/game/action/skill/simple_melee.h 
     ./src/game/action/skill/skill.cc 
     ./src/game/action/skill/skill.h 
     ./src/game/action/skill/skillmanager.cc 
@@ -77,6 +81,8 @@ SET(GAME_SRCS
     ./src/game/component/graphic_rectangular.cc 
     ./src/game/component/graphic_rectangular.h 
     ./src/game/component/shape.h 
+    ./src/game/component/sound.cc 
+    ./src/game/component/sound.h 
     ./src/game/component/shape_rectangular.cc 
     ./src/game/component/shape_rectangular.h 
     ./src/game/component/vision.cc 

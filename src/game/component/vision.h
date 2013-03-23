@@ -36,6 +36,10 @@ class Vision : public ComponentBase {
 
     void set_dir(const ugdk::math::Integer2D& dir) { dir_ = dir; }
 
+    void clean_visible_tiles() { visible_tiles_.clear(); }
+    void see_tile(ugdk::math::Integer2D tile) { visible_tiles_.insert(tile); }
+    std::set<ugdk::math::Integer2D>& visible_tiles() { return visible_tiles_; }
+
   private:
     void face_ahead();
     void update_octants(int start);

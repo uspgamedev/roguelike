@@ -72,10 +72,10 @@ static SpendInfo spend_mov_step(GameObject* caster, const Integer2D& direction) 
     Energy* energy = caster->energy_component();
 
     if( direction.NormOne() > 1 ) {
-        if(!energy->Spend(0.0,0.141,0.0))
+        if(!energy->Spend(0.0,1.41,0.0))
             return SpendInfo(false,0.0);
     } else {
-        if(!energy->Spend(0.0,0.100,0.0))
+        if(!energy->Spend(0.0,1.0,0.0))
             return SpendInfo(false,0.0);
     }
     return SpendInfo(1.0,1.0);

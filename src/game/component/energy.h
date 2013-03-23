@@ -24,7 +24,8 @@ class Energy : public ComponentBase {
               arms_(100.0),       legs_(100.0),       eyes_(100.0),
           max_arms_(100.0),   max_legs_(100.0),   max_eyes_(100.0),
         regen_arms_(  1.0), regen_legs_(  1.0), regen_eyes_(  1.0),
-        time_carry_(  0.0) {}
+        time_carry_(  0.0),
+         last_tick_(    0),  next_tick_(    0) {}
     ~Energy() {}
 
     // Getters
@@ -37,6 +38,8 @@ class Energy : public ComponentBase {
     double regen_arms() const { return regen_arms_; }
     double regen_legs() const { return regen_legs_; }
     double regen_eyes() const { return regen_eyes_; }
+    int     last_tick() const { return  last_tick_; }
+    int     next_tick() const { return  next_tick_; }
 
     // Setters
     void       set_arms(double       arms) {       arms_ =       arms; }
@@ -48,6 +51,8 @@ class Energy : public ComponentBase {
     void set_regen_arms(double regen_arms) { regen_arms_ = regen_arms; }
     void set_regen_legs(double regen_legs) { regen_legs_ = regen_legs; }
     void set_regen_eyes(double regen_eyes) { regen_eyes_ = regen_eyes; }
+    void  set_last_tick(int     last_tick) {  last_tick_ =  last_tick; }
+    void  set_next_tick(int     next_tick) {  next_tick_ =  next_tick; }
 
     void set_time_carry(double   time_carry) { time_carry_ = time_carry; }
 
@@ -83,6 +88,9 @@ class Energy : public ComponentBase {
     double regen_arms_;
     double regen_legs_;
     double regen_eyes_;
+    
+    int    last_tick_;
+    int    next_tick_;
 
     double time_carry_;
 };

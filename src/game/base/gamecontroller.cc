@@ -5,6 +5,7 @@
 // External Dependencies
 #include <cassert>
 #include <cstdlib>
+#include <queue>
 #include <set>
 #include <ugdk/action/generictask.h>
 #include <ugdk/base/engine.h>
@@ -16,11 +17,13 @@
 #include <ugdk/script/scriptmanager.h>
 
 // Internal Dependencies
+#include "game/component/vision.h"
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
 #include "game/builder/objectbuilder.h"
 #include "game/component/energy.h"
 #include "game/component/shape.h"
+#include "game/component/sound.h"
 
 // Using
 using std::list;
@@ -52,41 +55,12 @@ GameController* GameController::reference() {
 static bool actor_less(const GameObject* a, const GameObject* b) {
     double mean_a = a->energy_component()->Mean();
     double mean_b = b->energy_component()->Mean();
-    return mean_a < mean_b || ( mean_a == mean_b && a < b );
+    return mean_a > mean_b || ( mean_a == mean_b && a < b );
 }
 
-GameController::GameController() : super(), map_size_(50, 40), hero_(nullptr), actors_(actor_less), time_since_beggining_(0.0) {
+GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(245), map_size_(50, 40),
+                                   hero_(nullptr), actors_(), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
-
-    this->AddTask(new GenericTask(
-        [this](double)->bool { 
-            this->AdjustCamera(); return true;
-        }, 50
-    ));
-
-    //VirtualObj level_data = SCRIPT_MANAGER()->LoadModule("level_1");
-    
-	/*Vector2D pos = Vector2D();
-	for(int y = 0; y < 50; ++y) {
-		vector<GameTile*> vect;
-		pos.x = 0;
-		for(int x = 0; x < 40; ++x) {
-			GameTile* gt = new GameTile(x, y);
-            gt->node()->set_zindex(-1.0);
-			gt->node()->modifier()->set_offset(pos);
-			content_node()->AddChild(gt->node());
-			vect.push_back(gt);
-
-			pos.x += TILE_SIZE.x;
-    
-		}
-		tiles_.push_back(vect);
-		pos.y += TILE_SIZE.y;
-	}
-
-    this->AddTask(new action::time::TimeManager(actors_));
-
-    BlackoutTiles();   */
 }
 
 GameController::~GameController() {
@@ -94,15 +68,32 @@ GameController::~GameController() {
     reference_ = nullptr;
 }
 
+void GameController::Spawn() {
+    monster_spawn_counter_++;
+    if(monster_spawn_counter_ < 250)
+        return;
+    monster_spawn_counter_ = 0;
+    ObjectBuilder& objb = ObjectBuilder();
+    GameObject* new_enemy = objb.BuildEnemy();
+    int x, y;
+    do {
+        x = rand()%60;
+        y = rand()%60;
+    } while(!new_enemy->shape_component()->TryPlace(Integer2D(x,y)));
+    new_enemy->shape_component()->PlaceAt(Integer2D(x,y));
+    AddGameObject(new_enemy);
+}
+
 void GameController::AddGameObject(GameObject* game_object) {
     this->QueuedAddEntity(game_object);
     if( game_object->controller_component() != nullptr )
-        actors_.insert(game_object);
+        actors_.push_back(game_object);
 }
 
-bool GameController::TilesNeededBlackout() {
+bool GameController::TilesNeededBlackout(GameObject* owner) {
     if(!needs_blackout_) return false;
-    BlackoutTiles();
+    if(owner == hero_)
+        BlackoutTiles();
     return true;
 }
 
@@ -113,12 +104,60 @@ void GameController::BlackoutTiles() {
     needs_blackout_ = false;
 }
 
-void GameController::MarkVisible(const Integer2D& tile) {
-    Tile(tile)->SetVisibility(true);
+void GameController::MarkVisible(GameObject* viewer, const Integer2D tile) {
+    if(viewer == hero_)
+        Tile(tile)->SetVisibility(true);
+    else
+        viewer->vision_component()->see_tile(tile);
 }
 
 void GameController::RemoveActor(GameObject* actor) {
-    actors_.erase(actor);
+    this->RemoveEntity(actor);
+    /*for(auto it = actors_.begin(); it != actors_.end(); it++)
+        if(*it == actor) {
+            actors_.erase(it);
+            return;
+        }*/
+}
+
+void GameController::PropagateSound(const Integer2D& origin, int noise_level) {
+    std::vector<std::vector<int>> map;
+    map.resize(map_size_.x);
+
+    for(int i = 0; i < map_size_.x ; ++i)
+        map[i].resize(map_size_.y);
+    for(int i = 0; i < map_size_.x ; ++i)
+        for(int j = 0; j < map_size_.y ; ++j)
+            map[i][j] = 0;
+    map[origin.x][origin.y] = noise_level;
+
+    std::queue<Integer2D> targets;
+    std::queue<int>       noise;
+    targets.push(origin);
+    noise.push(noise_level);
+
+    while(!targets.empty()) {
+        Integer2D tile = targets.front();
+        int tile_noise = noise.front();
+        targets.pop();
+        noise.pop();
+
+        for(int i = -1; i < 2; ++i) {
+            for(int j = -1; j < 2; ++j) {
+                if(i == 0 && j == 0)
+                    continue;
+                if( map[tile.x + i][tile.y + j] < tile_noise )
+                    map[tile.x + i][tile.y + j] = tile_noise;
+                else
+                    continue;
+                const std::set<GameObject*>& obj_list = ObjectsAt(tile + Integer2D(i, j));
+                /*for(auto it = obj_list.begin(); it != obj_list.end(); ++it)
+                    if((*it)->sound_component())
+                        if((*it)->sound_component()->TryListen(tile_noise))
+                            (*it)->TryTarget(*/
+            }
+        }
+    }
 }
 
 const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {

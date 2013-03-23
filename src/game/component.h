@@ -17,6 +17,7 @@ class Damageable;
 class Energy;
 class Shape;
 class ShapeRectangular;
+class Sound;
 class Vision;
 
 // View components
