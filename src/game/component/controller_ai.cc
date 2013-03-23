@@ -23,9 +23,9 @@ action::time::TimeElapsed ControllerAi::Act() {
     Cast("see");
     for(int i = 0; i < map_.size(); ++i)
         for(int j = 0; j < map_[0].size(); ++j)
-            map_[i][j] = INT_MAX;
-    //for(auto it = owner_->vision_component()->visible_tiles().begin(); it != owner_->vision_component()->visible_tiles().end(); ++it)
-    //    map_[(*it).x][(*it).y] = INT_MAX;
+            map_[i][j] = 0;
+    for(auto it = owner_->vision_component()->visible_tiles().begin(); it != owner_->vision_component()->visible_tiles().end(); ++it)
+        map_[(*it).x][(*it).y] = INT_MAX;
     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it)
         map_[(*it).x][(*it).y] = 0;
 
@@ -86,11 +86,9 @@ void ControllerAi::NewMapSize(int x, int y) {
 
 bool ControllerAi::InMeleeRange(game::base::GameObject* target) {
     for(auto tait = target->shape_component()->occupying_tiles().begin(); tait != target->shape_component()->occupying_tiles().end(); ++tait)
-        for(auto cait = owner_->shape_component()->occupying_tiles().begin(); cait != owner_->shape_component()->occupying_tiles().end(); ++cait) {
-            printf("%f\n", ((*tait) - (*cait)).Length());
+        for(auto cait = owner_->shape_component()->occupying_tiles().begin(); cait != owner_->shape_component()->occupying_tiles().end(); ++cait)
             if( ((*tait) - (*cait)).Length() < 2 )
                 return true;
-        }
     return false;
 }
 
@@ -147,7 +145,7 @@ Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
                     walkable = false;
                     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it )
                         if( (*it) + path + offset == destination && (return_value == Integer2D(0, 0) ||
-                            (destination - step).Length() < (destination - return_value).Length() ) ) {
+                            (origin + step - destination).Length() < (origin + return_value - destination).Length() ) ) {
                                 return_value = step;
                                 return_distance = distance;
                         }
