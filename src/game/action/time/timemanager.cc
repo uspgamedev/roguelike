@@ -72,9 +72,10 @@ void TimeManager::time_has_passed(const TimeElapsed& time) {
 
     game::base::GameController* gc = game::base::GameController::reference();
 
-    for(std::vector<GameObject*>::iterator it = actors_.begin(); it != actors_.end() ; ++it)
-        (*it)->energy_component()->Regen(time);
-    SortStructure sorter(this);
+    //TODO: clean up old energy code
+    //for(std::vector<GameObject*>::iterator it = actors_.begin(); it != actors_.end() ; ++it)
+    //    (*it)->energy_component()->Regen(time);
+    SortStructure sorter = SortStructure(this);
     std::sort(actors_.begin(), actors_.end(), sorter);
 
     //gc->PassTime(time);

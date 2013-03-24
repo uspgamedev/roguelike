@@ -71,13 +71,15 @@ static Integer2D calculate_mov_step(const GameObject* caster, const Integer2D& d
 static SpendInfo spend_mov_step(GameObject* caster, const Integer2D& direction) {
     Energy* energy = caster->energy_component();
 
-    if( direction.NormOne() > 1 ) {
-        if(!energy->Spend(0.0,1.41,0.0))
+    //TODO: ignoring energy constraints since we'll change this system
+    /*if( direction.NormOne() > 1 ) {
+        if(!energy->Spend(0.0,1.41,0.0)) 
             return SpendInfo(false,0.0);
     } else {
         if(!energy->Spend(0.0,1.0,0.0))
             return SpendInfo(false,0.0);
-    }
+    }*/
+    energy->Spend(0.0,1.0,0.0);
     return SpendInfo(1.0,1.0);
 }
 

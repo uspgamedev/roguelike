@@ -57,7 +57,7 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
     return mean_a > mean_b || ( mean_a == mean_b && a < b );
 }
 
-GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(1), map_size_(50, 40),
+GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(0), map_size_(50, 40),
                                    hero_(nullptr), actors_(), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 }
