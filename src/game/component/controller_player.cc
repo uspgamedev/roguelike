@@ -44,12 +44,16 @@ ControllerPlayer::~ControllerPlayer() {}
 
 TimeElapsed ControllerPlayer::Act() {
     //double time_carry = super::Act(); //TODO: change the time system of the game
+    TimeElapsed total_time_elapsed = TimeElapsed(false);
     InputManager* input = INPUT_MANAGER();
 
     // Cursor
     Aim* aim = owner_->shape_component()->aim();
-    if (aim->IsActive())
-        return cursor(aim);
+    if (aim->IsActive()) {
+        total_time_elapsed = cursor(aim);
+        Cast("see");
+        return total_time_elapsed;
+    }
 
     if( input->KeyPressed(ugdk::input::K_f) ) {
         where_to_ = Integer2D(0,0);
@@ -64,7 +68,7 @@ TimeElapsed ControllerPlayer::Act() {
         return Cast("ouch");
     }
 
-    auto total_time_elapsed = Cast("step", movement());
+    total_time_elapsed = Cast("step", movement());
     Cast("see");
     return total_time_elapsed;
 }
