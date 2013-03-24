@@ -26,6 +26,13 @@ struct TimeElapsed {
 
     operator   bool() const { return elapsed; }
     operator double() const { return    time; }
+
+    TimeElapsed& operator+=(const TimeElapsed &rhs) {
+        if( (bool)rhs == false ) return *this;
+        this->elapsed = true;
+        this->time += (double)rhs;
+        return *this;
+    }
 };
 
 } // namespace time

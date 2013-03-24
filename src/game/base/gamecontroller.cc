@@ -3,7 +3,6 @@
 #include "game/base/gamecontroller.h"
 
 // External Dependencies
-#include <cassert>
 #include <cstdlib>
 #include <queue>
 #include <set>
@@ -58,7 +57,7 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
     return mean_a > mean_b || ( mean_a == mean_b && a < b );
 }
 
-GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(245), map_size_(50, 40),
+GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(1), map_size_(50, 40),
                                    hero_(nullptr), actors_(), time_since_beggining_(0.0) {
 	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
 }
@@ -69,10 +68,11 @@ GameController::~GameController() {
 }
 
 void GameController::Spawn() {
-    monster_spawn_counter_++;
-    if(monster_spawn_counter_ < 250)
+    //TODO: fix monster AI and spawning times so that this doesn't lag as much.
+    if(monster_spawn_counter_ > 0)
         return;
-    monster_spawn_counter_ = 0;
+    monster_spawn_counter_++;
+
     ObjectBuilder objb = ObjectBuilder();
     GameObject* new_enemy = objb.BuildEnemy();
     int x, y;
@@ -104,20 +104,18 @@ void GameController::BlackoutTiles() {
     needs_blackout_ = false;
 }
 
-void GameController::MarkVisible(GameObject* viewer, const Integer2D tile) {
-    if(viewer == hero_)
-        Tile(tile)->SetVisibility(true);
-    else
-        viewer->vision_component()->see_tile(tile);
+void GameController::ShowTileAsVisible(const Integer2D& tile) {
+    Tile(tile)->SetVisibility(true);
+}
+
+void GameController::ShowHeroTilesAsVisible() {
+    auto tiles_to_show = hero_->vision_component()->visible_tiles();
+    for(auto tt = tiles_to_show.begin(); tt != tiles_to_show.end(); ++tt)
+        ShowTileAsVisible(*tt);
 }
 
 void GameController::RemoveActor(GameObject* actor) {
     this->RemoveEntity(actor);
-    /*for(auto it = actors_.begin(); it != actors_.end(); it++)
-        if(*it == actor) {
-            actors_.erase(it);
-            return;
-        }*/
 }
 
 void GameController::PropagateSound(const Integer2D& origin, int noise_level) {
@@ -151,6 +149,7 @@ void GameController::PropagateSound(const Integer2D& origin, int noise_level) {
                 else
                     continue;
                 const std::set<GameObject*>& obj_list = ObjectsAt(tile + Integer2D(i, j));
+                //TODO: make work
                 /*for(auto it = obj_list.begin(); it != obj_list.end(); ++it)
                     if((*it)->sound_component())
                         if((*it)->sound_component()->TryListen(tile_noise))

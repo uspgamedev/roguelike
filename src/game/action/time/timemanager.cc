@@ -28,6 +28,8 @@ namespace time {
 
 void TimeManager::operator()(double) {
     GameController* gc = GameController::reference();
+
+    // Move GameController's actors_ to TimeManager's actors_
     std::vector<GameObject*> actors = gc->actors();
     if(!actors.empty()) {
         for(std::vector<GameObject*>::iterator it = actors.begin(); it != actors.end(); it++) {
@@ -37,13 +39,24 @@ void TimeManager::operator()(double) {
         gc->ClearActorsList();
     }
 
-    if( actors_.empty() ) {
+    // End the game if the hero is no more.
+    if( gc->hero() == nullptr ) {
         gc->Finish();
         return;
     }
 
+    // Give control to the next actor, and make it act
     GameObject* next = *(actors_.begin());
     TimeElapsed time_elapsed = next->controller_component()->Act();
+
+    //TODO: move these to a better place
+    if(next == gc->hero()) {
+        gc->BlackoutTiles();
+        gc->AdjustCamera();
+        gc->ShowHeroTilesAsVisible();
+    }
+
+    // Tidy up if time has elapsed.
     if(time_elapsed.elapsed) {
         std::vector<GameObject*>::iterator nend = std::remove_if(actors_.begin(), actors_.end(), IsDead);
         actors_.erase(nend, actors_.end());
@@ -64,8 +77,7 @@ void TimeManager::time_has_passed(const TimeElapsed& time) {
     SortStructure sorter(this);
     std::sort(actors_.begin(), actors_.end(), sorter);
 
-    gc->PassTime(time);
-    gc->AdjustCamera(); //TODO: move to a better place
+    //gc->PassTime(time);
 }
 
 } // namespace time

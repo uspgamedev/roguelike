@@ -24,23 +24,22 @@ typedef std::set< base::GameObject*, bool (*)(const base::GameObject*, const bas
 
 class TimeManager : public ugdk::action::Task {
   typedef ugdk::action::Task super;
-
   struct SortStructure {
-    TimeManager* manager_;
-    SortStructure(TimeManager* manager) { manager_ = manager; };
+      TimeManager* manager_;
+      SortStructure(TimeManager* manager) { manager_ = manager; };
 
-    bool operator()(base::GameObject* a, base::GameObject* b) {
-        if (manager_->actors_time_[a] < manager_->actors_time_[b] )
-            return true;
-        else if (manager_->actors_time_[a] > manager_->actors_time_[b])
-            return false;
-        else {
-            double mean_a = a->energy_component()->Mean();
-            double mean_b = b->energy_component()->Mean();
-            return mean_a > mean_b || ( mean_a == mean_b && a < b );
-        }
-    }
-};
+      bool operator()(base::GameObject* a, base::GameObject* b) {
+          if (manager_->actors_time_[a] < manager_->actors_time_[b] )
+              return true;
+          else if (manager_->actors_time_[a] > manager_->actors_time_[b])
+              return false;
+          else {
+              double mean_a = a->energy_component()->Mean();
+              double mean_b = b->energy_component()->Mean();
+              return mean_a > mean_b || ( mean_a == mean_b && a < b );
+          }
+      }
+  };
 
   public:
     TimeManager() : current_tick_(0) {}

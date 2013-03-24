@@ -2,6 +2,7 @@
 #include "game/component/shape_rectangular.h"
 
 // External Dependencies
+#include <cassert>
 #include <list>
 #include <limits> //TODO: remove.
 #include <set>

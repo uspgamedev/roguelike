@@ -5,9 +5,8 @@
 #include <ugdk/action/scene.h>
 
 // External Dependencies
-#include <cassert>
 #include <list>                  // template class, also needed for push_back(-)
-#include <set>
+#include <set>                   // template class, needed for ObjectsAt(-)
 #include <vector>                // template class, also needed for size(-)
 #include <ugdk/math/integer2D.h> // needed for Tile
 #include <ugdk/math/vector2D.h>  // needed for map_size_
@@ -51,19 +50,19 @@ class GameController : public ugdk::action::Scene {
         return Tile(coords.x, coords.y);
     }
 
-    void AddToSpawnCounter() { monster_spawn_counter_++; }
-
     const std::set<GameObject*>& ObjectsAt(const ugdk::math::Integer2D& coords);
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
     
     void AdjustCamera();
     void Spawn();
     void ClearActorsList() { actors_.clear(); }
+    void DeleteAllActors();
     void RequireBlackout() { needs_blackout_ = true; }
     bool TilesNeededBlackout(GameObject* owner);
     void BlackoutTiles();
-    void MarkVisible(GameObject*, const ugdk::math::Integer2D tile);
-    void PassTime(double dt) { time_since_beggining_ += dt; }
+    void ShowTileAsVisible(const ugdk::math::Integer2D& tile);
+    void ShowHeroTilesAsVisible();
+    //void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);
     void PropagateSound(const ugdk::math::Integer2D& origin, int noise_level);
 

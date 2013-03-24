@@ -33,11 +33,9 @@ class Vision : public ComponentBase {
     const std::set<int>& relevant_octants() const { return relevant_octants_; }
 
     void See();
+    void ClearVisibleTiles() { visible_tiles_.clear(); }
 
     void set_dir(const ugdk::math::Integer2D& dir) { dir_ = dir; }
-
-    void clean_visible_tiles() { visible_tiles_.clear(); }
-    void see_tile(ugdk::math::Integer2D tile) { visible_tiles_.insert(tile); }
     std::set<ugdk::math::Integer2D>& visible_tiles() { return visible_tiles_; }
 
   private:

@@ -43,9 +43,8 @@ ControllerPlayer::ControllerPlayer(GameObject* owner)
 ControllerPlayer::~ControllerPlayer() {}
 
 TimeElapsed ControllerPlayer::Act() {
-    //double time_carry = super::Act(); //TODO: herp.
-    Cast("see");
-
+    //double time_carry = super::Act(); //TODO: change the time system of the game
+    TimeElapsed total_time_elapsed = TimeElapsed(false);
     InputManager* input = INPUT_MANAGER();
 
     // Cursor
@@ -60,11 +59,14 @@ TimeElapsed ControllerPlayer::Act() {
         return false;
     }
 
-    // Derp stuff
-    if( input->KeyPressed(ugdk::input::K_z) )
-        return Cast("ouch");
+    // Derp stuff //TODO: Derp. Remove.
+    if( input->KeyPressed(ugdk::input::K_z) ) {
+        total_time_elapsed += Cast("see");
+        return total_time_elapsed += Cast("ouch");
+    }
 
-    return Cast("step", movement());
+    total_time_elapsed += Cast("step", movement());
+    return total_time_elapsed += Cast("see");
 }
 
 TimeElapsed ControllerPlayer::cursor(Aim* aim) {
@@ -118,11 +120,6 @@ Integer2D ControllerPlayer::movement() {
 
     if( input->KeyReleased(ugdk::input::K_RIGHT) || input->KeyReleased(ugdk::input::K_LEFT) ||
         input->KeyReleased(ugdk::input::K_UP)    || input->KeyReleased(ugdk::input::K_DOWN) ) {
-        
-        time_held_.Restart(DELAY_HOLD);
-        time_held_.Pause();
-        hold_tick_.Restart(HOLD_TICK_INTERVAL);
-        hold_tick_.Pause();
 
         Integer2D ret = where_to_;
         where_to_ = Integer2D(0, 0);
@@ -130,14 +127,23 @@ Integer2D ControllerPlayer::movement() {
         return ret;
     }
     if ( ( input->KeyDown(ugdk::input::K_RIGHT) || input->KeyDown(ugdk::input::K_LEFT) ||
-           input->KeyDown(ugdk::input::K_UP)    || input->KeyDown(ugdk::input::K_DOWN) )
-         && time_held_.Expired() && hold_tick_.Expired() ) {
+           input->KeyDown(ugdk::input::K_UP)    || input->KeyDown(ugdk::input::K_DOWN) ) ) {
 
+        if( time_held_.Expired() && hold_tick_.Expired() ) {
+            hold_tick_.Restart(HOLD_TICK_INTERVAL);
+            return where_to_;
+        }
+
+    } else {
+        time_held_.Restart(DELAY_HOLD);
+        time_held_.Pause();
         hold_tick_.Restart(HOLD_TICK_INTERVAL);
-        return where_to_;
+        hold_tick_.Pause();
+
+        where_to_ = Integer2D(0,0);
     }
 
-    return Integer2D(0, 0);
+    return Integer2D(0,0);
 }
 
 
