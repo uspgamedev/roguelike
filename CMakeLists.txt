@@ -10,6 +10,9 @@ SET(roguelike_FULL_VERSION "${roguelike_VERSION_MAJOR}.${roguelike_VERSION_MINOR
 
 MESSAGE("== Roguelike -- version ${roguelike_FULL_VERSION} ==")
 
+IF(MSVC AND (CMAKE_SIZEOF_VOID_P EQUAL 8))
+	set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
+ENDIF()
 
 #Necessary for a Mac Universal Binary
 IF(UNIVERSAL)
