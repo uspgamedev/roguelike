@@ -57,12 +57,15 @@ void TimeManager::operator()(double) {
 
 void TimeManager::time_has_passed(const TimeElapsed& time) {
 
+    game::base::GameController* gc = game::base::GameController::reference();
+
     for(std::vector<GameObject*>::iterator it = actors_.begin(); it != actors_.end() ; ++it)
         (*it)->energy_component()->Regen(time);
     SortStructure sorter(this);
     std::sort(actors_.begin(), actors_.end(), sorter);
 
-    game::base::GameController::reference()->PassTime(time);
+    gc->PassTime(time);
+    gc->AdjustCamera(); //TODO: move to a better place
 }
 
 } // namespace time

@@ -73,7 +73,7 @@ void GameController::Spawn() {
     if(monster_spawn_counter_ < 250)
         return;
     monster_spawn_counter_ = 0;
-    ObjectBuilder& objb = ObjectBuilder();
+    ObjectBuilder objb = ObjectBuilder();
     GameObject* new_enemy = objb.BuildEnemy();
     int x, y;
     do {

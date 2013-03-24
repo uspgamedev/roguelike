@@ -63,9 +63,6 @@ TimeElapsed ControllerPlayer::Act() {
     // Derp stuff
     if( input->KeyPressed(ugdk::input::K_z) )
         return Cast("ouch");
-    
-    // Camera
-    //gc->AdjustCamera();
 
     return Cast("step", movement());
 }

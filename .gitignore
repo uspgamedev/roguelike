@@ -41,3 +41,5 @@ cmake_install.cmake
 /src/MinSizeRel
 Makefile
 roguelike
+Win32
+/data/scripts/new_level.lua

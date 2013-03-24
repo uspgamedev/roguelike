@@ -39,11 +39,10 @@ int main(int argc, char **argv) {
 	engine->video_manager()->SetVSync(true);
     engine->video_manager()->SetLightSystem(true);
 
-    srand ( time(NULL) );
+    srand ( (int)time(NULL) );
     ugdk::action::Scene* main_scene = game::base::GameController::reference();
     game::base::LevelManager* lm = new game::base::LevelManager();
     lm->GenerateFromFile();
-    //LevelLoader();
 
     engine->PushScene(main_scene);
     engine->Run();

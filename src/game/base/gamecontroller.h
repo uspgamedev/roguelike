@@ -55,7 +55,8 @@ class GameController : public ugdk::action::Scene {
 
     const std::set<GameObject*>& ObjectsAt(const ugdk::math::Integer2D& coords);
     const std::set<GameObject*>& ObjectsAt(int x, int y) { return ObjectsAt(ugdk::math::Integer2D(x,y)); }
-
+    
+    void AdjustCamera();
     void Spawn();
     void ClearActorsList() { actors_.clear(); }
     void RequireBlackout() { needs_blackout_ = true; }
@@ -76,10 +77,8 @@ class GameController : public ugdk::action::Scene {
     std::vector<base::GameObject*> actors() { return actors_; }
     base::GameObject* hero() { return hero_; }
 
-
   private:
     GameController();
-    void AdjustCamera();
     
     int current_tick_;
     int monster_spawn_counter_;

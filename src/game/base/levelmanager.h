@@ -2,16 +2,16 @@
 #define ROGUELIKE_BASE_LEVELMANAGER_H_
 
 // Inheritance
-// none
+// (none)
 
 // External Dependencies
-// none
+// (none)
 
 // Internal Dependencies
-#include "game/base/gamecontroller.h"
+// (none)
 
 // Forward Declarations
-#include "game/base.h"
+// (none)
 
 namespace game {
 namespace base {
@@ -19,15 +19,11 @@ namespace base {
 class LevelManager {
 
   public:
-
     LevelManager();
     ~LevelManager();
 
     void GenerateFromFile();
     void GenerateCaveLevel();
-
-  private:
-    GameController* gc;
 
 };
 

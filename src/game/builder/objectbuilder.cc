@@ -58,7 +58,7 @@ GameObject* ObjectBuilder::BuildHero() {
 
     Node* light_node = new Node();
     Light* light = new Light();
-    light->set_dimension(Vector2D(400.0,400.0));
+    light->set_dimension(Vector2D(1200.0,1200.0));
     light_node->set_light(light);
     light_node->modifier()->set_offset(Vector2D(static_cast<GraphicRectangular*>(hero->graphic_component())->rect_size().x/2));
     

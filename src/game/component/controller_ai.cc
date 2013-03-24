@@ -15,11 +15,18 @@
 
 // Using
 using ugdk::math::Integer2D;
+using game::action::time::TimeElapsed;
+using game::base::GameController;
 
 namespace game {
 namespace component {
 
-action::time::TimeElapsed ControllerAi::Act() {
+ControllerAi::ControllerAi(game::base::GameObject* owner) : super(owner) {}
+ControllerAi::~ControllerAi() {}
+
+TimeElapsed ControllerAi::Act() {
+    GameController* gc = GameController::reference();
+
     Cast("see");
     for(int i = 0; i < map_.size(); ++i)
         for(int j = 0; j < map_[0].size(); ++j)
@@ -29,7 +36,6 @@ action::time::TimeElapsed ControllerAi::Act() {
     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it)
         map_[(*it).x][(*it).y] = 0;
 
-    game::base::GameController* gc = game::base::GameController::reference();
     Integer2D hero_pos = Integer2D(-1, -1);
     Integer2D this_pos = (*owner_->shape_component()->occupying_tiles().begin());
 
@@ -41,7 +47,7 @@ action::time::TimeElapsed ControllerAi::Act() {
     if(hero_pos == Integer2D(-1, -1))
         return Cast("idle", owner_);
     else
-        target_ = game::base::GameThing(hero_pos);
+        target_ = gc->Tile(hero_pos);
 
     if(InMeleeRange(gc->hero()))
         return Cast("melee", gc->hero());
@@ -93,13 +99,13 @@ bool ControllerAi::InMeleeRange(game::base::GameObject* target) {
 }
 
 void ControllerAi::HearSound(int intensity) {
-    if (target_.is_obj() ) {
-
-    }
+    //TODO: implement
 }
 
 Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
-    //WARNING: This shit only works with Rectangular Shapes.
+    GameController* gc = GameController::reference();
+
+    //TODO: WARNING: This shit only works with Rectangular Shapes.
     bool walkable = false;
     Integer2D return_value = Integer2D(0, 0);
     int return_distance = 0;

@@ -23,10 +23,12 @@ namespace component {
 
 class ControllerAi : public Controller {
   typedef Controller super;
+  // lacks operator=
+  ControllerAi& operator=(const ControllerAi&);
 
   public:
-      ControllerAi(game::base::GameObject* owner) : super(owner), gc(game::base::GameController::reference()), target_(game::base::GameThing()) {}
-    ~ControllerAi() {}
+    ControllerAi(game::base::GameObject* owner);
+    ~ControllerAi();
 
     action::time::TimeElapsed Act();
     void NewMapSize(int x, int y);
@@ -39,10 +41,8 @@ class ControllerAi : public Controller {
     std::vector< std::vector<int> > map_;
     std::vector< std::vector<int> > clean_map_;
     std::deque<ugdk::math::Integer2D> tile_queue_;
-    game::base::GameThing& target_;
+    game::base::GameTile* target_;
     int hostility_level_;
-    game::base::GameController* gc;
-
 };
 
 } // namespace component

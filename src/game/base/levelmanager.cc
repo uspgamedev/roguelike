@@ -13,6 +13,8 @@
 #include <ugdk/math/vector2D.h>
 
 // Internal Dependencies
+#include "game/action/time/timemanager.h"
+#include "game/base/gamecontroller.h"
 #include "game/base/gametile.h"
 #include "game/base/gameobject.h"
 #include "game/builder/objectbuilder.h"
@@ -20,26 +22,27 @@
 
 // Using
 using std::endl;
+using std::ofstream;
 using std::string;
 using std::vector;
 using ugdk::Vector2D;
 using ugdk::math::Integer2D;
 using ugdk::script::VirtualObj;
+using game::action::time::TimeManager;
+using game::base::GameController;
 using game::builder::ObjectBuilder;
 
 namespace game {
 namespace base {
 
-LevelManager::LevelManager(): gc(game::base::GameController::reference()) {
-}
-
-LevelManager::~LevelManager() {
-}
+LevelManager::LevelManager() {}
+LevelManager::~LevelManager() {}
 
 /* Taken from:
    http://roguebasin.roguelikedevelopment.org/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels */
 void LevelManager::GenerateFromFile() {
-    
+    GameController* gc = GameController::reference();
+
     GenerateCaveLevel();
     VirtualObj level_data = SCRIPT_MANAGER()->LoadModule("new_level");
     if(!level_data) return;
@@ -52,7 +55,7 @@ void LevelManager::GenerateFromFile() {
     
     ObjectBuilder builder = ObjectBuilder();
 	Vector2D pos = Vector2D();
-    std::vector< std::vector<GameTile*> > tiles;
+    vector< vector<GameTile*> > tiles;
     
     for(int y = 0; y < height; ++y) {
 		vector<GameTile*> vect;
@@ -90,7 +93,7 @@ void LevelManager::GenerateFromFile() {
     GameObject* hero;
     gc->set_hero(hero = builder.BuildHero());
     gc->AddGameObject(hero);
-    gc->AddTask(new action::time::TimeManager());
+    gc->AddTask(new TimeManager());
     int x, y;
     do {
         x = rand()%width;
@@ -101,11 +104,11 @@ void LevelManager::GenerateFromFile() {
 }
 
 void LevelManager::GenerateCaveLevel() {
-    char map[60][100];
-    char temp_map[60][100];
+    char map[60][60];
+    char temp_map[60][60];
 
     int width = 60;
-    int height = 100;
+    int height = 60;
     int walls_nearby = 0;
 
     // Part 1 of the generation
@@ -197,7 +200,7 @@ void LevelManager::GenerateCaveLevel() {
         printf("\n");
     }
 
-    std::ofstream level_file;
+    ofstream level_file;
     level_file.open("data/scripts/new_level.lua");
     level_file << "height = " << height << endl;
     level_file << "width = " << width << endl;

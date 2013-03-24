@@ -15,6 +15,7 @@
 #include "game/component/damageable.h"
 #include "game/component/energy.h"
 #include "game/component/shape.h"
+#include "game/component/sound.h"
 #include "game/component/graphic.h"
 
 // Defines
@@ -32,7 +33,7 @@ using ugdk::action::Scene;
 using ugdk::math::Integer2D;
 using game::action::skill::GameTargets;
 using game::action::skill::SkillManager;
-FORALL_COMPONENTS(USING_DEFINITION) // note lack of ";"
+FORALL_COMPONENTS(USING_DEFINITION) // ;
 
 namespace game {
 namespace base {
@@ -59,8 +60,6 @@ void GameObject::Update(double dt) {
 void GameObject::Die() {
     GameController* gc = base::GameController::reference();
 
-    //if(this->controller_component())
-    //    gc->RemoveActor(this);
     if(die_) // if die_ is a valid tr1::function
         die_();
     to_be_removed_ = true;
