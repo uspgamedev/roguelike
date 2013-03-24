@@ -16,13 +16,14 @@
 #include <ugdk/script/scriptmanager.h>
 
 // Internal Dependencies
-#include "game/component/vision.h"
 #include "game/base/gameobject.h"
 #include "game/base/gametile.h"
 #include "game/builder/objectbuilder.h"
 #include "game/component/energy.h"
+#include "game/component/graphic.h"
 #include "game/component/shape.h"
 #include "game/component/sound.h"
+#include "game/component/vision.h"
 
 // Using
 using std::list;
@@ -34,6 +35,7 @@ using ugdk::math::Integer2D;
 using ugdk::script::VirtualObj;
 using ugdk::Vector2D;
 using game::builder::ObjectBuilder;
+using game::component::Graphic;
 
 namespace game {
 namespace base {
@@ -68,7 +70,6 @@ GameController::~GameController() {
 }
 
 void GameController::Spawn() {
-
     monster_spawn_counter_++;
     if(monster_spawn_counter_ < 250)
         return;
@@ -99,17 +100,30 @@ bool GameController::TilesNeededBlackout(GameObject* owner) {
 }
 
 void GameController::BlackoutTiles() {
-    for(auto j = tiles_.begin(); j != tiles_.end(); ++j)
-        for(auto i = (*j).begin(); i != (*j).end(); ++i)
-            (*i)->SetVisibility(false);
+    for(auto jt = tiles_.begin(); jt != tiles_.end(); ++jt)
+        for(auto it = (*jt).begin(); it != (*jt).end(); ++it) {
+            (*it)->SetVisibility(false);
+            for(auto ot = (*it)->objects_here().begin(); ot != (*it)->objects_here().end(); ++ot) {
+                Graphic* ot_graphic = (*ot)->graphic_component();
+                if(ot_graphic != nullptr) 
+                    ot_graphic->SetVisibility(false);
+            }
+        }
     needs_blackout_ = false;
 }
 
-void GameController::ShowTileAsVisible(const Integer2D& tile) {
-    Tile(tile)->SetVisibility(true);
+void GameController::ShowTileAsVisible(const Integer2D& tile_coords) {
+    GameTile* tile = Tile(tile_coords);
+
+    tile->SetVisibility(true);
+    for(auto ot = tile->objects_here().begin(); ot != tile->objects_here().end(); ++ot) {
+        Graphic* ot_graphic = (*ot)->graphic_component();
+        if(ot_graphic != nullptr) 
+            ot_graphic->SetVisibility(true);
+    }
 }
 
-void GameController::ShowHeroTilesAsVisible() {
+void GameController::LightHeroVisibleTiles() {
     auto tiles_to_show = hero_->vision_component()->visible_tiles();
     for(auto tt = tiles_to_show.begin(); tt != tiles_to_show.end(); ++tt)
         ShowTileAsVisible(*tt);

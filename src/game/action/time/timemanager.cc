@@ -14,6 +14,7 @@
 
 // Using
 using std::set;
+using std::sort;
 using game::base::GameController;
 using game::base::GameObject;
 using game::component::Energy;
@@ -53,30 +54,28 @@ void TimeManager::operator()(double) {
     if(next == gc->hero()) {
         gc->BlackoutTiles();
         gc->AdjustCamera();
-        gc->ShowHeroTilesAsVisible();
+        gc->LightHeroVisibleTiles();
     }
 
     // Tidy up if time has elapsed.
-    if(time_elapsed.elapsed) {
+    if((bool)time_elapsed && (double)time_elapsed > 0.0 ) { // Change this to != 0.0 if you want to allow time_elapsed < 0.0
         std::vector<GameObject*>::iterator nend = std::remove_if(actors_.begin(), actors_.end(), IsDead);
         actors_.erase(nend, actors_.end());
         current_tick_++;
-        assert( static_cast<double>(time_elapsed) >= 0.0 ); // Remove this if you want to allow time_elapsed < 0.0
-        GameController::reference()->Spawn();
+        gc->Spawn();
         time_has_passed(time_elapsed);
         actors_time_[next] = current_tick_ + 5;
     }
 }
 
 void TimeManager::time_has_passed(const TimeElapsed& time) {
-
-    game::base::GameController* gc = game::base::GameController::reference();
-
     //TODO: clean up old energy code
+    //GameController* gc = GameController::reference();
+
     //for(std::vector<GameObject*>::iterator it = actors_.begin(); it != actors_.end() ; ++it)
     //    (*it)->energy_component()->Regen(time);
     SortStructure sorter = SortStructure(this);
-    std::sort(actors_.begin(), actors_.end(), sorter);
+    sort(actors_.begin(), actors_.end(), sorter);
 
     //gc->PassTime(time);
 }

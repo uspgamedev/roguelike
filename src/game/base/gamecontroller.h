@@ -61,7 +61,7 @@ class GameController : public ugdk::action::Scene {
     bool TilesNeededBlackout(GameObject* owner);
     void BlackoutTiles();
     void ShowTileAsVisible(const ugdk::math::Integer2D& tile);
-    void ShowHeroTilesAsVisible();
+    void LightHeroVisibleTiles();
     //void PassTime(double dt) { time_since_beggining_ += dt; }
     void RemoveActor(GameObject* actor);
     void PropagateSound(const ugdk::math::Integer2D& origin, int noise_level);

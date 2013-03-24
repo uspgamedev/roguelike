@@ -21,7 +21,7 @@ static bool validate_self_lightvision(const GameObject* caster) {
 }
 
 static SpendInfo spend_self_lightvision(GameObject* caster) {
-    return SpendInfo(0.0,1.0);
+    return SpendInfo(1.0,1.0);
 }
 
 static void act_self_lightvision(GameObject* caster, const Efficiency& power) {
