@@ -40,15 +40,19 @@ void TimeManager::operator()(double) {
         gc->ClearActorsList();
     }
 
+    // Give control to the next actor, and make it act
+    GameObject* next = *(actors_.begin());
+    TimeElapsed time_elapsed = next->controller_component()->Act();
+
     // End the game if the hero is no more.
     if( gc->hero() == nullptr ) {
         gc->Finish();
         return;
     }
-
-    // Give control to the next actor, and make it act
-    GameObject* next = *(actors_.begin());
-    TimeElapsed time_elapsed = next->controller_component()->Act();
+    
+    // Removing dead stuff
+    std::vector<GameObject*>::iterator nend = std::remove_if(actors_.begin(), actors_.end(), IsDead);
+    actors_.erase(nend, actors_.end());
 
     //TODO: move these to a better place
     if(next == gc->hero()) {
@@ -57,10 +61,8 @@ void TimeManager::operator()(double) {
         gc->LightHeroVisibleTiles();
     }
 
-    // Tidy up if time has elapsed.
-    if((bool)time_elapsed && (double)time_elapsed > 0.0 ) { // Change this to != 0.0 if you want to allow time_elapsed < 0.0
-        std::vector<GameObject*>::iterator nend = std::remove_if(actors_.begin(), actors_.end(), IsDead);
-        actors_.erase(nend, actors_.end());
+    //TODO: this doesn't make much sense...
+    if((bool)time_elapsed && (double)time_elapsed > 0.0 ) {
         current_tick_++;
         gc->Spawn();
         time_has_passed(time_elapsed);

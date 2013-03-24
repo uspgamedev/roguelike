@@ -50,7 +50,7 @@ TimeElapsed ControllerPlayer::Act() {
     // Cursor
     Aim* aim = owner_->shape_component()->aim();
     if (aim->IsActive()) {
-        total_time_elapsed = cursor(aim);
+        total_time_elapsed += cursor(aim);
         Cast("see");
         return total_time_elapsed;
     }
@@ -64,11 +64,12 @@ TimeElapsed ControllerPlayer::Act() {
 
     // Derp stuff //TODO: Derp. Remove.
     if( input->KeyPressed(ugdk::input::K_z) ) {
+        total_time_elapsed += Cast("ouch");
         Cast("see");
-        return Cast("ouch");
+        return total_time_elapsed;
     }
 
-    total_time_elapsed = Cast("step", movement());
+    total_time_elapsed += Cast("step", movement());
     Cast("see");
     return total_time_elapsed;
 }
