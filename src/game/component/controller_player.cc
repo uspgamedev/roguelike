@@ -44,7 +44,6 @@ ControllerPlayer::~ControllerPlayer() {}
 
 TimeElapsed ControllerPlayer::Act() {
     //double time_carry = super::Act(); //TODO: change the time system of the game
-    TimeElapsed total_time_elapsed = TimeElapsed(false);
     InputManager* input = INPUT_MANAGER();
 
     // Cursor
@@ -61,12 +60,13 @@ TimeElapsed ControllerPlayer::Act() {
 
     // Derp stuff //TODO: Derp. Remove.
     if( input->KeyPressed(ugdk::input::K_z) ) {
-        total_time_elapsed += Cast("see");
-        return total_time_elapsed += Cast("ouch");
+        Cast("see");
+        return Cast("ouch");
     }
 
-    total_time_elapsed += Cast("step", movement());
-    return total_time_elapsed += Cast("see");
+    auto total_time_elapsed = Cast("step", movement());
+    Cast("see");
+    return total_time_elapsed;
 }
 
 TimeElapsed ControllerPlayer::cursor(Aim* aim) {

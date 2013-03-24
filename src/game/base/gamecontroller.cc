@@ -68,10 +68,11 @@ GameController::~GameController() {
 }
 
 void GameController::Spawn() {
-    //TODO: fix monster AI and spawning times so that this doesn't lag as much.
-    if(monster_spawn_counter_ > 0)
-        return;
+
     monster_spawn_counter_++;
+    if(monster_spawn_counter_ < 250)
+        return;
+    monster_spawn_counter_ = 0;
 
     ObjectBuilder objb = ObjectBuilder();
     GameObject* new_enemy = objb.BuildEnemy();
