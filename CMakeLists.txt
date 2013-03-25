@@ -5,8 +5,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(roguelike CXX C)
 set(roguelike_VERSION_MAJOR 0)
 set(roguelike_VERSION_MINOR 0)
-set(roguelike_VERSION_SUBMINOR 0)
-SET(roguelike_FULL_VERSION "${roguelike_VERSION_MAJOR}.${roguelike_VERSION_MINOR}.${roguelike_VERSION_SUBMINOR} Alpha")
+set(roguelike_VERSION_PATCH 0)
+SET(roguelike_FULL_VERSION "${roguelike_VERSION_MAJOR}.${roguelike_VERSION_MINOR}.${roguelike_VERSION_PATCH} Alpha")
 
 MESSAGE("== Roguelike -- version ${roguelike_FULL_VERSION} ==")
 
@@ -30,7 +30,7 @@ ENDIF()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
 # FindUGDK
-option (USE_EMBBEDED_UGDK "" OFF)
+#option (USE_EMBBEDED_UGDK "" OFF)
 find_package(UGDK REQUIRED)
 include_directories(${UGDK_INCLUDE_DIRS})
 set(UGDK_EXTERNAL_LIBRARIES ${UGDK_LIBRARIES})
@@ -67,7 +67,6 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 add_executable(roguelike ${GAME_SRCS})
 target_link_libraries(roguelike ${UGDK_EXTERNAL_LIBRARIES})
 
-
 set(GAME_LOCAL_DIR "./data")
 
 CONFIGURE_FILE(
@@ -87,23 +86,17 @@ if(WIN32)
 		COMMAND 
 		COMMENT "Removing all libs and dlls from the project's root directory.")
 	
-	foreach(it ${dlls})
+	foreach(it ${dlls} ${libs})
 		add_custom_command(TARGET roguelike POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_SOURCE_DIR}/${it}")
 	endforeach(it ${dlls})
-		
-	foreach(it ${libs})
-		add_custom_command(TARGET roguelike POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_SOURCE_DIR}/${it}")
-	endforeach(it ${libs})
 
 	IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		add_custom_command(TARGET roguelike POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory "./lib64/" "./"
-			COMMENT "Copying x64-relevant libs to the project's root directory.")
+		set(LIBS_SOURCE "./lib64/")
 	ELSE()
-		add_custom_command(TARGET roguelike POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory "./lib/" "./"
-			COMMENT "Copying x86-relevant libs to the project's root directory.")
+		set(LIBS_SOURCE "./lib/")
 	ENDIF()
+	add_custom_command(TARGET roguelike POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_SOURCE} "./"
+		COMMENT "Copying libs from ${LIBS_SOURCE} to the project's root directory.")
 endif(WIN32)
