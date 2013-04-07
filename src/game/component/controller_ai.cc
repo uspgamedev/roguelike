@@ -4,6 +4,7 @@
 // External Dependencies
 #include <cmath>
 #include <cstdlib>
+#include <vector>
 #include "ugdk/math/integer2D.h"
 
 // Internal Dependencies
@@ -18,6 +19,23 @@ using ugdk::math::Integer2D;
 using game::action::time::TimeElapsed;
 using game::base::GameController;
 
+struct PathElement {
+    Integer2D offset_;
+    Integer2D step_;
+    double walked_distance_;
+    double distance_to_target_;
+} path;
+
+class ElementComparator {
+    public:
+        ElementComparator() {}
+        bool operator()(const PathElement& lhs, const PathElement& rhs) {
+            if (lhs.walked_distance_ + lhs.distance_to_target_ > rhs.walked_distance_ + rhs.distance_to_target_)
+                return true;
+            return false;
+        }
+};
+
 namespace game {
 namespace component {
 
@@ -30,7 +48,7 @@ TimeElapsed ControllerAi::Act() {
     Cast("see");
     for(int i = 0; i < map_.size(); ++i)
         for(int j = 0; j < map_[0].size(); ++j)
-            map_[i][j] = 0;
+            map_[i][j] = INT_MAX;
     for(auto it = owner_->vision_component()->visible_tiles().begin(); it != owner_->vision_component()->visible_tiles().end(); ++it)
         map_[(*it).x][(*it).y] = INT_MAX;
     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it)
@@ -108,30 +126,29 @@ Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
     //TODO: WARNING: This shit only works with Rectangular Shapes.
     bool walkable = false;
     Integer2D return_value = Integer2D(0, 0);
-    int return_distance = 0;
-    std::queue<Integer2D> paths;
-    std::queue<Integer2D> steps;
-    std::queue<int>       distances;
-
+    double return_distance = 0.0;
+    
     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it )
         if( (*it) == destination )
             return Integer2D(0, 0);
 
-    paths.push(Integer2D(0, 0));
-    steps.push(Integer2D(0, 0));
-    distances.push(1);
+    std::priority_queue<PathElement, std::vector<PathElement>, ElementComparator> elements;
+    PathElement starting_point;
+    starting_point.step_ = Integer2D(0, 0);
+    starting_point.offset_ = Integer2D(0, 0);
+    starting_point.walked_distance_ = 0;
+    starting_point.distance_to_target_ = (destination - origin).Length();
+    elements.push(starting_point);
 
     do {
-        Integer2D path = paths.front();
-        Integer2D step     = steps.front();
-        int       distance = distances.front();
-        paths.pop();
-        steps.pop();
-        distances.pop();
+        PathElement element = elements.top();
+        Integer2D path   = element.offset_;
+        Integer2D step   = element.step_;
+        double distance  = element.walked_distance_;
 
-        if( (return_value.x != 0 || return_value.x != 0) && distance > return_distance )
-            return return_value;
-
+        printf("-- %f, %f --\n", element.walked_distance_, element.distance_to_target_);
+        
+        distance += 1;
         for(int i = -1; i < 2; i++)
             for(int j = -1; j < 2; j++) {
                 //check if is an actual step
@@ -149,23 +166,25 @@ Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
                     }
                 if(walkable) {
                     walkable = false;
-                    for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it )
-                        if( (*it) + path + offset == destination && (return_value == Integer2D(0, 0) ||
-                            (origin + step - destination).Length() < (origin + return_value - destination).Length() ) ) {
-                                return_value = step;
-                                return_distance = distance;
+                    for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it ) 
+                        if( (*it) + path + offset == destination) {
+                            printf("Step: %d, %d\n\n", offset.x, offset.y);
+                            return step;
                         }
-                    paths.push(path + offset);
-                    if(step == Integer2D(0, 0))
-                        steps.push(offset);
-                    else
-                        steps.push(step);
-                    distances.push(distance + 1);
+                    PathElement new_element = element;
+                    if( new_element.step_ == Integer2D(0, 0) )
+                        new_element.step_ = offset;
+                    new_element.distance_to_target_ = (destination - (origin + path + offset)).Length();
+                    new_element.walked_distance_    = distance;
+                    new_element.offset_ = element.offset_ + offset;
+                    elements.push(new_element);
                 }
             }
-    } while(!paths.empty());
-
-    return return_value;
+        elements.pop();
+    } while(!elements.empty());
+    
+    printf("No step.\n\n");
+    return Integer2D(0, 0);
 }
 
 /*static double getRandomNumber(double min, double max) {

@@ -7,6 +7,7 @@
 
 // External Dependencies
 #include <vector>
+#include <list>
 #include <deque>
 #include <queue>
 #include <climits>
@@ -38,8 +39,8 @@ class ControllerAi : public Controller {
     void HearSound(int intensity);
 
   private:
-    std::vector< std::vector<int> > map_;
-    std::vector< std::vector<int> > clean_map_;
+    std::vector< std::vector<double> > map_;
+    std::vector< std::vector<double> > clean_map_;
     std::deque<ugdk::math::Integer2D> tile_queue_;
     game::base::GameTile* target_;
     int hostility_level_;
