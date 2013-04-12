@@ -46,14 +46,7 @@ TimeElapsed ControllerAi::Act() {
     GameController* gc = GameController::reference();
 
     Cast("see");
-    for(int i = 0; i < map_.size(); ++i)
-        for(int j = 0; j < map_[0].size(); ++j)
-            map_[i][j] = INT_MAX;
-    for(auto it = owner_->vision_component()->visible_tiles().begin(); it != owner_->vision_component()->visible_tiles().end(); ++it)
-        map_[(*it).x][(*it).y] = INT_MAX;
-    for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it)
-        map_[(*it).x][(*it).y] = 0;
-
+    
     Integer2D hero_pos = Integer2D(-1, -1);
     Integer2D this_pos = (*owner_->shape_component()->occupying_tiles().begin());
 
@@ -121,6 +114,14 @@ void ControllerAi::HearSound(int intensity) {
 }
 
 Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
+    for(int i = 0; i < map_.size(); ++i)
+        for(int j = 0; j < map_[0].size(); ++j)
+            map_[i][j] = INT_MAX;
+    for(auto  it = owner_->vision_component()->visible_tiles().begin();  it != owner_->vision_component()->visible_tiles().end(); ++it)
+        map_[(*it).x][(*it).y] = INT_MAX;
+    for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it)
+        map_[(*it).x][(*it).y] = 0;
+
     GameController* gc = GameController::reference();
 
     //TODO: WARNING: This shit only works with Rectangular Shapes.
@@ -142,11 +143,10 @@ Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
 
     do {
         PathElement element = elements.top();
+        elements.pop();
         Integer2D path   = element.offset_;
         Integer2D step   = element.step_;
         double distance  = element.walked_distance_;
-
-        printf("-- %f, %f --\n", element.walked_distance_, element.distance_to_target_);
         
         distance += 1;
         for(int i = -1; i < 2; i++)
@@ -167,20 +167,19 @@ Integer2D ControllerAi::TryPath(Integer2D destination, Integer2D origin) {
                 if(walkable) {
                     walkable = false;
                     for(auto it = owner_->shape_component()->occupying_tiles().begin(); it != owner_->shape_component()->occupying_tiles().end(); ++it ) 
-                        if( (*it) + path + offset == destination) {
-                            printf("Step: %d, %d\n\n", offset.x, offset.y);
+                        if( (*it) + path + offset == destination)
                             return step;
-                        }
                     PathElement new_element = element;
                     if( new_element.step_ == Integer2D(0, 0) )
                         new_element.step_ = offset;
+                    else
+                        new_element.step_ = step;
                     new_element.distance_to_target_ = (destination - (origin + path + offset)).Length();
                     new_element.walked_distance_    = distance;
                     new_element.offset_ = element.offset_ + offset;
                     elements.push(new_element);
                 }
             }
-        elements.pop();
     } while(!elements.empty());
     
     printf("No step.\n\n");

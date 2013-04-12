@@ -86,6 +86,10 @@ void GameController::Spawn() {
     AddGameObject(new_enemy);
 }
 
+void GameController::SpawnMonster() {
+    monster_spawn_counter_ = 250;
+}
+
 void GameController::AddGameObject(GameObject* game_object) {
     this->QueuedAddEntity(game_object);
     if( game_object->controller_component() != nullptr )

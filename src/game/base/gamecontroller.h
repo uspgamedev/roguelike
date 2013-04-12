@@ -55,6 +55,7 @@ class GameController : public ugdk::action::Scene {
     
     void AdjustCamera();
     void Spawn();
+    void SpawnMonster();
     void ClearActorsList() { actors_.clear(); }
     void DeleteAllActors();
     void RequireBlackout() { needs_blackout_ = true; }

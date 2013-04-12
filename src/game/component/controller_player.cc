@@ -55,6 +55,10 @@ TimeElapsed ControllerPlayer::Act() {
         return total_time_elapsed;
     }
 
+    if( input->KeyPressed(ugdk::input::K_s) ) {
+        gc->SpawnMonster();
+    }
+
     if( input->KeyPressed(ugdk::input::K_f) ) {
         where_to_ = Integer2D(0,0);
         aim->AimAt((*owner_->shape_component()->occupying_tiles().begin()));
