@@ -26,9 +26,9 @@ namespace game {
 namespace alg {
 namespace los {
 
-OctantProcessor::OctantProcessor(int octant_id, set<Integer2D>& visible_tiles, const double& sight_range,
+OctantProcessor::OctantProcessor(int octant_id, const VisibleTileAction& visible_tile_action, const double& sight_range,
                                  const set<Eye*>& eyes, const function<bool (const Integer2D&)>& blocks_vision)
-  : octant_(octant_id, sight_range*sight_range), visible_tiles_(visible_tiles),
+  : octant_(octant_id, sight_range*sight_range), visible_tile_action_(visible_tile_action),
     sight_range_(sight_range), eyes_(eyes), blocks_vision_(blocks_vision),
     cone_processor_(bind( &OctantProcessor::process_cone_here, this, _1 )) {
 }
@@ -90,7 +90,7 @@ bool OctantProcessor::process_cone_here(Cone* cone) {
     // If the cone intersects with it, it is visible.
     if( bt != bump::ABV && bt != bump::BLW )
 		if( !octant_.FocusIsControlTile() )
-			visible_tiles_.insert(focus_tile);
+			visible_tile_action_(focus_tile,cone->upper(),cone->lower(),bt);
 
     // If it doesn't block the vision, then we move on and keep the cone alive.
     if(!blocks_vision_(focus_tile))

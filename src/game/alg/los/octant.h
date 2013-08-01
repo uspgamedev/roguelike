@@ -12,6 +12,7 @@
 
 // Forward Declarations
 #include "game/alg.h"
+#include "game/alg/los.h"
 
 namespace game {
 namespace alg {

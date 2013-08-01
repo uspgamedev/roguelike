@@ -19,6 +19,7 @@
 #include "utils/integer2Dutils.h"
 #include "game/base.h"
 #include "game/alg.h"
+#include "game/alg/los.h"
 
 namespace game {
 namespace component {
@@ -38,10 +39,12 @@ class Vision : public ComponentBase {
     void set_dir(const ugdk::math::Integer2D& dir) { dir_ = dir; }
     std::set<ugdk::math::Integer2D>& visible_tiles() { return visible_tiles_; }
 
+    void visible_tile_action(const ugdk::math::Integer2D& tile, const alg::EquationalLineDouble& upper, const alg::EquationalLineDouble& lower, alg::los::enums::bump::BumpType bump);
+  
   private:
     void face_ahead();
     void update_octants(int start);
-
+    
     double range_;
     std::set<int> relevant_octants_;
     std::set<ugdk::math::Integer2D> visible_tiles_;

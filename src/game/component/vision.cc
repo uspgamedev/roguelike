@@ -10,8 +10,10 @@
 #include "game/base/gamecontroller.h"
 #include "game/base/gameobject.h"
 #include "game/alg/los/processor.h"
+#include "game/component/controller_player.h"
 
 // Using
+using namespace std::tr1::placeholders;
 using std::set;
 using ugdk::math::Integer2D;
 using game::alg::los::Eye;
@@ -39,7 +41,13 @@ Vision::Vision(game::base::GameObject* owner)
     
     eyes_.insert(  &left_eye_ );
     eyes_.insert( &right_eye_ );
-    losprocessor_ = new Processor(relevant_octants_,visible_tiles_,range_,eyes_,blocks_vision);
+
+    losprocessor_ = new Processor(relevant_octants_,
+        std::tr1::bind(&game::component::Vision::visible_tile_action,
+            this, _1, _2, _3, _4),
+        range_, 
+        eyes_, 
+        blocks_vision);
 }
 
 Vision::~Vision() {
@@ -98,6 +106,17 @@ void Vision::update_octants(int start) {
     relevant_octants_.clear();
     for(int i = 0; i < 6; ++i)
         relevant_octants_.insert((i+start)%8);
+}
+
+void Vision::visible_tile_action(const ugdk::math::Integer2D& tile, const alg::EquationalLineDouble& upper, const alg::EquationalLineDouble& lower, alg::los::enums::bump::BumpType bump) {
+    visible_tiles_.insert(tile);
+    game::component::Controller* controller = owner_->controller_component();
+    /*if(dynamic_cast<game::component::ControllerPlayer*>(controller)) { // not-null
+        // is a player
+        gamecontroller_->LightHeroVisibleTiles
+    } else {
+        // is not a player
+    }*/
 }
 
 } // namespace component

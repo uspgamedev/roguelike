@@ -30,6 +30,8 @@ class Controller : public ComponentBase {
     action::time::TimeElapsed Cast(const std::string& skill, const ugdk::math::Integer2D& target);
     action::time::TimeElapsed Cast(const std::string& skill, base::GameObject* target);
     action::time::TimeElapsed Cast(const std::string& skill);
+
+  private:
 };
 
 } // namespace component

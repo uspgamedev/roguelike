@@ -19,14 +19,17 @@
 
 // Forward Declarations
 #include "game/alg.h"
+#include "game/alg/los.h"
 
 namespace game {
 namespace alg {
 namespace los {
 
 class OctantProcessor {
+    // lacks operator=
+
   public:
-    OctantProcessor(int octant_id, std::set<ugdk::math::Integer2D>& visible_tiles, const double& sight_range,
+    OctantProcessor(int octant_id, const VisibleTileAction& visible_tile_action, const double& sight_range,
                     const std::set<Eye*>& eyes, const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~OctantProcessor();
 
@@ -41,7 +44,7 @@ class OctantProcessor {
     Octant octant_;
     std::list<Cone*> cones_;
     
-    std::set<ugdk::math::Integer2D>& visible_tiles_;
+    const VisibleTileAction& visible_tile_action_;
     const double& sight_range_;
     const std::set<Eye*>& eyes_;
 

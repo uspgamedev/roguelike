@@ -14,6 +14,7 @@ class OctantIterator;
 } // namespace los
 
 class EquationalLine;
+class EquationalLineDouble;
 
 } // namespace base
 } // namespace game

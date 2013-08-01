@@ -12,11 +12,13 @@
 
 // Internal Dependencies
 #include "game/alg/los/eye.h"
+#include "game/alg/los/cone.h"
 
 // Forward Declarations
 #include <ugdk/math.h>
 #include "utils/integer2Dutils.h"
 #include "game/alg.h"
+#include "game/alg/los.h"
 
 namespace game {
 namespace alg {
@@ -27,7 +29,7 @@ class Processor {
   Processor& operator=(const Processor&);
 
   public:
-    Processor(const std::set<int>& relevant_octants, std::set<ugdk::math::Integer2D>& visible_tiles,
+    Processor(const std::set<int>& relevant_octants, const VisibleTileAction& visible_tile_action,
               const double& sight_range, const std::set<Eye*>& eyes,
               const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~Processor();
@@ -36,7 +38,7 @@ class Processor {
 
   private:
     const std::set<int>& relevant_octants_;
-    std::set<ugdk::math::Integer2D>& visible_tiles_;
+    const VisibleTileAction& visible_tile_action_;
 
     std::array<OctantProcessor*,8> octants_;
 };

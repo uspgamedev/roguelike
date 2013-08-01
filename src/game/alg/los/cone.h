@@ -12,26 +12,11 @@
 #include "game/alg/equationallinedouble.h"
 
 // Forward Declarations
-// (none)
+#include "game/alg/los.h"
 
 namespace game {
 namespace alg {
 namespace los {
-
-namespace enums {
-
-namespace bump {
-enum BumpType {
-    ABV = 0, // tile está completamente acima do cone de visão
-    UPR = 1, // tile colide com a upper line do cone apenas
-    MDL = 2, // tile está dentro do cone de visão, sem colidir com nenhuma linha
-    BLK = 3, // tile bloqueia o campo de visão completamente (colide com as duas linhas)
-    LWR = 4, // tile colide com a lower line do cone apenas
-    BLW = 5  // tile está completamente abaixo do cone de visão
-};
-}
-
-} // namespace enums
 
 class Cone {
   public:
@@ -42,6 +27,9 @@ class Cone {
 
     void UpperBump(const ugdk::Vector2D& up_left);
     void LowerBump(const ugdk::Vector2D& up_left);
+
+    const EquationalLineDouble& upper() const { return upper_; }
+    const EquationalLineDouble& lower() const { return lower_; }
 
   private:
     EquationalLineDouble upper_;

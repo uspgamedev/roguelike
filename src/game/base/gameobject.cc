@@ -48,7 +48,7 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Initialize( FORALL_COMPONENTS(INI_ARG_DECLARATION) // ;
-                             const function<void (void)>& die ) {
+                             const function<void (void)>& die) {
     FORALL_COMPONENTS(INI_ASSIGNMENT) // ;
     die_ = die;
 }

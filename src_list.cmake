@@ -31,6 +31,7 @@ SET(GAME_SRCS
     ./src/game/action/time/timemanager.cc 
     ./src/game/action/time/timemanager.h 
     ./src/game/action.h 
+    ./src/game/alg/los.h 
     ./src/game/alg/equationalline.cc 
     ./src/game/alg/equationalline.h 
     ./src/game/alg/equationallinedouble.cc 
