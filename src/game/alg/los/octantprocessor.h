@@ -44,7 +44,7 @@ class OctantProcessor {
     Octant octant_;
     std::list<Cone*> cones_;
     
-    const VisibleTileAction& visible_tile_action_;
+    const VisibleTileAction visible_tile_action_;
     const double& sight_range_;
     const std::set<Eye*>& eyes_;
 
