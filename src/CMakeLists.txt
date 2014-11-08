@@ -58,22 +58,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-# # Lua and Python
-# include_directories(${LUA_INCLUDE_DIR})
-# 
-# if(NOT ANDROID)
-#     include_directories(${PYTHON_INCLUDE_DIR})
-# endif()
-# 
-# include(module/module_list.cmake)
-# if(ANDROID)
-#     set(ROGUELIKE_LANGUAGES_LIST "lua")
-# else()
-#     set(ROGUELIKE_LANGUAGES_LIST "lua;python")
-# endif()
-# 
-# set(GENERATED_PY_FILES)
-# 
+# Lua
+include_directories(${LUA_INCLUDE_DIR})
+set(ROGUELIKE_LANGUAGES_LIST "lua")
+
 # # SWIG
 # include(${CMAKE_SOURCE_DIR}/cmake/SWIG.cmake)
 # include_directories("${ugdk_SOURCE_DIR}/src")
