@@ -1,102 +1,125 @@
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-### Project Specification ###
+
+# ===========
+# = Project =
+# ===========
 
 PROJECT(roguelike CXX C)
+
+# Version
 set(roguelike_VERSION_MAJOR 0)
 set(roguelike_VERSION_MINOR 0)
 set(roguelike_VERSION_PATCH 0)
-SET(roguelike_FULL_VERSION "${roguelike_VERSION_MAJOR}.${roguelike_VERSION_MINOR}.${roguelike_VERSION_PATCH} Alpha")
-
+SET(roguelike_FULL_VERSION "${roguelike_VERSION_MAJOR}.${roguelike_VERSION_MINOR}.${roguelike_VERSION_PATCH}")
 MESSAGE("== Roguelike -- version ${roguelike_FULL_VERSION} ==")
 
+
+# ============
+# = Platform =
+# ============
+
+# Windows
 IF(MSVC AND (CMAKE_SIZEOF_VOID_P EQUAL 8))
-	set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
+    set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
 ENDIF()
 
-#Necessary for a Mac Universal Binary
-IF(UNIVERSAL)
-  SET (CMAKE_OSX_ARCHITECTURES ppc;i386;x86_64)
-  SET (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
-  SET (MACOSX_DEPLOYMENT_TARGET 10.5)
-ENDIF(UNIVERSAL)
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND UNIVERSAL)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5")
-ENDIF()
+# # Mac Universal
+# IF(UNIVERSAL)
+#     SET (CMAKE_OSX_ARCHITECTURES ppc;i386;x86_64)
+#     SET (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
+#     SET (MACOSX_DEPLOYMENT_TARGET 10.5)
+# ENDIF(UNIVERSAL)
+# IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND UNIVERSAL)
+#     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5")
+# ENDIF()
+
+# Android
+if(ANDROID)
+    if(${ANDROID_NATIVE_API_LEVEL} LESS 9)
+        message(FATAL_ERROR "ANDROID_NATIVE_API_LEVEL must be at least 9")
+    endif()
+else()
+    macro(find_host_package)
+        find_package(${ARGN})
+    endmacro(find_host_package)
+endif()
 
 
-### Find Libraries ###
+# =========================
+# = Libraries & Resources =
+# =========================
 
+# General Libraries
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
-# FindUGDK
-#option (USE_EMBBEDED_UGDK "" OFF)
-find_package(UGDK REQUIRED)
-include_directories(${UGDK_INCLUDE_DIRS})
-set(UGDK_EXTERNAL_LIBRARIES ${UGDK_LIBRARIES})
+# Git
+find_host_package(Git)
+if(GIT_FOUND)
+    execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --dirty --always
+                            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                            OUTPUT_VARIABLE roguelike_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE
+                            RESULT_VARIABLE GIT_DESCRIBE_SUCCESS)
+    if(NOT ${GIT_DESCRIBE_SUCCESS} EQUAL 0)
+        # Source is not in a git repository
+        set(roguelike_VERSION "Unknown version")
+    endif()
+else(GIT_FOUND)
+    set(roguelike_VERSION "Unknown version")
+endif(GIT_FOUND)
+
+# # Resources repository
+# set(RESOURCES_VERSION jsonmetadata)
+# if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/resources-${RESOURCES_VERSION}.tar.gz)
+#     if(GIT_FOUND)
+#         message("= Downloading resources file version '${RESOURCES_VERSION}'...")
+#         execute_process(COMMAND ${GIT_EXECUTABLE} archive --remote=git://uspgamedev.org/roguelike-resources.git
+#                             -o ${CMAKE_CURRENT_BINARY_DIR}/resources-${RESOURCES_VERSION}.tar.gz ${RESOURCES_VERSION} resources/ )
+#         execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf ${CMAKE_CURRENT_BINARY_DIR}/resources-${RESOURCES_VERSION}.tar.gz
+#                         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
+#     else(GIT_FOUND)
+#         message("-- WARNING: Git not found, unable to download resources.")
+#     endif(GIT_FOUND)    
+# endif()
 
 
-### Build ###
+# UGDK
+option(ROGUELIKE_INTERNAL_UGDK   "Set to ON to use an internal UGDK instead of the system one." ON)
+option(ROGUELIKE_FORCE_SUBMODULE "Set to ON to force git submodule update whenever cmake is ran." ON)
+if(NOT ROGUELIKE_INTERNAL_UGDK)
+    find_package(UGDK)
+    if(NOT UGDK_FOUND)
+        set(ROGUELIKE_INTERNAL_UGDK ON CACHE BOOL "Set to ON to use an internal UGDK instead of the system one." FORCE)
+        message(FATAL_ERROR "Unable to find UGDK, forcing internal. Please, re-run CMake.")
+    endif(NOT UGDK_FOUND)
+    include_directories(${UGDK_INCLUDE_DIRS})
+    set(UGDK_EXTERNAL_LIBRARIES ${UGDK_LIBRARIES})
+    
+else(NOT ROGUELIKE_INTERNAL_UGDK)
+    if(ROGUELIKE_FORCE_SUBMODULE OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/externals/ugdk/CMakeLists.txt")
+        if(GIT_FOUND)
+            execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init
+                            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+        else(GIT_FOUND)
+            message(FATAL_ERROR "Git submodule 'externals/ugdk' not initialized and git not found.")
+        endif(GIT_FOUND)
+    endif()
+    
+    set(UGDK_BUILD_TESTS    OFF CACHE BOOL "Set to ON to enable building tests.")
+    set(UGDK_BUILD_EXAMPLES OFF CACHE BOOL "Set to ON to enable building examples.")
 
-include (src_list.cmake)
-
-#Adding the icon to the windows executable
-#if (WIN32) 
-#	set(GAME_SRCS ${GAME_SRCS} ./src/roguelike.rc)
-#endif()
-
-#Necessary for Mac with SDL
-IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    SET(GAME_SRCS ${GAME_SRCS} ./src/mac/SDLMain.h ./src/mac/SDLMain.m)
-ENDIF ()
-
-#Compiler definitions
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-if (UNIX OR MINGW)
-    # se for o g++ para *nix ou o MinGW para Windows:
-    add_definitions(-Wall -ansi -U_FORTIFY_SOURCE -msse2 -std=c++0x)
-elseif (MSVC) 
-    add_definitions(/D_CRT_SECURE_NO_WARNINGS /W4 /wd4100 /wd4127 /wd4201 /wd4211 /wd4250 /wd4355 /wd4706 /arch:SSE2 /fp:fast /MP)
-endif ()
-
-#Source Directories
-include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src/")
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
-
-#Executable
-add_executable(roguelike ${GAME_SRCS})
-target_link_libraries(roguelike ${UGDK_EXTERNAL_LIBRARIES})
-
-set(GAME_LOCAL_DIR "./data")
-
-CONFIGURE_FILE(
-    "src/game/config.h.in"
-    "src/game/config.h"
-)
+    add_definitions(-DEMBBEDED_UGDK="${CMAKE_CURRENT_BINARY_DIR}/externals/ugdk")
+    add_subdirectory(externals/ugdk EXCLUDE_FROM_ALL)
+    include_directories(${UGDK_EXTERNAL_INCLUDE_DIRS})
+    set(UGDK_EXTERNAL_LIBRARIES libugdk)
+endif(NOT ROGUELIKE_INTERNAL_UGDK)
 
 
-### Post-Build Commands ###
+# =========
+# = Build =
+# =========
 
-#Manual copy of libs and dlls to the executable's root in Windows, for x86/x64 compatibility.
-if(WIN32)
-	file(GLOB dlls RELATIVE ${CMAKE_SOURCE_DIR} *.dll)
-	file(GLOB libs RELATIVE ${CMAKE_SOURCE_DIR} *.lib)
-	
-	add_custom_command(TARGET roguelike POST_BUILD
-		COMMAND 
-		COMMENT "Removing all libs and dlls from the project's root directory.")
-	
-	foreach(it ${dlls} ${libs})
-		add_custom_command(TARGET roguelike POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_SOURCE_DIR}/${it}")
-	endforeach(it ${dlls})
+add_subdirectory(src)
 
-	IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(LIBS_SOURCE "./lib64/")
-	ELSE()
-		set(LIBS_SOURCE "./lib/")
-	ENDIF()
-	add_custom_command(TARGET roguelike POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_SOURCE} "./"
-		COMMENT "Copying libs from ${LIBS_SOURCE} to the project's root directory.")
-endif(WIN32)
+add_ugdk_android_project(roguelike "Roguelike" "org.uspgamedev.roguelike")

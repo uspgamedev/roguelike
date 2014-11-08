@@ -43,3 +43,5 @@ Makefile
 roguelike
 Win32
 /data/scripts/new_level.lua
+CPackConfig.cmake
+CPackSourceConfig.cmake
