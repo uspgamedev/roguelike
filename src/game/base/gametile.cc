@@ -2,11 +2,13 @@
 #include "gametile.h"
 
 // External Dependencies
-#include <ugdk/base/resourcemanager.h>
-#include <ugdk/graphic/drawable/texturedrectangle.h>
+#include <memory>
+#include <ugdk/resource/module.h>
+#include <ugdk/ui/drawable/texturedrectangle.h>
 #include <ugdk/ui/node.h>
 #include <ugdk/math/integer2D.h>
 #include <ugdk/math/vector2D.h>
+#include <ugdk/system/compatibility.h>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
@@ -18,28 +20,36 @@ using ugdk::math::Integer2D;
 using ugdk::math::Vector2D;
 using game::base::GameController;
 using game::base::GameObject;
-using ugdk::base::ResourceManager;
 using ugdk::ui::Node;
-using ugdk::graphic::TexturedRectangle;
+using ugdk::ui::TexturedRectangle;
 
 namespace game {
 namespace base {
 
 GameTile::GameTile(const Integer2D& coords) : coords_(coords), node_(new Node) {
-	ground_ = new TexturedRectangle( ResourceManager::GetTextureFromFile("images/white.png") );
-	node_->set_drawable(ground_);
-    node_->modifier()->set_scale( Vector2D(GameController::TILE_SIZE) / ground_->width());
+	node_->set_drawable(
+		ugdk::MakeUnique<TexturedRectangle>(
+			ugdk::resource::GetTextureFromFile("images/white.png")
+		)
+	);
+    node_->geometry() = ugdk::graphic::Geometry(
+		Vector2D(),
+		Vector2D(GameController::TILE_SIZE) / node_->drawable()->width()
+	);
 }
 GameTile::GameTile(int x, int y) : coords_(x,y), node_(new Node) {
-	ground_ = new TexturedRectangle( ResourceManager::GetTextureFromFile("images/white.png") );
-	node_->set_drawable(ground_);
-    node_->modifier()->set_scale( Vector2D(GameController::TILE_SIZE) / ground_->width());
+	node_->set_drawable(
+		ugdk::MakeUnique<TexturedRectangle>(
+			ugdk::resource::GetTextureFromFile("images/white.png")
+		)
+	);
+    node_->geometry() = ugdk::graphic::Geometry(
+		Vector2D(),
+		Vector2D(GameController::TILE_SIZE) / node_->drawable()->width()
+	);
 }
 
-GameTile::~GameTile() { 
-	node_->set_drawable(ground_);
-	delete node_;
-}
+GameTile::~GameTile() {}
 
 void GameTile::PushObject(GameObject* obj) {
 	objects_here_.insert(obj);
@@ -50,7 +60,7 @@ void GameTile::RemoveObject(GameObject* obj) {
 }
 
 void GameTile::SetVisibility(bool visibility) {
-    node_->modifier()->set_visible(visibility);
+    node_->effect().set_visible(visibility);
     for(auto it = objects_here_.begin(); it != objects_here_.end(); ++it) {
         //TODO: fix
         //(*it)->graphic_component()->SetVisibility(visibility);

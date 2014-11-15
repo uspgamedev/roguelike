@@ -5,8 +5,9 @@
 // (none)
 
 // External Dependencies
-#include <set> // template class
-#include <ugdk/math/integer2D.h> // coords_
+#include <set>
+#include <memory>
+#include <ugdk/math/integer2D.h>
 
 // Internal Dependencies
 // (none)
@@ -27,7 +28,8 @@ class GameTile {
     GameTile(int x, int y);
 	~GameTile();
 
-	ugdk::ui::Node* node() const { return node_; }
+	ugdk::ui::Node* node() { return node_.get(); }
+	ugdk::ui::Node* node() const { return node_.get(); }
 
 	void PushObject(GameObject* obj);
 	void RemoveObject(GameObject* obj);
@@ -37,8 +39,6 @@ class GameTile {
 	int y() const { return coords_.y; }
 
     const ugdk::math::Integer2D& coords() const { return coords_; }
-
-	ugdk::ui::Node* node() { return node_; }
     
     const std::set<GameObject*>& objects_here() const { return objects_here_; }
           std::set<GameObject*>& objects_here()       { return objects_here_; }
@@ -46,9 +46,8 @@ class GameTile {
   private:
 	const ugdk::math::Integer2D coords_;
 
-	ugdk::ui::Node* node_;
+	std::unique_ptr<ugdk::ui::Node> node_;
 	std::set<GameObject*> objects_here_;
-	ugdk::ui::Drawable* ground_;
 
 };
 
