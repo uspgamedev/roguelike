@@ -31,13 +31,13 @@ class Graphic : public ComponentBase {
 
     void SetVisibility(bool visibility);
 
-    const ugdk::graphic::Node* node() const { return node_; }
-          ugdk::graphic::Node* node()       { return node_; }
+    const ugdk::ui::Node* node() const { return node_; }
+          ugdk::ui::Node* node()       { return node_; }
 
     void OnSceneAdd(ugdk::action::Scene* scene);
 
   protected:
-    ugdk::graphic::Node* node_;
+    ugdk::ui::Node* node_;
 };
 
 } // namespace component

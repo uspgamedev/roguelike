@@ -5,8 +5,7 @@
 #include "game/action/skill/skill.h"
 
 // External Dependencies
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 
 // Internal Dependencies
 // (none)
@@ -19,10 +18,10 @@ namespace game {
 namespace action {
 namespace skill {
 
-typedef std::tr1::function<bool (const base::GameObject*, const GameTargets&)>
+typedef std::function<bool (const base::GameObject*, const GameTargets&)>
         GenericValidator;
 
-typedef std::tr1::function<SpendInfo (base::GameObject*, const GameTargets&)>
+typedef std::function<SpendInfo (base::GameObject*, const GameTargets&)>
         GenericSpender;
 
 typedef GameAction

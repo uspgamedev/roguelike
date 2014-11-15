@@ -10,7 +10,7 @@
 #include "utils/utils.h"
 
 // Using
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using utils::CompareDoubles;
 using namespace utils::enums;
 using utils::enums::ord::Ord;

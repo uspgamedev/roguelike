@@ -13,7 +13,7 @@
 #include "game/component/controller_player.h"
 
 // Using
-using namespace std::tr1::placeholders;
+using namespace std::placeholders;
 using std::set;
 using ugdk::math::Integer2D;
 using game::alg::los::Eye;
@@ -43,7 +43,7 @@ Vision::Vision(game::base::GameObject* owner)
     eyes_.insert( &right_eye_ );
 
     losprocessor_ = new Processor(relevant_octants_,
-        std::tr1::bind(&game::component::Vision::visible_tile_action,
+        std::bind(&game::component::Vision::visible_tile_action,
             this, _1, _2, _3, _4),
         range_, 
         eyes_, 

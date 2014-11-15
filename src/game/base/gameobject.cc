@@ -2,8 +2,7 @@
 #include "game/base/gameobject.h"
 
 // External Dependencies
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 #include <ugdk/action/scene.h>
 #include <ugdk/graphic/node.h>
 #include <ugdk/math/integer2D.h>
@@ -28,7 +27,7 @@
 
 // Using
 using std::string;
-using std::tr1::function;
+using std::function;
 using ugdk::action::Scene;
 using ugdk::math::Integer2D;
 using game::action::skill::GameTargets;

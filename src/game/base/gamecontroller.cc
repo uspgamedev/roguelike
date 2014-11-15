@@ -6,11 +6,11 @@
 #include <cstdlib>
 #include <queue>
 #include <set>
-#include <ugdk/action/generictask.h>
-#include <ugdk/base/engine.h>
-#include <ugdk/graphic/drawable/text.h>
-#include <ugdk/graphic/node.h>
-#include <ugdk/graphic/textmanager.h>
+#include <ugdk/system/engine.h>
+#include <ugdk/ui/node.h>
+#include <ugdk/text/module.h>
+#include <ugdk/graphic/module.h>
+#include <ugdk/graphic/rendertarget.h>
 #include <ugdk/math/vector2D.h>
 #include <ugdk/script/virtualobj.h>
 #include <ugdk/script/scriptmanager.h>
@@ -29,11 +29,9 @@
 using std::list;
 using std::set;
 using std::vector;
-using ugdk::Engine;
-using ugdk::action::GenericTask;
 using ugdk::math::Integer2D;
+using ugdk::math::Vector2D;
 using ugdk::script::VirtualObj;
-using ugdk::Vector2D;
 using game::builder::ObjectBuilder;
 using game::component::Graphic;
 
@@ -50,7 +48,7 @@ const Integer2D GameController::TILE_SIZE = Integer2D(23, 23);
 GameController* GameController::reference_ = nullptr;
 
 GameController* GameController::reference() {
-    return reference_ == nullptr ? (reference_ = new GameController()) : reference_;
+    return reference_;
 }
 
 static bool actor_less(const GameObject* a, const GameObject* b) {
@@ -61,7 +59,12 @@ static bool actor_less(const GameObject* a, const GameObject* b) {
 
 GameController::GameController() : super(), current_tick_(0), monster_spawn_counter_(0), map_size_(50, 40),
                                    hero_(nullptr), actors_(), time_since_beggining_(0.0) {
-	TEXT_MANAGER()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15, 0, 0);
+
+	if (reference_)
+		throw "Multiple instances of GameController"; // Fixme
+
+	reference_ = this;
+	ugdk::text::manager()->AddFont("MAH FONTI", "fonts/FUTRFW.TTF", 15);
 }
 
 GameController::~GameController() {
@@ -91,7 +94,7 @@ void GameController::SpawnMonster() {
 }
 
 void GameController::AddGameObject(GameObject* game_object) {
-    this->QueuedAddEntity(game_object);
+    //this->QueuedAddEntity(game_object); // Fixme
     if( game_object->controller_component() != nullptr )
         actors_.push_back(game_object);
 }
@@ -134,7 +137,7 @@ void GameController::LightHeroVisibleTiles() {
 }
 
 void GameController::RemoveActor(GameObject* actor) {
-    this->RemoveEntity(actor);
+    //this->RemoveEntity(actor); // Fixme
 }
 
 void GameController::PropagateSound(const Integer2D& origin, int noise_level) {
@@ -185,15 +188,12 @@ const set<GameObject*>& GameController::ObjectsAt(const Integer2D& coords) {
 void GameController::AdjustCamera() {
     if(hero_ == nullptr) return;
 
-    //TODO: const
-    Engine* engine = Engine::reference();
-    const Vector2D& window_size = engine->window_size();
+	auto screen_center = ugdk::graphic::manager()->screen()->size()*0.5;
 
-    int camera_x = (*hero_->shape_component()->occupying_tiles().begin()).get_x()*GameController::TILE_SIZE.x;
-    int camera_y = (*hero_->shape_component()->occupying_tiles().begin()).get_y()*GameController::TILE_SIZE.y;
-    ugdk::math::Integer2D camera_offset = ugdk::math::Integer2D(camera_x, camera_y);
-    ugdk::Vector2D offset = ugdk::Vector2D(- camera_x + window_size.x/2, - camera_y + window_size.y/2);
-    this->content_node()->modifier()->set_offset(offset);
+	const ugdk::math::Integer2D& heroCoords = *hero_->shape_component()->occupying_tiles().begin();
+	ugdk::math::Integer2D camera_offset = heroCoords.Multiplied(GameController::TILE_SIZE);
+	ugdk::math::Vector2D offset = ugdk::math::Vector2D(-camera_offset.x + screen_center.x, -camera_offset.y + screen_center.y);
+    this->content_node()->geometry().set_offset(offset);
 }
 
 } // namespace base

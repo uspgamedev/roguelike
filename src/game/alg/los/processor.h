@@ -6,8 +6,7 @@
 
 // External Dependencies
 #include <array>
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 #include <set>
 
 // Internal Dependencies
@@ -31,7 +30,7 @@ class Processor {
   public:
     Processor(const std::set<int>& relevant_octants, const VisibleTileAction& visible_tile_action,
               const double& sight_range, const std::set<Eye*>& eyes,
-              const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
+              const std::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~Processor();
 
     void Process();

@@ -25,7 +25,7 @@ using std::endl;
 using std::ofstream;
 using std::string;
 using std::vector;
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using ugdk::math::Integer2D;
 using ugdk::script::VirtualObj;
 using game::action::time::TimeManager;

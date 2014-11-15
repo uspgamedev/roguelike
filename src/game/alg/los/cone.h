@@ -23,10 +23,10 @@ class Cone {
     Cone(const EquationalLineDouble& upper, const EquationalLineDouble& lower);
     ~Cone() {};
     
-    enums::bump::BumpType ComputeBumpType(const ugdk::Vector2D& up_left);
+    enums::bump::BumpType ComputeBumpType(const ugdk::math::Vector2D& up_left);
 
-    void UpperBump(const ugdk::Vector2D& up_left);
-    void LowerBump(const ugdk::Vector2D& up_left);
+    void UpperBump(const ugdk::math::Vector2D& up_left);
+    void LowerBump(const ugdk::math::Vector2D& up_left);
 
     const EquationalLineDouble& upper() const { return upper_; }
     const EquationalLineDouble& lower() const { return lower_; }
@@ -35,8 +35,8 @@ class Cone {
     EquationalLineDouble upper_;
     EquationalLineDouble lower_;
     
-    std::list<ugdk::Vector2D> upper_bumps_;
-    std::list<ugdk::Vector2D> lower_bumps_;
+    std::list<ugdk::math::Vector2D> upper_bumps_;
+    std::list<ugdk::math::Vector2D> lower_bumps_;
 };
 
 } // namespace los

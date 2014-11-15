@@ -19,7 +19,7 @@
 using std::list;
 using ugdk::input::InputManager;
 using ugdk::math::Integer2D;
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using ugdk::time::TimeAccumulator;
 using game::action::Aim;
 using game::action::time::TimeElapsed;

@@ -9,7 +9,7 @@
 // (none)
 
 // Using
-using ugdk::Frame;
+using ugdk::math::Frame;
 using ugdk::math::Integer2D;
 
 namespace game {
@@ -20,7 +20,7 @@ Eye::Eye(const Integer2D& coordinates, const Frame& eyeframe)
   : coords(coordinates), frame(eyeframe) {}
 Eye::Eye(const Integer2D& coordinates, double left, double top, double right, double bottom)
   : coords(coordinates), frame(left,top,right,bottom) {}
-Eye::Eye(int x, int y, const ugdk::Frame& eyeframe)
+Eye::Eye(int x, int y, const ugdk::math::Frame& eyeframe)
   : coords(x,y), frame(eyeframe) {}
 Eye::Eye(int x, int y, double left, double top, double right, double bottom)
   : coords(x,y), frame(left,top,right,bottom) {}

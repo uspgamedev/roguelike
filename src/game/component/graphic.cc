@@ -11,7 +11,7 @@
 // Using
 using std::string;
 using ugdk::action::Scene;
-using ugdk::graphic::Node;
+using ugdk::ui::Node;
 using game::base::GameObject;
 
 namespace game {

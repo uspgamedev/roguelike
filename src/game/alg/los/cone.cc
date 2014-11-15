@@ -9,7 +9,7 @@
 #include "utils/utils.h"
 
 // Using
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using namespace game::alg::los::enums;
 using namespace utils::enums;
 

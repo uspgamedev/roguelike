@@ -7,8 +7,7 @@
 // External Dependencies
 #include <list> //TODO: Use a better data structure for cones_.
 #include <set>
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 #include <ugdk/math/integer2D.h>
 #include "utils/integer2Dutils.h"
 
@@ -30,7 +29,7 @@ class OctantProcessor {
 
   public:
     OctantProcessor(int octant_id, const VisibleTileAction& visible_tile_action, const double& sight_range,
-                    const std::set<Eye*>& eyes, const std::tr1::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
+                    const std::set<Eye*>& eyes, const std::function<bool (const ugdk::math::Integer2D&)>& blocks_vision);
     ~OctantProcessor();
 
     void ProcessOctant();
@@ -48,8 +47,8 @@ class OctantProcessor {
     const double& sight_range_;
     const std::set<Eye*>& eyes_;
 
-    const std::tr1::function<bool (ugdk::math::Integer2D&)> blocks_vision_;
-	const std::tr1::function<bool (Cone*)> cone_processor_; // process_cone_here's incarnation as a non-method function.
+    const std::function<bool (ugdk::math::Integer2D&)> blocks_vision_;
+	const std::function<bool (Cone*)> cone_processor_; // process_cone_here's incarnation as a non-method function.
 };
 
 } // namespace los

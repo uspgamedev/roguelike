@@ -2,13 +2,12 @@
 #define ROGUELIKE_BASE_GAMEOBJECT_H_
 
 // Inheritance
-#include <ugdk/action/entity.h>
+// (none)
 
 // External Dependencies
 #include <set>
 #include <string>
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 #include <list>                 // template class
 #include <ugdk/math/vector2D.h> // needed for dimensions_
 
@@ -50,15 +49,14 @@
 namespace game {
 namespace base {
 
-class GameObject : public ugdk::action::Entity {
-  typedef ugdk::action::Entity super;
+class GameObject {
   public:
     GameObject();
     ~GameObject();
 
     void Initialize(
         FORALL_COMPONENTS(INI_FULLTYPE_ARG_DECLARATION) // note lack of ","
-        const std::tr1::function<void (void)>& die = std::tr1::function<void (void)>()
+        const std::function<void (void)>& die = std::function<void (void)>()
     );
 
     void Update(double dt);
@@ -72,9 +70,11 @@ class GameObject : public ugdk::action::Entity {
     void OnSceneAdd(ugdk::action::Scene* scene);
 
   private:
-    FORALL_COMPONENTS(ATTRIBUTES_DECLARATION) // note lack of ";"
+	FORALL_COMPONENTS(ATTRIBUTES_DECLARATION) // note lack of ";"
 
-    std::tr1::function<void (void)> die_;
+	bool to_be_removed_;
+
+    std::function<void (void)> die_;
 };
 
 } // namespace base

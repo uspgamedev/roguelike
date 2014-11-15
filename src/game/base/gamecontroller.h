@@ -4,6 +4,9 @@
 // Inheritance
 #include <ugdk/action/scene.h>
 
+// Internal Dependencies
+#include "game/action/time/timemanager.h"
+
 // External Dependencies
 #include <list>                  // template class, also needed for push_back(-)
 #include <set>                   // template class, needed for ObjectsAt(-)
@@ -11,10 +14,8 @@
 #include <ugdk/math/integer2D.h> // needed for Tile
 #include <ugdk/math/vector2D.h>  // needed for map_size_
 
-// Internal Dependencies
-#include "game/action/time/timemanager.h"
-
 // Forward Declarations
+#include <ugdk/ui.h>
 #include "game/base.h"
 
 namespace game {
@@ -28,6 +29,7 @@ class GameController : public ugdk::action::Scene {
     static const ugdk::math::Integer2D TILE_SIZE;
 
     static GameController* reference();
+	GameController();
     ~GameController();
 
     void AddGameObject(GameObject* game_object);
@@ -77,8 +79,11 @@ class GameController : public ugdk::action::Scene {
     std::vector<base::GameObject*> actors() { return actors_; }
     base::GameObject* hero() { return hero_; }
 
+	ugdk::ui::Node* content_node() { return content_node_.get(); }
+	const ugdk::ui::Node* content_node() const { return content_node_.get(); }
+
   private:
-    GameController();
+    
     
     int current_tick_;
     int monster_spawn_counter_;
@@ -91,6 +96,8 @@ class GameController : public ugdk::action::Scene {
 
     GameObject* hero_;
     std::vector<base::GameObject*> actors_;
+
+	std::unique_ptr<ugdk::ui::Node> content_node_;
     
     double time_since_beggining_;
     bool needs_blackout_;

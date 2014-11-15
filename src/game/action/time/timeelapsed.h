@@ -2,16 +2,16 @@
 #define ROGUELIKE_ACTION_TIME_TIMEELAPSED_H_
 
 // Inheritance
-#include <ugdk/action/task.h>
+// (none)
 
 // External Dependencies
-#include <set>
+// (none)
 
 // Internal Dependencies
 // (none)
 
 // Forward Declarations
-#include "game/base.h"
+// (none)
 
 namespace game {
 namespace action {

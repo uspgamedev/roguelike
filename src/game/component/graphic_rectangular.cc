@@ -21,7 +21,7 @@ using std::set;
 using std::string;
 using ugdk::base::ResourceManager;
 using ugdk::graphic::TexturedRectangle;
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using ugdk::math::Integer2D;
 using game::base::GameController;
 using game::base::GameObject;

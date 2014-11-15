@@ -20,14 +20,14 @@ namespace alg {
 namespace los {
 
 struct Eye {
-    Eye(const ugdk::math::Integer2D& coordinates, const ugdk::Frame& frame);
+    Eye(const ugdk::math::Integer2D& coordinates, const ugdk::math::Frame& frame);
     Eye(const ugdk::math::Integer2D& coordinates, double left, double top, double right, double bottom);
-    Eye(int x, int y, const ugdk::Frame& frame);
+    Eye(int x, int y, const ugdk::math::Frame& frame);
     Eye(int x, int y, double left, double top, double right, double bottom);
     ~Eye() {}
 
     ugdk::math::Integer2D coords;
-    ugdk::Frame frame;
+    ugdk::math::Frame frame;
 };
 
 bool operator<(const Eye& lhs, const Eye& rhs);

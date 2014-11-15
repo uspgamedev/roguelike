@@ -13,12 +13,12 @@
 // Using
 using std::list;
 using std::set;
-using std::tr1::bind;
-using std::tr1::function;
-using std::tr1::placeholders::_1;
-using ugdk::Frame;
+using std::bind;
+using std::function;
+using std::placeholders::_1;
+using ugdk::math::Frame;
 using ugdk::math::Integer2D;
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using namespace game::alg::los::enums;
 using game::alg::EquationalLine;
 

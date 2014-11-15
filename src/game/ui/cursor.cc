@@ -14,9 +14,9 @@
 #include "game/base/gamecontroller.h"
 
 // Using
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using ugdk::base::ResourceManager;
-using ugdk::graphic::Node;
+using ugdk::ui::Node;
 using ugdk::graphic::TexturedRectangle;
 using game::base::GameController;
 

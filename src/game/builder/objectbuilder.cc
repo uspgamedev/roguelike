@@ -26,8 +26,8 @@
 // Using
 using std::numeric_limits;
 using ugdk::graphic::Light;
-using ugdk::graphic::Node;
-using ugdk::Vector2D;
+using ugdk::ui::Node;
+using ugdk::math::Vector2D;
 using game::base::GameController;
 using game::base::GameObject;
 using game::component::ControllerAi;

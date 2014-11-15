@@ -1,52 +1,38 @@
 // External Dependencies
 #include <time.h>
-#include <ugdk/modules.h>
-#include <ugdk/base/engine.h>           // needed for engine
-#include <ugdk/graphic/videomanager.h>  // needed for SetVSync()
+
+#include <ugdk/script.h>
+#include <ugdk/system/engine.h>
 #include <ugdk/script/scriptmanager.h>
 #include <ugdk/script/virtualobj.h>
-#include <ugdk/script/languages/lua/luawrapper.h>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"   // needed for GameController::reference()
 #include "game/base/levelmanager.h"
-#include "game/action/time/timemanager.h"
 
-static void InitScripts() {
-    using ugdk::script::lua::LuaWrapper;
-
-    //inicializando lua
-    LuaWrapper* lua_wrapper = new LuaWrapper();
-    ugdk::RegisterLuaModules(lua_wrapper);
-    SCRIPT_MANAGER()->Register("Lua", lua_wrapper);
-}
 
 int main(int argc, char **argv) {
-	ugdk::Configuration engine_config;
-	engine_config.window_title = "AWESUMENFUCKINTASTIC-EST. Game. Ever.";
-	engine_config.window_size = ugdk::Vector2D(1200.0, 900.0);
-	engine_config.fullscreen = false;
+	ugdk::system::Configuration engine_config;
+	engine_config.windows_list[0].title = "Undeadest. Game. Ever.";
     engine_config.base_path = "./data/";
 
-    ugdk::Engine* engine = ugdk::Engine::reference();
-    InitScripts();
-    engine->Initialize(engine_config);
+	ugdk::script::InitScripts();
+	ugdk::system::Initialize(engine_config);
+
     
     {
         SCRIPT_MANAGER()->LoadModule("init_constants");
     }
 
-	engine->video_manager()->SetVSync(true);
-    engine->video_manager()->SetLightSystem(true);
-
     srand ( (int)time(NULL) );
-    ugdk::action::Scene* main_scene = game::base::GameController::reference();
+	auto main_scene = ugdk::MakeUnique<game::base::GameController>();
+
     game::base::LevelManager* lm = new game::base::LevelManager();
     lm->GenerateFromFile();
 
-    engine->PushScene(main_scene);
-    engine->Run();
+	ugdk::system::PushScene(std::move(main_scene));
 
-    engine->Release();
+	ugdk::system::Run();
+	ugdk::system::Release();
     return 0;
 }

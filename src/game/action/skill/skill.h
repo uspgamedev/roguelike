@@ -7,8 +7,7 @@
 // External Dependencies
 #include <list>
 #include <string>
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 
 // Internal Dependencies
 #include "game/action/time/timeelapsed.h"
@@ -42,7 +41,7 @@ struct SpendInfo {
     operator time::TimeElapsed() { return time_elapsed; }
 };
 
-typedef std::tr1::function<void (base::GameObject*, const GameTargets&, const Efficiency&)>
+typedef std::function<void (base::GameObject*, const GameTargets&, const Efficiency&)>
         GameAction;
 
 class Skill {

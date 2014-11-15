@@ -5,8 +5,7 @@
 #include "game/action/skill/skill.h"
 
 // External Dependencies
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 #include <ugdk/math/integer2D.h>
 
 // Internal Dependencies
@@ -20,13 +19,13 @@ namespace game {
 namespace action {
 namespace skill {
 
-typedef std::tr1::function<ugdk::math::Integer2D (const base::GameObject*, const ugdk::math::Integer2D&)>
+typedef std::function<ugdk::math::Integer2D (const base::GameObject*, const ugdk::math::Integer2D&)>
         MovementCalculator;
 
-typedef std::tr1::function<SpendInfo (base::GameObject*, const ugdk::math::Integer2D&)>
+typedef std::function<SpendInfo (base::GameObject*, const ugdk::math::Integer2D&)>
         MovementSpender;
 
-typedef std::tr1::function<void (base::GameObject*, const ugdk::math::Integer2D&, const Efficiency&)>
+typedef std::function<void (base::GameObject*, const ugdk::math::Integer2D&, const Efficiency&)>
         MovementAction;
 
 class Movement : public Skill {

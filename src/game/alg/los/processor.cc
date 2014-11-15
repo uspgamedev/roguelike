@@ -10,7 +10,7 @@
 
 // Using
 using std::set;
-using std::tr1::function;
+using std::function;
 using ugdk::math::Integer2D;
 
 

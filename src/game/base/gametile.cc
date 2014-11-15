@@ -15,11 +15,11 @@
 
 // Using
 using ugdk::math::Integer2D;
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using game::base::GameController;
 using game::base::GameObject;
 using ugdk::base::ResourceManager;
-using ugdk::graphic::Node;
+using ugdk::ui::Node;
 using ugdk::graphic::TexturedRectangle;
 
 namespace game {

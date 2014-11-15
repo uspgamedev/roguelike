@@ -2,7 +2,7 @@
 #define ROGUELIKE_ACTION_TIME_TIMEMANAGER_H_
 
 // Inheritance
-#include <ugdk/action/task.h>
+#include <ugdk/system/task.h>
 
 // External Dependencies
 #include <map>
@@ -22,8 +22,7 @@ namespace time {
 
 typedef std::set< base::GameObject*, bool (*)(const base::GameObject*, const base::GameObject*) > ObjectQueue;
 
-class TimeManager : public ugdk::action::Task {
-  typedef ugdk::action::Task super;
+class TimeManager {
   struct SortStructure {
       TimeManager* manager_;
       SortStructure(TimeManager* manager) { manager_ = manager; };

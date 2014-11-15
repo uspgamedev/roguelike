@@ -31,7 +31,7 @@ class Cursor {
 
   protected:
     ugdk::math::Integer2D tile_;
-    ugdk::graphic::Modifier* node_modifier_;
+    ugdk::graphic::Geometry* node_modifier_;
 };
 
 } // namespace ui

@@ -9,7 +9,7 @@
 #include "game/base/gamecontroller.h"
 
 // Using
-using ugdk::Vector2D;
+using ugdk::math::Vector2D;
 using game::base::GameController;
 
 namespace game {

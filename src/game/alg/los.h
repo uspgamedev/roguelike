@@ -5,8 +5,7 @@
 // (none)
 
 // External Dependencies
-#include <ugdk/portable/tr1.h>
-#include FROM_TR1(functional)
+#include <functional>
 
 // Internal Dependencies
 // (none)
@@ -34,7 +33,7 @@ enum BumpType {
 
 } // namespace enums
 
-typedef std::tr1::function<void (const ugdk::math::Integer2D& tile, const EquationalLineDouble& upper, const EquationalLineDouble& lower, enums::bump::BumpType bump)> VisibleTileAction;
+typedef std::function<void (const ugdk::math::Integer2D& tile, const EquationalLineDouble& upper, const EquationalLineDouble& lower, enums::bump::BumpType bump)> VisibleTileAction;
 
 } // namespace los
 } // namespace alg

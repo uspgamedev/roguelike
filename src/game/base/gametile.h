@@ -12,7 +12,7 @@
 // (none)
 
 // Forward Declarations
-#include <ugdk/graphic.h>
+#include <ugdk/ui.h>
 #include "game/base.h"
 
 namespace game {
@@ -27,7 +27,7 @@ class GameTile {
     GameTile(int x, int y);
 	~GameTile();
 
-	ugdk::graphic::Node* node() const { return node_; }
+	ugdk::ui::Node* node() const { return node_; }
 
 	void PushObject(GameObject* obj);
 	void RemoveObject(GameObject* obj);
@@ -38,7 +38,7 @@ class GameTile {
 
     const ugdk::math::Integer2D& coords() const { return coords_; }
 
-	ugdk::graphic::Node* node() { return node_; }
+	ugdk::ui::Node* node() { return node_; }
     
     const std::set<GameObject*>& objects_here() const { return objects_here_; }
           std::set<GameObject*>& objects_here()       { return objects_here_; }
@@ -46,9 +46,9 @@ class GameTile {
   private:
 	const ugdk::math::Integer2D coords_;
 
-	ugdk::graphic::Node* node_;
+	ugdk::ui::Node* node_;
 	std::set<GameObject*> objects_here_;
-	ugdk::graphic::Drawable* ground_;
+	ugdk::ui::Drawable* ground_;
 
 };
 
