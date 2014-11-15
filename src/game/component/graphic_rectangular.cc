@@ -6,7 +6,7 @@
 #include <cmath>
 #include <ugdk/base/resourcemanager.h>
 #include <ugdk/graphic/drawable/texturedrectangle.h>
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 #include <ugdk/math/integer2D.h>
 #include <ugdk/math/vector2D.h>
 

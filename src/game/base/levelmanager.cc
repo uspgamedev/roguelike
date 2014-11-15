@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 #include <ugdk/script/virtualobj.h>
 #include <ugdk/script/scriptmanager.h>
 #include <ugdk/math/vector2D.h>

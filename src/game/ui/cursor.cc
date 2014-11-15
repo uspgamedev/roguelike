@@ -4,7 +4,7 @@
 
 // External Dependencies
 #include <ugdk/base/resourcemanager.h>
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 #include <ugdk/graphic/modifier.h>
 #include <ugdk/graphic/drawable/texturedrectangle.h>
 #include <ugdk/math/vector2D.h>

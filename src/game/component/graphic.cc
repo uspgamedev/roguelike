@@ -3,7 +3,7 @@
 
 // External Dependencies
 #include <ugdk/action/scene.h>
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 
 // Internal Dependencies
 #include "game/base/gameobject.h"

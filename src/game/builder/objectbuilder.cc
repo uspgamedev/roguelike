@@ -6,7 +6,7 @@
 #include <string>
 #include <limits>
 #include <ugdk/graphic/light.h>
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 #include <ugdk/graphic/modifier.h>
 #include <ugdk/math/vector2D.h>
 

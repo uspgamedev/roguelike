@@ -1,12 +1,6 @@
 // Header File
 #include "game/base/gameobject.h"
 
-// External Dependencies
-#include <functional>
-#include <ugdk/action/scene.h>
-#include <ugdk/graphic/node.h>
-#include <ugdk/math/integer2D.h>
-
 // Internal Dependencies
 #include "game/action/skill/skillmanager.h"
 #include "game/component/controller.h"
@@ -16,6 +10,12 @@
 #include "game/component/shape.h"
 #include "game/component/sound.h"
 #include "game/component/graphic.h"
+
+// External Dependencies
+#include <functional>
+#include <ugdk/action/scene.h>
+#include <ugdk/ui/node.h>
+#include <ugdk/math/integer2D.h>
 
 // Defines
 #define        USING_DEFINITION(compo,type) using game::component::type;
@@ -38,8 +38,7 @@ namespace game {
 namespace base {
 
 GameObject::GameObject()
-  : super(),
-	FORALL_COMPONENTS(INITIALIZE_WITH_NULLPTR) // ,
+  : FORALL_COMPONENTS(INITIALIZE_WITH_NULLPTR) // ,
     die_() {}
 
 GameObject::~GameObject() {
@@ -59,15 +58,15 @@ void GameObject::Update(double dt) {
 void GameObject::Die() {
     GameController* gc = base::GameController::reference();
 
-    if(die_) // if die_ is a valid tr1::function
+    if(die_) // if die_ is a valid std::function
         die_();
     to_be_removed_ = true;
     gc->RequireBlackout();
 }
 
-void GameObject::OnSceneAdd(Scene* scene) {
-    graphic_component()->OnSceneAdd(scene);
-}
+//void GameObject::OnSceneAdd(Scene* scene) {
+//    graphic_component()->OnSceneAdd(scene);
+//}
 
 } // namespace base
 } // namespace game

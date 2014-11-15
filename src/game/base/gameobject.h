@@ -4,15 +4,15 @@
 // Inheritance
 // (none)
 
+// Internal Dependencies
+#include "game/action/skill/skill.h"
+
 // External Dependencies
 #include <set>
 #include <string>
 #include <functional>
 #include <list>                 // template class
 #include <ugdk/math/vector2D.h> // needed for dimensions_
-
-// Internal Dependencies
-#include "game/action/skill/skill.h"
 
 // Forward Declarations
 #include "game/base.h"
@@ -67,7 +67,7 @@ class GameObject {
     void Die();
     bool dead() const { return to_be_removed_; }
     
-    void OnSceneAdd(ugdk::action::Scene* scene);
+    //void OnSceneAdd(ugdk::action::Scene* scene);
 
   private:
 	FORALL_COMPONENTS(ATTRIBUTES_DECLARATION) // note lack of ";"

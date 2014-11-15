@@ -5,7 +5,7 @@
 // (none)
 
 // External Dependencies
-#include <ugdk/base/genericcontainer.h>
+#include <ugdk/resource/genericcontainer.h>
 
 // Internal Dependencies
 #include "game/action/skill/skill.h"
@@ -17,8 +17,8 @@ namespace game {
 namespace action {
 namespace skill {
 
-class SkillManager : public ugdk::base::GenericContainer<Skill*> {
-  typedef ugdk::base::GenericContainer<Skill*> super;
+class SkillManager : public ugdk::resource::GenericContainer<Skill*> {
+  typedef ugdk::resource::GenericContainer<Skill*> super;
   // singleton
   static SkillManager* reference_;
   SkillManager();

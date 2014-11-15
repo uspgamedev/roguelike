@@ -7,7 +7,7 @@
 // External Dependencies
 #include <ugdk/math/integer2D.h> // where_to_
 #include <ugdk/time/timeaccumulator.h> // time_held_
-#include <ugdk/graphic/node.h>
+#include <ugdk/ui/node.h>
 
 // Internal Dependencies
 #include "game/base/gamecontroller.h"
