@@ -63,8 +63,8 @@ void LevelManager::GenerateFromFile() {
 		for(int x = 0; x < width; ++x) {
 			GameTile* gt = new GameTile(x, y);
             gt->node()->set_zindex(-1.0);
-			gt->node()->modifier()->set_offset(pos);
-			gc->content_node()->AddChild(gt->node());
+			gt->node()->geometry().set_offset(pos);
+			//gc->content_node()->AddChild(gt->node()); // FIXME
 			vect.push_back(gt);
 
 			pos.x += GameController::TILE_SIZE.x;
@@ -93,7 +93,7 @@ void LevelManager::GenerateFromFile() {
     GameObject* hero;
     gc->set_hero(hero = builder.BuildHero());
     gc->AddGameObject(hero);
-    gc->AddTask(new TimeManager());
+    gc->AddTask(ugdk::system::Task(TimeManager()));
     int x, y;
     do {
         x = rand()%width;

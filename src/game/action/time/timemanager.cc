@@ -27,7 +27,7 @@ namespace game {
 namespace action {
 namespace time {
 
-void TimeManager::operator()(double) {
+bool TimeManager::operator()(double) {
     GameController* gc = GameController::reference();
 
     // Move GameController's actors_ to TimeManager's actors_
@@ -47,7 +47,7 @@ void TimeManager::operator()(double) {
     // End the game if the hero is no more.
     if( gc->hero() == nullptr ) {
         gc->Finish();
-        return;
+        return false;
     }
     
     // Removing dead stuff
@@ -68,6 +68,8 @@ void TimeManager::operator()(double) {
         time_has_passed(time_elapsed);
         actors_time_[next] = current_tick_ + 5;
     }
+
+	return true;
 }
 
 void TimeManager::time_has_passed(const TimeElapsed& time) {

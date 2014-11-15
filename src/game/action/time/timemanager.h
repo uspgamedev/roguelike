@@ -45,7 +45,7 @@ class TimeManager {
     ~TimeManager() {}
     bool CompareFunction(base::GameObject* a, base::GameObject* b);
 
-    void operator()(double dt);
+    bool operator()(double dt);
 
   private:
      int current_tick_;
